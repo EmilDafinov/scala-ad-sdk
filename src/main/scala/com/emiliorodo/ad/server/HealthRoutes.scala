@@ -10,14 +10,6 @@ import com.emiliorodo.ad.service.DummyServiceModule
 trait HealthRoutes extends Directives {
   this: AkkaDependenciesModule with DummyServiceModule =>
 
-  lazy val ping: Route =
-    (path("ping") & pathEndOrSingleSlash & get) {
-      import JsonSupport._
-      complete {
-        PingResponse()
-      }
-    }
-
   lazy val sample: Route =
     (path("sample") & get) {
       complete {

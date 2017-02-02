@@ -7,20 +7,9 @@ import com.typesafe.config.{Config, ConfigFactory}
   * the application configuration
   * @author edafinov
   */
-trait ApplicationConfigurationModule 
-  extends WebappConfig 
-     with HttpServerConfig {
-  
-  lazy val config = ConfigFactory.load()
-  
-  val webappConfig = config.getConfig("webapp")
-   
+trait ApplicationConfigurationModule {
+  lazy val config: Config = ConfigFactory.load()
+  lazy val webappConfig: Config = config.getConfig("webapp")
 }
 
-trait WebappConfig {
-  val webappConfig: Config
-}
 
-trait HttpServerConfig {
-  abstract val httpServerConfig: Config
-}

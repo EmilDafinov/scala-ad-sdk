@@ -1,11 +1,11 @@
 package com.emiliorodo.ad.server
 
 import akka.http.scaladsl.server.{Directives, Route}
-import com.emiliorodo.ad.configuration.WebappConfig
+import com.emiliorodo.ad.configuration.ApplicationConfigurationModule
 
 
 trait RoutesModule extends Directives {
-  this: WebappConfig with HealthRoutes =>
+  this: ApplicationConfigurationModule with HealthRoutes =>
   
   private lazy val webAppRootDirectory = webappConfig.getString("root.directory")
   private lazy val staticContent: Route = getFromResourceDirectory(webAppRootDirectory)
@@ -13,8 +13,9 @@ trait RoutesModule extends Directives {
   lazy val baseRoute: Route =
     
     staticContent ~
-    sample ~
-    ping
+    sample
+  
+  val abc: Route = baseRoute
 }
 
 
