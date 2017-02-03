@@ -9,7 +9,6 @@ import com.typesafe.config.{Config, ConfigFactory}
   */
 trait ApplicationConfigurationModule {
   lazy val config: Config = ConfigFactory.load()
-  lazy val webappConfig: Config = config.getConfig("webapp")
 }
 
 
