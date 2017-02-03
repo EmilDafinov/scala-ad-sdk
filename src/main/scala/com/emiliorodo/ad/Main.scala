@@ -1,24 +1,24 @@
 package com.emiliorodo.ad
 
-import com.emiliorodo.ad.configuration.ApplicationConfigurationModule
-import com.emiliorodo.ad.server._
-import com.emiliorodo.ad.service.DummyServiceModule
-
-/**
-  * @author edafinov
-  */
-trait ConnectorRootApplicationContext
-  extends ApplicationConfigurationModule
-  with AkkaDependenciesModule
-  with DummyServiceModule
-  with HealthRoutes
-  with RoutesModule
+import com.emiliorodo.ad.events.handlers.EventHandler
+import com.emiliorodo.ad.events.payloads.events.{SubscriptionCancel, SubscriptionChange, SubscriptionOrder}
+import com.emiliorodo.ad.events.payloads.responses.{SubscriptionCancelResponse, SubscriptionChangeResponse, SubscriptionOrderResponse}
 
 object Main extends App {
 
-  val connector = new AppdirectConnectorBuilder()
-    .build()
+  val isvSubOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse] = (event: SubscriptionOrder) => ???
+  val isvSubChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = (event: SubscriptionChange) => ???
+  val isvSubCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = (event: SubscriptionCancel) => ???
+
+  val connector = new AppdirectConnectorBuilder(
+    subscriptionOrderHandler = isvSubOrderHandler,
+    subscriptionCancelHandler = isvSubCancelHandler
+  )
+  .subscriptionChangeHandler(isvSubChangeHandler)
+  .build()
     
   connector.start()
 
+
 }
+

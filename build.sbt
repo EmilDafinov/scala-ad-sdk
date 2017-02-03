@@ -1,13 +1,12 @@
 val AKKA_VERSION = "2.4.16"
 val AKKA_HTTP_VERSION = "10.0.3"
 val SCALATEST_VERSION = "3.0.0"
-val JSON4S_VERSION = "3.5.0"
 
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
   .settings(
 
-    name := "scalaAdSdk",
+    name := "scala-ad-sdk",
     version := "1.0",
     scalaVersion := "2.12.1",
 
@@ -28,10 +27,7 @@ lazy val scalaAdSdk = (project in file("."))
       "com.typesafe.akka" %% "akka-http" % "10.0.3",
       "com.typesafe.akka" %% "akka-http-testkit" % "10.0.3",
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.3",
-//      "com.typesafe.akka" %% "akka-http-jackson" % "10.0.3",
       "com.typesafe.akka" %% "akka-http-xml" % "10.0.3",
-//      "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
-//      "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
