@@ -1,4 +1,4 @@
-package com.emiliorodo.ad.sdk.internal.service
+package com.emiliorodo.ad.sdk.service
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -8,7 +8,7 @@ import akka.util.ByteString
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DummyService {
+private[sdk] class DummyService {
 
   def getAkkaWebPageAsString(implicit 
                              actorMaterializer: ActorMaterializer, 

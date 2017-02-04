@@ -1,13 +1,13 @@
-package com.emiliorodo.ad.sdk.internal.server
+package com.emiliorodo.ad.sdk.server
 
 import akka.http.scaladsl.server.{Directives, Route}
-import com.emiliorodo.ad.sdk.internal.AkkaDependenciesModule
-import com.emiliorodo.ad.sdk.internal.service.DummyServiceModule
+import com.emiliorodo.ad.sdk.AkkaDependenciesModule
+import com.emiliorodo.ad.sdk.service.DummyServiceModule
 
 /**
   * @author edafinov
   */
-trait HealthRoutes extends Directives {
+private[sdk]  trait HealthRoutes extends Directives {
   this: AkkaDependenciesModule with DummyServiceModule =>
 
   lazy val sample: Route =
@@ -19,4 +19,4 @@ trait HealthRoutes extends Directives {
 
 }
 
-case class PingResponse(message: String = "Pong!")
+private[sdk] case class PingResponse(message: String = "Pong!")

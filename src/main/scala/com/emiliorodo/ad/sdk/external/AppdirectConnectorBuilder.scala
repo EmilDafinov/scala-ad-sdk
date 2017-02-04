@@ -1,10 +1,12 @@
 package com.emiliorodo.ad.sdk.external
 
+import com.emiliorodo.ad.sdk.{AppdirectConnector, ConnectorRootApplicationContext, ConnectorStarter}
+import com.emiliorodo.ad.sdk.events.payloads.events._
+import com.emiliorodo.ad.sdk.events.payloads.responses._
 import com.emiliorodo.ad.sdk.internal.events.handlers.EventHandler
 import com.emiliorodo.ad.sdk.internal.events.payloads.events._
 import com.emiliorodo.ad.sdk.internal.events.payloads.responses._
 import com.emiliorodo.ad.sdk.internal._
-import com.emiliorodo.ad.sdk.internal.handler.UnimplementedEventHandler
 
 class AppdirectConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse],
                                 subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse]) {
@@ -65,7 +67,7 @@ class AppdirectConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
   }
 
   def build(): AppdirectConnector = {
-    new EventHandlers with ConnectorRootApplicationContext with ConnectorStarter {
+    new ClientDefinedEventHandlersModule with ConnectorRootApplicationContext with ConnectorStarter {
       override val subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = AppdirectConnectorBuilder.this.subscriptionCancelHandler
       override val userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = AppdirectConnectorBuilder.this.userAssignedHandler
       override val subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = AppdirectConnectorBuilder.this.subscriptionChangeHandler

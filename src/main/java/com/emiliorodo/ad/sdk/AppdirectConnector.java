@@ -1,4 +1,4 @@
-package com.emiliorodo.ad.sdk.internal;
+package com.emiliorodo.ad.sdk;
 
 /**
  * A connector instance.

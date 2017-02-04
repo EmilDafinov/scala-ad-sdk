@@ -1,11 +1,11 @@
-package com.emiliorodo.ad.sdk.internal
+package com.emiliorodo.ad.sdk
 
 import akka.http.scaladsl.Http
 import com.typesafe.scalalogging.StrictLogging
 
 import scala.util.{Failure, Success}
 
-trait ConnectorStarter extends AppdirectConnector with StrictLogging {
+private[sdk] trait ConnectorStarter extends AppdirectConnector with StrictLogging {
   this: ConnectorRootApplicationContext =>
 
   def start(): Unit = {

@@ -1,5 +1,7 @@
-package com.emiliorodo.ad.sdk.internal
+package com.emiliorodo.ad.sdk
 
+import com.emiliorodo.ad.sdk.events.payloads.events.{AddonSubscriptionCancel, SubscriptionCancel, SubscriptionChange, SubscriptionOrder}
+import com.emiliorodo.ad.sdk.events.payloads.responses.{AddonSubscriptionCancelResponse, AddonSubscriptionOrderResponse, SubscriptionCancelResponse, SubscriptionOrderResponse}
 import com.emiliorodo.ad.sdk.external.AppdirectConnectorBuilder
 import com.emiliorodo.ad.sdk.internal.events.handlers.EventHandler
 import com.emiliorodo.ad.sdk.internal.events.payloads.events._

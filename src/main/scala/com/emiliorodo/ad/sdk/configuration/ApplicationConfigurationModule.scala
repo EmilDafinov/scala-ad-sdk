@@ -1,4 +1,4 @@
-package com.emiliorodo.ad.sdk.internal.configuration
+package com.emiliorodo.ad.sdk.configuration
 
 import com.typesafe.config.{Config, ConfigFactory}
 
@@ -7,7 +7,7 @@ import com.typesafe.config.{Config, ConfigFactory}
   * the application configuration
   * @author edafinov
   */
-trait ApplicationConfigurationModule {
+private[sdk] trait ApplicationConfigurationModule {
   lazy val config: Config = ConfigFactory.load()
 }
 
