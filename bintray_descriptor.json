@@ -11,11 +11,8 @@
   },
   "files": [
     {
-      "includePattern":  "/home/travis/build/EmilDafinov/scala-ad-sdk/target/scala-2.12/scala-ad-sdk.jar",
-      "uploadPattern": "jars/scala-ad-sdk.jar",
-      "matrixParams": {
-        "override": 1 
-      }
+      "includePattern":  ".ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/*",
+      "uploadPattern": "1.0/$1"
     }
   ]
 }
