@@ -3,7 +3,6 @@
     "name": "com.emiliorodo",
     "repo": "scala-ad-sdk",
     "subject": "emildafinov",
-    "vcs_url": "https://github.com/EmilDafinov/scala-ad-sdk",
     "licenses": ["MIT"]
   },
   "version": {
@@ -12,7 +11,7 @@
   },
   "files": [
     {
-      "includePattern":  "/home/travis/.ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0(.*)*/(.*)",
+      "includePattern":  "/home/travis/.ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/*",
       "uploadPattern": "1.0/$1"
     }
   ]
