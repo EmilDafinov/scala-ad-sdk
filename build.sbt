@@ -35,5 +35,8 @@ lazy val scalaAdSdk = (project in file("."))
     ),
 
     maintainer in Docker := "Emil Dafinov <emil.dafinov@gmail.com>",
-    assemblyJarName in assembly := "scala-ad-sdk.jar"
+    assemblyJarName in assembly := "scala-ad-sdk.jar",
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    bintrayRepository := "scala-ad-sdk",
+    bintrayPackage := "scala-ad-sdk"
   )
