@@ -6,6 +6,7 @@ lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
   .settings(
 
+    organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
     scalaVersion := "2.12.1",
@@ -34,9 +35,5 @@ lazy val scalaAdSdk = (project in file("."))
       "org.mockito" % "mockito-all" % "1.10.19" % "test"
     ),
 
-    maintainer in Docker := "Emil Dafinov <emil.dafinov@gmail.com>",
-    assemblyJarName in assembly := "scala-ad-sdk.jar",
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    bintrayRepository := "scala-ad-sdk",
-    bintrayPackage := "scala-ad-sdk"
+    maintainer in Docker := "Emil Dafinov <emil.dafinov@gmail.com>"
   )
