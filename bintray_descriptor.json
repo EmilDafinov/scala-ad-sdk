@@ -10,8 +10,10 @@
   },
   "files": [
     {
-      "includePattern": "/home/travis/build/EmilDafinov/scala-ad-sdk/target/scala-2.12/scala-ad-sdk.jar"
+      "includePattern":  "build/bin(.*)*/(.*\\.jar)",
+      "matrixParams": {
+        "override": 1 
+      }
     }
-  ]//,
-  //"publish": true
+  ]
 }
