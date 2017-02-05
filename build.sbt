@@ -9,6 +9,7 @@ lazy val scalaAdSdk = (project in file("."))
     organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
+    
     scalaVersion := "2.12.1",
 
     resolvers ++= Seq(
