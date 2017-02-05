@@ -1,7 +1,7 @@
 {
   "package": {
-    "name": "com.emiliorodo",
-    "repo": "scala-ad-sdk",
+    "repo": "com.emiliorodo",
+    "name": "scala-ad-sdk",
     "subject": "emildafinov",
     "licenses": ["MIT"]
   },
