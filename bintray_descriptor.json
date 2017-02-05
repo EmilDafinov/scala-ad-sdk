@@ -1,6 +1,6 @@
 {
   "package": {
-    "name": "scala-ad-sdk",
+    "name": "com.emiliorodo",
     "repo": "scala-ad-sdk",
     "subject": "emildafinov",
     "licenses": ["MIT"]
@@ -11,7 +11,7 @@
   },
   "files": [
     {
-      "includePattern":  ".ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/*",
+      "includePattern":  "$HOME/.ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/*",
       "uploadPattern": "1.0/$1"
     }
   ]

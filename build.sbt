@@ -9,9 +9,9 @@ lazy val scalaAdSdk = (project in file("."))
     organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
+    licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
     
     scalaVersion := "2.12.1",
-
     resolvers ++= Seq(
       "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
       Resolver.bintrayRepo("hseeberger", "maven")
