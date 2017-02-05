@@ -3,7 +3,8 @@
     "repo": "com.emiliorodo",
     "name": "scala-ad-sdk",
     "subject": "emildafinov",
-    "licenses": ["MIT"]
+    "licenses": ["MIT"],
+    "vcs_url": "https://github.com/EmilDafinov/scala-ad-sdk.git"
   },
   "version": {
     "name": "1.0",
