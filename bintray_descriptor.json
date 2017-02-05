@@ -3,5 +3,9 @@
     "name": "scala-ad-sdk",
     "repo": "scala-ad-sdk",
     "subject": "emildafinov"
+  },
+  "version": {
+    "name": "1.0",
+    "desc": "This is a the first version"
   }
 }

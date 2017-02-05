@@ -34,5 +34,6 @@ lazy val scalaAdSdk = (project in file("."))
       "org.mockito" % "mockito-all" % "1.10.19" % "test"
     ),
 
-    maintainer in Docker := "Emil Dafinov <emil.dafinov@gmail.com>"
+    maintainer in Docker := "Emil Dafinov <emil.dafinov@gmail.com>",
+    assemblyJarName in assembly := "scala-ad-sdk.jar"
   )
