@@ -2,15 +2,17 @@
   "package": {
     "name": "scala-ad-sdk",
     "repo": "scala-ad-sdk",
-    "subject": "emildafinov"
+    "subject": "emildafinov",
+    "licenses": ["MIT"]
   },
   "version": {
-    "name": "1.0",
-    "desc": "This is a the first version"
+    "name": "1.0-SNAPSHOT",
+    "desc": "This is the first version"
   },
   "files": [
     {
-      "includePattern":  "/home/travis/build/EmilDafinov/scala-ad-sdk/target/scala-2.12/scala-ad-sdk.jar", //"build/bin(.*)*/(.*\\.jar)",
+      "includePattern":  "/home/travis/build/EmilDafinov/scala-ad-sdk/target/scala-2.12/scala-ad-sdk.jar",
+      "uploadPattern": "jars/$1",
       "matrixParams": {
         "override": 1 
       }
