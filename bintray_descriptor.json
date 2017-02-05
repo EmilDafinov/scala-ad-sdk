@@ -12,7 +12,7 @@
   },
   "files": [
     {
-      "includePattern":  "${HOME}/.ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/(.*)/(.*)",
+      "includePattern":  "~/.ivy2/local/com.emiliorodo/scala-ad-sdk_2.12/1.0/(.*)/(.*)",
       "uploadPattern": "com/emiliorodo/scala-ad-sdk/1.0/$2"
     }
   ]
