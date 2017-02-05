@@ -10,6 +10,7 @@ jdk:
 script:
   - sbt ++$TRAVIS_SCALA_VERSION assembly test
 deploy:
+  skip_cleanup: true
   provider: bintray
   user: emildafinov
   file: bintray_descriptor.json
