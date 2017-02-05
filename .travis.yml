@@ -8,7 +8,7 @@ scala:
 jdk:
   - oraclejdk8
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test publishLocal
+  - sbt ++$TRAVIS_SCALA_VERSION test publishM2
 deploy:
   skip_cleanup: true
   provider: bintray
