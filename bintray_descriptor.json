@@ -11,7 +11,7 @@
   },
   "files": [
     {
-      "includePattern":  "*./com.emiliorodo/scala-ad-sdk_2.12/1.0/.*",
+      "includePattern":  ".*/com.emiliorodo/scala-ad-sdk_2.12/1.0/.*",
       "uploadPattern": "1.0/$1"
     }
   ]
