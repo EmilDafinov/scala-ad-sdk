@@ -6,7 +6,7 @@
     "licenses": ["MIT"]
   },
   "version": {
-    "name": "1.0-SNAPSHOT",
+    "name": "1.0",
     "desc": "This is the first version"
   },
   "files": [
