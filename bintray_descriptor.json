@@ -13,7 +13,10 @@
   "files": [
     {
       "includePattern":  "/home/travis/.m2/repository/com/emiliorodo/scala-ad-sdk_2.12/1.0/(.*)",
-      "uploadPattern": "com/emiliorodo/scala-ad-sdk/1.0/$1"
+      "uploadPattern": "com/emiliorodo/scala-ad-sdk/1.0/$1",
+      "matrixParams": {
+        "override": 1 
+      }
     }
   ],
   "publish": true
