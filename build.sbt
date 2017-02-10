@@ -9,20 +9,16 @@ lazy val scalaAdSdk = (project in file("."))
     organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
-    licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
-    
+    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+
     scalaVersion := "2.12.1",
-    resolvers ++= Seq(
-      "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases/",
-      Resolver.bintrayRepo("hseeberger", "maven")
-    ),
 
     libraryDependencies ++= Seq(
       //Application config
       "com.typesafe" % "config" % "1.3.0",
 
       //Logging
-      "ch.qos.logback" %  "logback-classic" % "1.1.7",
+      "ch.qos.logback" % "logback-classic" % "1.1.7",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
       "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http-core" % "10.0.3",

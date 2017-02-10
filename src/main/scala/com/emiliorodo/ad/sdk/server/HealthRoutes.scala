@@ -11,12 +11,9 @@ private[sdk]  trait HealthRoutes extends Directives {
   this: AkkaDependenciesModule with DummyServiceModule =>
 
   lazy val sample: Route =
-    (path("sample") & get) {
+    path("sample") {
       complete {
         dummyService.getAkkaWebPageAsString
       }
     }
-
 }
-
-private[sdk] case class PingResponse(message: String = "Pong!")
