@@ -21,4 +21,5 @@ class SubscriptionOrderEventParserTest extends FlatSpec with Matchers {
     //Then
     parsedEvent shouldEqual expectedSubscriptionOrder
   }
+  
 }
