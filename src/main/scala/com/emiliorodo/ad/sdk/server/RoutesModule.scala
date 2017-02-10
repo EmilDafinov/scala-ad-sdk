@@ -56,7 +56,7 @@ private[sdk] trait RoutesModule extends Directives {
     }
 
   def userUnassignment(implicit event: Event): Route =
-    path("user" / "assignment") {
+    path("user" / "unassignment") {
       complete(???)
     }
 }
