@@ -30,6 +30,5 @@ lazy val scalaAdSdk = (project in file("."))
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
       "org.mockito" % "mockito-all" % "1.10.19" % "test"
-    ),
-    jacoco.settings
+    )
   )
