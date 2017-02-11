@@ -9,7 +9,7 @@ jdk:
   - oraclejdk8
 before_script:
   - mkdir ~/.bintray
-  - echo 'realm = Bintray API Realm\nhost = api.bintray.com\nuser = emildafinov\npassword = $BINTRAY_API_KEY' > ~/.bintray/.credentials
+  - echo 'realm = Bintray API Realm\nhost = api.bintray.com\nuser = emildafinov\npassword = ${BINTRAY_API_KEY}' > ~/.bintray/.credentials
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport publishM2
 after_success:
