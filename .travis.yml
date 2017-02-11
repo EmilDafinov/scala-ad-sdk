@@ -8,10 +8,11 @@ scala:
 jdk:
   - oraclejdk8
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport publishM2
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
 after_success:
   # Needed in order to upload the code coverate report to https://codecov.io
   - bash <(curl -s https://codecov.io/bash)
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverageOff compile publishM2
 deploy:
   skip_cleanup: true
   provider: bintray
