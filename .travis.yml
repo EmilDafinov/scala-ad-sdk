@@ -11,10 +11,11 @@ env:
   global:
   - secure: xJFFXS5tJ2zvKSc8zCe8cpCuGlhcpCreASFXKQwIcjg2hGnQ8Co+me2Dg99iMZlhZSj6N0ccWzQp5gwEBPBYD9QE0pzAR/So9CPhE7rIMx+t93q1WL+btGxYWq2OxGC2oF/RrcnZYC+a43zFlnreonRN8BgQrUr3j5gX4Xte3rBmAPTBYm45eRWzpbTFdTeFfGlUPRBQWh3J1Fv9xwXRwCBF6pYK7vV32IF5RLDZK1u0RoMUo6N5NAM+lJDhEbmQKsFmgm/uSAMT9U+pKqCjZsEpHiy8un9o5StGOf/3Bf7FqoNLI1idwmJ+UgGYh6EWjwAqASNDA8ICK8LUOh/0RIWCVGBHnkh/nPkzv4umCQTdL26HbThdmQVVkIbD1SN2g5nIIxXTDs0EUwzqUXZF+/P5zxgbS4a9mFkeVrQbDawzOYwUafyY61M+i64O4+j9HhQ48jncX9trrHjPQn4iJXr9+M++72JIJ7yVg9e3/F1c9TBMKTvQIJttwjy+Z/8gG/gOH9dgEu9tLan2V+LGS4t3XfcEORx4Ana/a9sGrd7RAgcXDoem2ija8GWL1FnhOy2hzDwws8drvKZbIpYvFq+dc7kziw85MA9JUN0c1LOmVdztebboaL0sJTkxPl3MSmPDqg9j1ca0VI+4sX+XguvNb7J163GRLnr+pskLAW8= 
 script:
-  - curl -O https://gist.githubusercontent.com/EmilDafinov/c874e7f3abe77dd770c2bd26828b9224/raw/f75b659d1a2c3634140eace2c7899dc634e2790b/travis_bintray_credentials.sh
-  - chmod +x travis_bintray_credentials.sh
-  - ./travis_bintray_credentials.sh
-  - sbt ++$TRAVIS_SCALA_VERSION clean test publish
+  - curl -O https://gist.githubusercontent.com/EmilDafinov/c874e7f3abe77dd770c2bd26828b9224/raw/f75b659d1a2c3634140eace2c7899dc634e2790b/travis_bintray_credentials.sh &&
+    chmod +x travis_bintray_credentials.sh &&
+    ./travis_bintray_credentials.sh &&
+    sbt bintrayWhoami &&
+    sbt ++$TRAVIS_SCALA_VERSION clean test publish
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - sbt ++$TRAVIS_SCALA_VERSION clean coverageOff compile publishM2
