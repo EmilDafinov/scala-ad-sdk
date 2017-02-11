@@ -5,7 +5,7 @@ val SCALATEST_VERSION = "3.0.0"
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
   .settings(
-
+    
     organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
@@ -30,5 +30,6 @@ lazy val scalaAdSdk = (project in file("."))
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
       "org.mockito" % "mockito-all" % "1.10.19" % "test"
-    ) 
+    ),
+    jacoco.settings
   )
