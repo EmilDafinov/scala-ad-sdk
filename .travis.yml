@@ -7,15 +7,11 @@ scala:
   - 2.12.1
 jdk:
   - oraclejdk8
-before_script:
-  - mkdir ~/.bintray
-  - echo 'realm = Bintray API Realm\nhost = api.bintray.com\nuser = emildafinov\npassword = ${BINTRAY_API_KEY}' > ~/.bintray/.credentials
 script:
   - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport publishM2
 after_success:
   # Needed in order to upload the code coverate report to https://codecov.io
   - bash <(curl -s https://codecov.io/bash)
-  - sbt clean compile publish
 deploy:
   skip_cleanup: true
   provider: bintray
