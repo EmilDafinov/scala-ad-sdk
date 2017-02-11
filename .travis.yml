@@ -12,6 +12,7 @@ script:
 after_success:
   # Needed in order to upload the code coverate report to https://codecov.io
   - bash <(curl -s https://codecov.io/bash)
+  - sbt clean compile publish
 deploy:
   skip_cleanup: true
   provider: bintray
