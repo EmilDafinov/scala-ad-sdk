@@ -15,6 +15,7 @@ script:
     chmod +x travis_bintray_credentials.sh &&
     ./travis_bintray_credentials.sh &&
     sbt bintrayWhoami &&
+    sbt bintrayCredentialsFile &&
     sbt ++$TRAVIS_SCALA_VERSION clean test publish
 after_success:
   - bash <(curl -s https://codecov.io/bash)
