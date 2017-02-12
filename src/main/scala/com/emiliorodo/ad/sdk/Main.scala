@@ -9,11 +9,11 @@ import com.emiliorodo.ad.sdk.internal.events.payloads.responses._
 
 object Main extends App {
 
-  val isvSubOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse] = (event: SubscriptionOrder) => ???
-  val isvSubChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = (event: SubscriptionChange) => ???
-  val isvSubCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = (event: SubscriptionCancel) => ???
-  val isvAddonSubOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = (event: AddonSubscriptionOrder) => ???
-  val isvAddonSubCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = (event: AddonSubscriptionCancel) => ???
+  val isvSubOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse] = null
+  val isvSubChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = null
+  val isvSubCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = null
+  val isvAddonSubOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = null
+  val isvAddonSubCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = null
 
   val connector = new AppdirectConnectorBuilder(
     subscriptionOrderHandler = isvSubOrderHandler,

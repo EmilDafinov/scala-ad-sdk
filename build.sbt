@@ -5,13 +5,12 @@ val SCALATEST_VERSION = "3.0.0"
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
   .settings(
+    scalaVersion := "2.11.8",
     
     organization := "com.emiliorodo",
     name := "scala-ad-sdk",
     version := "1.0",
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-
-    scalaVersion := "2.12.1",
 
     libraryDependencies ++= Seq(
       //Application config
@@ -27,7 +26,6 @@ lazy val scalaAdSdk = (project in file("."))
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.3",
       "com.typesafe.akka" %% "akka-http-xml" % "10.0.3",
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
-      "org.scoverage" % "scalac-scoverage-runtime_2.12" % "1.3.0",
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
       "org.mockito" % "mockito-all" % "1.10.19" % "test"
