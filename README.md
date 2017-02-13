@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/EmilDafinov/scala-ad-sdk.svg?branch=master)](https://travis-ci.org/EmilDafinov/scala-ad-sdk)
 [![codecov](https://codecov.io/gh/EmilDafinov/scala-ad-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/EmilDafinov/scala-ad-sdk)
  [ ![Download](https://api.bintray.com/packages/emildafinov/maven/scala-ad-sdk/images/download.svg) ](https://bintray.com/emildafinov/maven/scala-ad-sdk/_latestVersion)
+ [ ![Download](https://api.bintray.com/packages/bintray/jcenter/scala-ad-sdk/images/download.svg) ](https://bintray.com/bintray/jcenter/scala-ad-sdk/_latestVersion)
 
 ## Tools
 
