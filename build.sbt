@@ -45,7 +45,6 @@ lazy val baseSettings = Seq(
       </developer>
     </developers>,
   publishArtifact in Test := false,
-  publishMavenStyle := false,
   publishTo := {
     if (isSnapshot.value)
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
