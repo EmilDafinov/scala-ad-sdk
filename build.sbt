@@ -56,5 +56,6 @@ lazy val baseSettings = Seq(
       List(Path.userHome / ".bintray" / ".artifactory").filter(_.exists).map(Credentials(_))
     else
       credentials.value
-  }
+  },
+  bintrayReleaseOnPublish := !isSnapshot.value
 )
