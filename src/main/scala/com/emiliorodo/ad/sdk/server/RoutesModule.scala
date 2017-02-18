@@ -1,6 +1,8 @@
 package com.emiliorodo.ad.sdk.server
 
-import akka.http.scaladsl.server.{Directives, Route}
+import akka.http.scaladsl.model.HttpResponse
+import akka.http.scaladsl.model.StatusCodes.BadRequest
+import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.emiliorodo.ad.sdk.AkkaDependenciesModule
 import com.emiliorodo.ad.sdk.configuration.ApplicationConfigurationModule
 import com.emiliorodo.ad.sdk.internal.ClientDefinedEventHandlersModule
@@ -17,13 +19,20 @@ private[sdk] trait RoutesModule extends Directives with EventJsonSupport {
    with AkkaDependenciesModule =>
 
   lazy val baseRoute: Route =
-    sample ~ appmarketIntegrationRoutes
+    handleExceptions(rootExceptionHandler) {
+      sample ~ appmarketIntegrationRoutes
+    }
 
+  lazy val rootExceptionHandler = ExceptionHandler {
+      case _: ArithmeticException =>
+        complete(HttpResponse(BadRequest, entity = "The operation you requested is not supported"))
+    }
+  
   def appmarketIntegrationRoutes: Route =
     (pathPrefix("integration") & entity(as[Event])) { implicit event =>
       subscriptionOrder ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
-        addonOrder ~ addonCancel ~
-        userAssignment ~ userUnassignment
+      addonOrder ~ addonCancel ~
+      userAssignment ~ userUnassignment
     }
 
   def subscriptionOrder(implicit event: Event): Route =
