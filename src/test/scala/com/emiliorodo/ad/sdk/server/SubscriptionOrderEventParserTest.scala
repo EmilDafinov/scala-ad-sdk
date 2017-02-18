@@ -1,9 +1,9 @@
 package com.emiliorodo.ad.sdk.server
 
+import com.emiliorodo.ad.sdk.UnitTestSpec
 import com.emiliorodo.ad.sdk.payload.{Event, SubscriptionOrderEvent}
-import org.scalatest.{FlatSpec, FunSuite, Matchers}
 
-class SubscriptionOrderEventParserTest extends FlatSpec with Matchers {
+class SubscriptionOrderEventParserTest extends UnitTestSpec {
 
   behavior of "SubscriptionOrderEventParser"
 
