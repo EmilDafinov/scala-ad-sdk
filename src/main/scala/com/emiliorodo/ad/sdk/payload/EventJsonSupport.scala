@@ -1,6 +1,7 @@
 package com.emiliorodo.ad.sdk.payload
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import com.emiliorodo.ad.sdk.events.parsers.SubscriptionOrderEvent
 import com.emiliorodo.ad.sdk.events.payloads.responses.SubscriptionOrderResponse
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 

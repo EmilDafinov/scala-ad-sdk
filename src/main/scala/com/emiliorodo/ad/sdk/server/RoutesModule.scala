@@ -5,6 +5,7 @@ import akka.http.scaladsl.model.StatusCodes.BadRequest
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.emiliorodo.ad.sdk.AkkaDependenciesModule
 import com.emiliorodo.ad.sdk.configuration.ApplicationConfigurationModule
+import com.emiliorodo.ad.sdk.events.parsers.RichEventParsersModule
 import com.emiliorodo.ad.sdk.internal.ClientDefinedEventHandlersModule
 import com.emiliorodo.ad.sdk.payload.{Event, EventJsonSupport}
 
