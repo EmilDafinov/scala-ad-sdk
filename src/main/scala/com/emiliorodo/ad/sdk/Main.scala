@@ -15,6 +15,7 @@ object Main extends App {
   val isvAddonSubOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = null
   val isvAddonSubCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = null
 
+
   val connector = new AppdirectConnectorBuilder(
     subscriptionOrderHandler = isvSubOrderHandler,
     subscriptionCancelHandler = isvSubCancelHandler

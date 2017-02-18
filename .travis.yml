@@ -14,5 +14,7 @@ before_script:
 script:
     sbt ++$TRAVIS_SCALA_VERSION clean test publish #Publish artifacts
 after_success:
-  - sbt coverage test coverageReport &&
-    bash <(curl -s https://codecov.io/bash) #Generate and publish coverage report
+  - sbt clean coverage test &&
+    sbt coverageReport &&
+    sbt coverageAggregate &&
+    sbt codacyCoverage
