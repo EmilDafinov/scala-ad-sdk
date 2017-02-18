@@ -1,7 +1,8 @@
 package com.emiliorodo.ad.sdk.server
 
 import com.emiliorodo.ad.sdk.UnitTestSpec
-import com.emiliorodo.ad.sdk.events.parsers.{SubscriptionOrderEvent, SubscriptionOrderEventParser}
+import com.emiliorodo.ad.sdk.events.parsers.SubscriptionOrderEventParser
+import com.emiliorodo.ad.sdk.events.payloads.SubscriptionOrderEvent
 import com.emiliorodo.ad.sdk.payload.Event
 
 class SubscriptionOrderEventParserTest extends UnitTestSpec {
@@ -22,5 +23,4 @@ class SubscriptionOrderEventParserTest extends UnitTestSpec {
     //Then
     parsedEvent shouldEqual expectedSubscriptionOrder
   }
-  
 }
