@@ -9,57 +9,66 @@ import com.emiliorodo.ad.sdk.{AppdirectConnector, ConnectorRootApplicationContex
 class AppdirectConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse],
                                 subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse]) {
 
-  private var subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = new UnimplementedEventHandler(classOf[SubscriptionChange])
-  private var addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = new UnimplementedEventHandler(classOf[AddonSubscriptionCancel])
-  private var addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = new UnimplementedEventHandler(classOf[AddonSubscriptionOrder])
-  private var userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = new UnimplementedEventHandler(classOf[UserAssignment])
-  private var userUnassignedHandler: EventHandler[UserUnassignment, UserUnassignmentResponse] = new UnimplementedEventHandler(classOf[UserUnassignment])
-  private var subscriptionClosedHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse] = new UnimplementedEventHandler(classOf[SubscriptionClosed])
-  private var subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse] = new UnimplementedEventHandler(classOf[SubscriptionDeactivated])
-  private var subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse] = new UnimplementedEventHandler(classOf[SubscriptionReactivated])
-  private var upcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse] = new UnimplementedEventHandler(classOf[SubscriptionUpcomingInvoice])
+  private var subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = UnimplementedEventHandler(classOf[SubscriptionChange])
+  private var addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = UnimplementedEventHandler(classOf[AddonSubscriptionCancel])
+  private var addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = UnimplementedEventHandler(classOf[AddonSubscriptionOrder])
+  private var userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = UnimplementedEventHandler(classOf[UserAssignment])
+  private var userUnassignedHandler: EventHandler[UserUnassignment, UserUnassignmentResponse] = UnimplementedEventHandler(classOf[UserUnassignment])
+  private var subscriptionClosedHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse] = UnimplementedEventHandler(classOf[SubscriptionClosed])
+  private var subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse] = UnimplementedEventHandler(classOf[SubscriptionDeactivated])
+  private var subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse] = UnimplementedEventHandler(classOf[SubscriptionReactivated])
+  private var upcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse] = UnimplementedEventHandler(classOf[SubscriptionUpcomingInvoice])
 
   def subscriptionChangeHandler(eventHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionChangeHandler = eventHandler
     this
   }
 
   def addonSubscriptionCancelHandler(eventHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     addonSubscriptionCancelHandler = eventHandler
     this
   }
 
   def addonSubscriptionOrderHandler(eventHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     addonSubscriptionOrderHandler = eventHandler
     this
   }
 
   def userAssignedHandler(eventHandler: EventHandler[UserAssignment, UserAssignmentResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     userAssignedHandler = eventHandler
     this
   }
 
   def userUnassignedHandler(eventHandler: EventHandler[UserUnassignment, UserUnassignmentResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     userUnassignedHandler = eventHandler
     this
   }
 
   def subscriptionClosedHandler(eventHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionClosedHandler = eventHandler
     this
   }
 
   def subscriptionDeactivatedHandler(eventHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionDeactivatedHandler = eventHandler
     this
   }
 
   def subscriptionReactivatedHandler(eventHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionReactivatedHandler = eventHandler
     this
   }
 
   def upcomingInvoiceHandler(eventHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse]): AppdirectConnectorBuilder = {
+    require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     upcomingInvoiceHandler = eventHandler
     this
   }
