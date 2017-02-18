@@ -2,7 +2,7 @@ package com.emiliorodo.ad.sdk.internal
 
 import javax.naming.OperationNotSupportedException
 
-import com.emiliorodo.ad.sdk.internal.events.handlers.EventHandler
+import com.emiliorodo.ad.sdk.events.handlers.EventHandler
 
 private[sdk] class UnimplementedEventHandler[U, T](eventType: Class[U]) extends EventHandler[U, T] {
   

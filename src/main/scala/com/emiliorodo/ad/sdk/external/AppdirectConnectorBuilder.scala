@@ -1,12 +1,10 @@
 package com.emiliorodo.ad.sdk.external
 
-import com.emiliorodo.ad.sdk.{AppdirectConnector, ConnectorRootApplicationContext, ConnectorStarter}
+import com.emiliorodo.ad.sdk.events.handlers.EventHandler
 import com.emiliorodo.ad.sdk.events.payloads.events._
 import com.emiliorodo.ad.sdk.events.payloads.responses._
-import com.emiliorodo.ad.sdk.internal.events.handlers.EventHandler
-import com.emiliorodo.ad.sdk.internal.events.payloads.events._
-import com.emiliorodo.ad.sdk.internal.events.payloads.responses._
 import com.emiliorodo.ad.sdk.internal._
+import com.emiliorodo.ad.sdk.{AppdirectConnector, ConnectorRootApplicationContext, ConnectorStarter}
 
 class AppdirectConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse],
                                 subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse]) {

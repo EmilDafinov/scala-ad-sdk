@@ -4,14 +4,17 @@ import akka.http.scaladsl.server.{Directives, Route}
 import com.emiliorodo.ad.sdk.AkkaDependenciesModule
 import com.emiliorodo.ad.sdk.configuration.ApplicationConfigurationModule
 import com.emiliorodo.ad.sdk.internal.ClientDefinedEventHandlersModule
-import com.emiliorodo.ad.sdk.payload.Event
+import com.emiliorodo.ad.sdk.payload.{Event, EventJsonSupport}
 
 import scala.concurrent.Future
 
-private[sdk] trait RoutesModule extends Directives {
-  this: ApplicationConfigurationModule with HealthRoutes with ClientDefinedEventHandlersModule with RichEventParsersModule with AkkaDependenciesModule =>
+private[sdk] trait RoutesModule extends Directives with EventJsonSupport {
 
-  import com.emiliorodo.ad.sdk.payload.EventJsonSupport._
+  this: ApplicationConfigurationModule 
+   with HealthRoutes 
+   with ClientDefinedEventHandlersModule 
+   with RichEventParsersModule 
+   with AkkaDependenciesModule =>
 
   lazy val baseRoute: Route =
     sample ~ appmarketIntegrationRoutes
