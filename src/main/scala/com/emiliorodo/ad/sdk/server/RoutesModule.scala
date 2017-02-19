@@ -21,7 +21,7 @@ private[sdk] trait RoutesModule extends Directives with EventJsonSupport {
 
   lazy val baseRoute: Route =
     handleExceptions(rootExceptionHandler) {
-      sample ~ appmarketIntegrationRoutes
+      health ~ appmarketIntegrationRoutes
     }
 
   lazy val rootExceptionHandler = ExceptionHandler {

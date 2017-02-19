@@ -13,6 +13,7 @@ lazy val baseSettings = Seq(
   version := "1.1-SNAPSHOT",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
+  resolvers += Resolver.bintrayRepo("lhotari","releases"),
   libraryDependencies ++= Seq(
     //Application config
     "com.typesafe" % "config" % "1.3.0",
@@ -26,6 +27,7 @@ lazy val baseSettings = Seq(
     "com.typesafe.akka" %% "akka-http-testkit" % "10.0.3",
     "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.3",
     "com.typesafe.akka" %% "akka-http-xml" % "10.0.3",
+    "io.github.lhotari" %% "akka-http-health" % "1.0.3",
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
     "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",

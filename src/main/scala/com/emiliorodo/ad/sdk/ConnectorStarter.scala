@@ -5,15 +5,17 @@ import com.typesafe.scalalogging.StrictLogging
 
 import scala.util.{Failure, Success}
 
-private[sdk] trait ConnectorStarter extends AppdirectConnector with StrictLogging {
+private[sdk] trait ConnectorStarter extends StrictLogging {
   this: ConnectorRootApplicationContext =>
 
   def start(): Unit = {
     val connectorHttpServerInterface: String = config.getString("http.server.interface")
     val connectorHttpServerPort: Int = config.getInt("http.server.port")
-
-    Http()
-      .bindAndHandle(
+    val healthPort:Int = config.getInt("http.server.health.port")
+    
+    val httpExt = Http()
+    
+    httpExt.bindAndHandle(
         handler = baseRoute,
         interface = connectorHttpServerInterface,
         port = connectorHttpServerPort
@@ -31,5 +33,22 @@ private[sdk] trait ConnectorStarter extends AppdirectConnector with StrictLoggin
             logger.info("Http server stopped")
           }
       }
+    httpExt.bindAndHandle(
+      handler = health, 
+      interface = connectorHttpServerInterface, 
+      port = healthPort
+    ).onComplete {
+      case Success(serverBinding) =>
+        logger.info(s"Http server for healthcheck route started on $connectorHttpServerInterface:$healthPort")
+        sys.addShutdownHook {
+          serverBinding.unbind()
+          logger.info("Http server stopped")
+        }
+      case Failure(exception) =>
+        logger.error(s"Cannot start healthcheck server on $connectorHttpServerInterface:$healthPort", exception)
+        sys.addShutdownHook {
+          logger.info("Http server stopped")
+        }
+    }
   }
 }

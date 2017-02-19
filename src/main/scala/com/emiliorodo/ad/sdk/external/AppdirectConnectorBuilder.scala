@@ -74,7 +74,7 @@ class AppdirectConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
   }
 
   def build(): AppdirectConnector = {
-    new ClientDefinedEventHandlersModule with ConnectorRootApplicationContext with ConnectorStarter {
+    new ClientDefinedEventHandlersModule with ConnectorRootApplicationContext with ConnectorStarter with AppdirectConnector {
       override val subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = AppdirectConnectorBuilder.this.subscriptionCancelHandler
       override val userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = AppdirectConnectorBuilder.this.userAssignedHandler
       override val subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = AppdirectConnectorBuilder.this.subscriptionChangeHandler
