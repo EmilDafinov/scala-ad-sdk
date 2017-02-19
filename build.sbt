@@ -10,7 +10,7 @@ lazy val baseSettings = Seq(
 
   organization := "com.emiliorodo",
   name := "scala-ad-sdk",
-  version := "1.1-SNAPSHOT",
+  version := "1.2-SNAPSHOT",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
   resolvers += Resolver.bintrayRepo("lhotari","releases"),
