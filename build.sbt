@@ -8,7 +8,7 @@ lazy val scalaAdSdk = (project in file("."))
 lazy val baseSettings = Seq(
   scalaVersion := "2.11.8",
 
-  organization := "com.emiliorodo",
+  organization := "com.github.emildafinov",
   name := "scala-ad-sdk",
   version := "1.2-SNAPSHOT",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
