@@ -61,3 +61,4 @@ lazy val baseSettings = Seq(
   },
   bintrayReleaseOnPublish := !isSnapshot.value
 )
+
