@@ -1,12 +1,12 @@
 val AKKA_VERSION = "2.4.16"
-val AKKA_HTTP_VERSION = "10.0.3"
+val AKKA_HTTP_VERSION = "10.0.4"
 val SCALATEST_VERSION = "3.0.0"
 
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
   .settings(baseSettings:_*)
 lazy val baseSettings = Seq(
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.12.1",
 
   organization := "com.github.emildafinov",
   name := "scala-ad-sdk",
@@ -22,11 +22,11 @@ lazy val baseSettings = Seq(
     "ch.qos.logback" % "logback-classic" % "1.1.7",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
     "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
-    "com.typesafe.akka" %% "akka-http-core" % "10.0.3",
-    "com.typesafe.akka" %% "akka-http" % "10.0.3",
-    "com.typesafe.akka" %% "akka-http-testkit" % "10.0.3",
-    "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.3",
-    "com.typesafe.akka" %% "akka-http-xml" % "10.0.3",
+    "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
+    "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
+    "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
+    "com.typesafe.akka" %% "akka-http-spray-json" % AKKA_HTTP_VERSION,
+    "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
     "io.github.lhotari" %% "akka-http-health" % "1.0.3",
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
