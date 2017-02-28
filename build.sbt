@@ -33,18 +33,19 @@ lazy val baseSettings = Seq(
     "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
     "org.mockito" % "mockito-all" % "1.10.19" % "test"
   ),
-  pomExtra := 
-    <scm>
-      <url>scm:git:https://github.com/EmilDafinov/scala-ad-sdk</url>
-      <connection>scm:git:https://github.com/EmilDafinov/scala-ad-sdk</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>edafinov</id>
-        <name>Emil Dafinov</name>
-        <url>http://www.example.com/~emil</url>
-      </developer>
-    </developers>,
+  scmInfo := Some(
+    ScmInfo(
+      browseUrl = url("https://github.com/EmilDafinov/scala-ad-sdk"), 
+      connection = "scm:git:git@github.com:EmilDafinov/scala-ad-sdk.git"
+    )
+  ),
+  developers := List(
+    Developer(
+      id = "edafinov", 
+      name = "Emil Dafinov", 
+      email = "emiliorodo@gmail.com", 
+      url = url("https://emiliorodo.com"))
+  ),
   publishArtifact in Test := false,
   publishTo := {
     if (isSnapshot.value)
