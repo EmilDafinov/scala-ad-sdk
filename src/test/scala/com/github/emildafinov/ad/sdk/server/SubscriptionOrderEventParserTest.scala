@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.server
 
-import com.emiliorodo.ad.sdk.UnitTestSpec
+import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.events.parsers.SubscriptionOrderEventParser
 import com.github.emildafinov.ad.sdk.events.payloads.SubscriptionOrderEvent
 import com.github.emildafinov.ad.sdk.payload.Event

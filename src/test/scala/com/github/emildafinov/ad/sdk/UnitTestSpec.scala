@@ -1,4 +1,4 @@
-package com.emiliorodo.ad.sdk
+package com.github.emildafinov.ad.sdk
 
 import org.scalactic.FutureSugar
 import org.scalatest.mockito.MockitoSugar

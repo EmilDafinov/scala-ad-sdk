@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.internal
 
 import javax.naming.OperationNotSupportedException
 
-import com.emiliorodo.ad.sdk.UnitTestSpec
+import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.payload.Event
 
 class UnimplementedEventHandlerTest extends UnitTestSpec {
@@ -11,7 +11,7 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
   
   val testedHandler = new UnimplementedEventHandler(classOf[Object])
   
-  it should "throw" in {
+  it should "throw when processing an event" in {
     //Given
     val testEvent = Event(null, null, null, null, null, null)
     
