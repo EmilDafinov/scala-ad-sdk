@@ -18,18 +18,18 @@ class ValidatingOAuthConsumerTest extends UnitTestSpec {
     //Given
     val testSecret = "testSecret"
     val testKey = "testKey"
-    val resourceUrl = "http://example.com"
-    val encodingConsumer = new CommonsHttpOAuthConsumer(testKey, testSecret)
-    val signedRequest = encodingConsumer.sign(new HttpGet(resourceUrl))
+    val testResourceUrl = "http://example.com"
     
-    val authorizationHeader = signedRequest.getHeader("Authorization")
+    val encodingConsumer = new CommonsHttpOAuthConsumer(testKey, testSecret)
+    val incomingRequest = encodingConsumer.sign(new HttpGet(testResourceUrl))
+    val incomingRequestAuthorizationHeader = incomingRequest.getHeader("Authorization")
     
     val signatureParser = new OauthSignatureParser()
-    val receivedRequestSignature = signatureParser.parse(authorizationHeader)
+    val receivedRequestSignature = signatureParser.parse(incomingRequestAuthorizationHeader)
     val tested = new ValidatingOAuthConsumer(testKey, testSecret, receivedRequestSignature.nonce, receivedRequestSignature.timestamp)
 
     val controlAuthorizationHeader = tested
-      .sign(new HttpGet(resourceUrl))
+      .sign(new HttpGet(testResourceUrl))
       .getHeader("Authorization")
 
     //When
