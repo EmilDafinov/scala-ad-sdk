@@ -8,16 +8,16 @@ import com.github.emildafinov.ad.sdk.payload.Event
 class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   behavior of "UnimplementedEventHandler"
-  
+
   val testedHandler = new UnimplementedEventHandler(classOf[Object])
-  
+
   it should "throw when processing an event" in {
     //Given
-    val testEvent = Event(null, null, null, null, null, null)
-    
+    val testEvent = Event(null, null, null)
+
     //Then
     an [OperationNotSupportedException] shouldBe thrownBy {
-      
+
       //When
       testedHandler handle testEvent
     }

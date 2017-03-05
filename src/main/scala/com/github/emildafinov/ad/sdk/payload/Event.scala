@@ -1,9 +1,6 @@
 package com.github.emildafinov.ad.sdk.payload
 
-case class Event(id: String,
-                 `type`: EventType,
+case class Event(`type`: String,
                  marketplace: MarketInfo,
-                 applicationUuid: String,
-                 flag: EventFlag,
                  creator: UserInfo
 )

@@ -1,5 +1,8 @@
 package com.github.emildafinov.ad.sdk.payload
 
-import com.github.emildafinov.ad.sdk.events.payloads.responses.SubscriptionOrderResponse
+import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
 
-case class SubscriptionResponseEvent() extends SubscriptionOrderResponse
+import scala.beans.BeanProperty
+
+case class SubscriptionResponseEvent(@BeanProperty userIdentifier: String,
+                                     @BeanProperty accountIdentifier: String) extends SubscriptionOrderResponse

@@ -1,0 +1,39 @@
+{
+	"type": "SUBSCRIPTION_ORDER",
+	"marketplace": {
+		"baseUrl": "http://sample.appdirect.com:8888",
+		"partner": "APPDIRECT"
+	},
+	"creator": {
+		"address": {
+			"city": "Somerville",
+			"country": "US",
+			"phone": "5104028723",
+			"state": "MA",
+			"street1": "50 Grove St",
+			"zip": "02144"
+		},
+		"email": "dev5ad081816@yopmail.com",
+		"firstName": "test",
+		"language": "en",
+		"lastName": "tester",
+		"locale": "en-US",
+		"openId": "https://dev5.appdirect.com/openid/id/cd8f0308-1eaa-4eb0-bdb4-1d773be5fcca",
+		"uuid": "cd8f0308-1eaa-4eb0-bdb4-1d773be5fcca"
+	},
+	"payload": {
+		"company": {
+			"country": "US",
+			"name": "test comp",
+			"uuid": "10471b2d-7b48-4b6d-a7fc-9e0c5acd5f77",
+			"website": "yopmail.com"
+		},
+		"configuration": {
+			"alternateEmail": "dev5ad081816@yopmail.com"
+		},
+		"order": {
+			"editionCode": "Google-Apps-For-Business",
+			"pricingDuration": "MONTHLY"
+		}
+	}
+}

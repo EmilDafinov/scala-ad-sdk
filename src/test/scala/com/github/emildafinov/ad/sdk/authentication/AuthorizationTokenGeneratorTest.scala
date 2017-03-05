@@ -16,18 +16,24 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
   val mockHttpRequest: HttpRequest = mock [oauth.signpost.http.HttpRequest]
   val sampleConsumerKey = "sampleKey"
   val sampleConsumerSecret = "sampleSecret"
-  val testedService = new AuthorizationTokenGenerator(
-    consumerKey = sampleConsumerKey,
-    consumerSecret = sampleConsumerSecret
-  )
+  val testedService = new AuthorizationTokenGenerator()
 
+  val mockCredentials = AppMarketCredentials(
+    clientKey = sampleConsumerKey,
+    clientSecret = sampleConsumerSecret
+  )
+  
   it should "sign a GET request" in {
     //Given
     val testHTTPMethod = "GET"
     val testUrl = "http://www.google.com"
-
+    
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName =  testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -40,7 +46,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -53,7 +63,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -66,7 +80,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -79,7 +97,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -92,7 +114,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"
@@ -105,7 +131,11 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val (headerName, headerValue) = testedService.generateAuthorizationHeader(testHTTPMethod, testUrl)
+    val (headerName, headerValue) = testedService.generateAuthorizationHeader(
+      httpMethodName = testHTTPMethod,
+      resourceUrl = testUrl,
+      marketplaceCredentials = mockCredentials
+    )
 
     //Then
     headerName shouldEqual "Authorization"

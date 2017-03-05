@@ -4,8 +4,7 @@ import com.typesafe.scalalogging.StrictLogging
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import org.apache.http.client.methods._
 
-class AuthorizationTokenGenerator(consumerKey: String, consumerSecret: String) extends StrictLogging {
-  private val consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret)
+class AuthorizationTokenGenerator extends StrictLogging {
   private val authorizationHeaderName = "Authorization"
 
   /**
@@ -15,8 +14,13 @@ class AuthorizationTokenGenerator(consumerKey: String, consumerSecret: String) e
     * @param resourceUrl the resource for which we want to generate an authorization value
     * @return a tuple representing the Authorization header: (headerName, headerValue)
     */
-  def generateAuthorizationHeader(httpMethodName: String, resourceUrl: String): (String, String) = {
+  def generateAuthorizationHeader(httpMethodName: String, resourceUrl: String, marketplaceCredentials: MarketplaceCredentials): (String, String) = {
 
+    val consumer = new CommonsHttpOAuthConsumer(
+      marketplaceCredentials.clientKey(), 
+      marketplaceCredentials.clientSecret()
+    )
+    
     val request = httpMethodName match {
       case requestMethod if requestMethod.equalsIgnoreCase("GET") => new HttpGet(resourceUrl)
       case requestMethod if requestMethod.equalsIgnoreCase("POST") => new HttpPost(resourceUrl)

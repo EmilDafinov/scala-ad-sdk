@@ -1,7 +1,7 @@
 val AKKA_VERSION = "2.4.16"
 val AKKA_HTTP_VERSION = "10.0.4"
 val SCALATEST_VERSION = "3.0.0"
-val OAUTH_VERSION = "1.2.1.2"
+val SIGNPOST_VERSION = "1.2.1.2"
 
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
@@ -29,13 +29,13 @@ lazy val baseSettings = Seq(
     "com.typesafe.akka" %% "akka-http-spray-json" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
     "io.github.lhotari" %% "akka-http-health" % "1.0.3",
-    "oauth.signpost" % "signpost-core" % OAUTH_VERSION,
-    "oauth.signpost" % "signpost-commonshttp4" % OAUTH_VERSION,
-    "oauth.signpost" % "oauth-signpost" % OAUTH_VERSION,
+    "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
+    "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
+    "oauth.signpost" % "oauth-signpost" % SIGNPOST_VERSION,
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
-    "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
-    "org.mockito" % "mockito-all" % "1.10.19" % "test"
+    "org.mockito" % "mockito-all" % "1.10.19" % "test",
+    "com.github.tomakehurst" % "wiremock" % "2.5.1" % "test"
   ),
   scmInfo := Some(
     ScmInfo(
@@ -65,4 +65,3 @@ lazy val baseSettings = Seq(
   },
   bintrayReleaseOnPublish := !isSnapshot.value
 )
-

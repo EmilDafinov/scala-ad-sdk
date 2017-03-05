@@ -2,5 +2,6 @@ package com.github.emildafinov.ad.sdk
 
 trait CustomMatchers {
 
-  def aValidOauthSignatureForConsumerKey(consumerKey: String) = new ValidOauthSignatureMatcher(consumerKey)
+  def aValidOauthSignatureForConsumerKey(consumerKey: String) = 
+    new ValidOauthSignatureMatcher(consumerKey)
 }

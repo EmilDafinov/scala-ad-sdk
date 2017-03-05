@@ -6,9 +6,9 @@ import com.github.emildafinov.ad.sdk.service.DummyServiceModule
 import io.github.lhotari.akka.http.health.HealthEndpoint.createDefaultHealthRoute
 
 /**
-  * @author edafinov
+  * Defines the health
   */
 private[sdk]  trait HealthRoutes extends Directives {
   this: AkkaDependenciesModule with DummyServiceModule =>
-  lazy val health:Route = createDefaultHealthRoute()
+  lazy val health: Route = createDefaultHealthRoute()
 }

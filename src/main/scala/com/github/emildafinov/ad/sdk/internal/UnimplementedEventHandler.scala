@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.internal
 
 import javax.naming.OperationNotSupportedException
 
-import com.github.emildafinov.ad.sdk.events.handlers.EventHandler
+import com.github.emildafinov.ad.sdk.EventHandler
 
 private[sdk] class UnimplementedEventHandler[U, T](eventType: Class[U]) extends EventHandler[U, T] {
   
