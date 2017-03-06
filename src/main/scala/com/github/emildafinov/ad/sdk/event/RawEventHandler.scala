@@ -5,7 +5,8 @@ import akka.http.scaladsl.model.StatusCodes.Accepted
 import com.github.emildafinov.ad.sdk.EventHandler
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults, Event}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.Success
 
@@ -23,13 +24,17 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
                             clientEventHandler: EventHandler[A, B],
                             toMarketplaceResponse: B => ApiResult)
                            (implicit appMarketEventResolver: AppMarketEventResolver, appMarketEventFetcher: AppMarketEventFetcher) {
-
+  
   def extractIdFrom(eventFetchUrl: String): String = eventFetchUrl split "/" last
 
-  def processEventFrom(eventFetchUrl: String, clientKey: String)
+  def processEventFrom(eventFetchUrl: String, clientKey: String, appMarketTimeoutInterval: FiniteDuration = 15 seconds)
                       (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
     
-    val rawEvent = appMarketEventFetcher.fetchRawAppMarketEvent(eventFetchUrl, clientKey)
+    val rawEvent = Await.result(
+      awaitable = appMarketEventFetcher.fetchRawAppMarketEvent(eventFetchUrl, clientKey),
+      atMost = appMarketTimeoutInterval
+    )
+
     val rawEventId = extractIdFrom(eventFetchUrl)
     val richEvent = transformToClientEvent(rawEvent, rawEventId)
 

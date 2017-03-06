@@ -6,35 +6,41 @@ import org.apache.http.client.methods.HttpGet
 
 import scala.language.postfixOps
 
-
-
-
-
 class ValidatingOAuthConsumerTest extends UnitTestSpec {
-  
+
   behavior of "ValidatingOAuthConsumer"
+
+  val testSecret = "testSecret"
+  val testKey = "testKey"
+  val testResourceUrl = "http://example.com"
+  val authorizationHeaderName = "Authorization"
   
-  it should "fdsfd" in {
-    //Given
-    val testSecret = "testSecret"
-    val testKey = "testKey"
-    val testResourceUrl = "http://example.com"
-    
+  def incomingGetRequestBearerToken(testKey: String, testSecret: String, testResourceUrl: String): String = {
     val encodingConsumer = new CommonsHttpOAuthConsumer(testKey, testSecret)
     val incomingRequest = encodingConsumer.sign(new HttpGet(testResourceUrl))
-    val incomingRequestAuthorizationHeader = incomingRequest.getHeader("Authorization")
+    incomingRequest.getHeader(authorizationHeaderName)
+  }
+  
+  it should "produce the same signature as the one of the incoming Get request" in {
+    //Given
+    val incomingRequestAuthorizationHeader = incomingGetRequestBearerToken(testKey, testSecret, testResourceUrl)
     
     val signatureParser = new OauthSignatureParser()
     val receivedRequestSignature = signatureParser.parse(incomingRequestAuthorizationHeader)
-    val tested = new ValidatingOAuthConsumer(testKey, testSecret, receivedRequestSignature.nonce, receivedRequestSignature.timestamp)
+    val tested = new ValidatingOAuthConsumer(
+      testKey, 
+      testSecret, 
+      receivedRequestSignature.nonce, 
+      receivedRequestSignature.timestamp
+    )
 
     val controlAuthorizationHeader = tested
       .sign(new HttpGet(testResourceUrl))
-      .getHeader("Authorization")
+      .getHeader(authorizationHeaderName)
 
     //When
     val controlAuthorizationHeaderSignature = signatureParser.parse(controlAuthorizationHeader)
-    
+
     //Then
     receivedRequestSignature shouldEqual controlAuthorizationHeaderSignature
   }

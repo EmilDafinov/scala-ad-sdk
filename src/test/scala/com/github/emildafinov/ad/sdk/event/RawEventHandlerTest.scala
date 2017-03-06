@@ -11,6 +11,7 @@ import org.scalatest.concurrent.PatienceConfiguration.Timeout
 import org.scalatest.concurrent.ScalaFutures
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.language.postfixOps
 
 class RawEventHandlerTest extends UnitTestSpec {
@@ -61,14 +62,18 @@ class RawEventHandlerTest extends UnitTestSpec {
     val testClientKey = "testClientKey"
     
     when {
+      mockEventFetcher.fetchRawAppMarketEvent(any(), any())
+    } thenReturn Future.successful(mock[Event])
+
+    when {
       mockEventTransformer.apply(any(), any())
     } thenThrow classOf[MalformedRawMarketplaceEventPayloadException]
 
 
     //When
-    (ScalaFutures whenReady {
+    whenReady {
       tested.processEventFrom(testUrl, testClientKey).failed
-    }) {
+    } {
       //Then
       _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
     }
@@ -84,12 +89,13 @@ class RawEventHandlerTest extends UnitTestSpec {
     
     when {
       mockEventFetcher.fetchRawAppMarketEvent(testEventFetchUrl, testClientKey)
-    } thenReturn 
+    } thenReturn Future.successful {
       Event(
         `type` = "type",
         marketplace = MarketInfo("testPartner", "http://example.com"),
         creator = UserInfo()
       )
+    }
 
     when {
       mockClientHandler.handle(any())

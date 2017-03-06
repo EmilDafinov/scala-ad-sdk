@@ -28,6 +28,6 @@ class OauthSignatureParser {
       )
     } catch {
       case NonFatal(_) => 
-        throw new IllegalArgumentException(s"Failed parsing oauth header: $oauthHeaderValue")
+        throw new IllegalArgumentException(s"Failed parsing oauth header: [$oauthHeaderValue]")
     }
 }

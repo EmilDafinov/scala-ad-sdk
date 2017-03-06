@@ -1,10 +1,10 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.payload.ApiResult
+import com.github.emildafinov.ad.sdk.payload.{ApiResult, EventJsonSupport}
 
 import scala.concurrent.Future
 
-class AppMarketEventResolver {
+class AppMarketEventResolver extends EventJsonSupport {
   /**
     * Calls the resolve event endpoint of the AppMarket in order to notify it that an event has been resolved
     * @param resolveEndpointBaseUrl Base Url of the AppMarket

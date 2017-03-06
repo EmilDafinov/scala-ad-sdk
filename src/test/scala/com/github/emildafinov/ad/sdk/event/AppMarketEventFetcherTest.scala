@@ -4,13 +4,20 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
 import com.github.emildafinov.ad.sdk.payload.{Event, MarketInfo, UserInfo}
-import com.github.emildafinov.ad.sdk.{AkkaSpec, HttpServiceTestSuite}
+import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
+import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration.Inf
 import scala.io.Source
+import scala.language.postfixOps
 
-class AppMarketEventFetcherTest extends HttpServiceTestSuite with AkkaSpec {
+class AppMarketEventFetcherTest 
+  extends UnitTestSpec 
+    with AkkaSpec 
+    with WiremockHttpServiceTestSuite {
 
   behavior of "AppMarketEventFetcher"
 
@@ -32,21 +39,21 @@ class AppMarketEventFetcherTest extends HttpServiceTestSuite with AkkaSpec {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenReturn Optional.empty[MarketplaceCredentials]
 
+    //When
+    val futureEvent = tested.fetchRawAppMarketEvent(
+      eventFetchUrl = testEventUrl,
+      clientKey = testClientKey
+    )
     //Then
     a[CouldNotFetchRawMarketplaceEventException] should be thrownBy {
-
-      //When
-      tested.fetchRawAppMarketEvent(
-        eventFetchUrl = testEventUrl,
-        clientKey = testClientKey
-      )
+      Await.result(futureEvent, atMost = Inf)
     }
   }
-
+  
   it should "parse a raw subscription order event" in {
     //Given
     val testClientKey = "testKey"
-    val testHost = s"http://localhost:${mockHttpServer.port()}"
+    val testHost = s"http://localhost:${httpServerMock.port()}"
     val testHttpResource = "/events/someEventIdHere"
     val testEventUrl = testHost + testHttpResource
     
@@ -65,9 +72,9 @@ class AppMarketEventFetcherTest extends HttpServiceTestSuite with AkkaSpec {
       mockAuthorizationTokenGenerator.generateAuthorizationHeader(
         "GET",testEventUrl, testAppmarketCredentials
       )
-    } thenReturn ("Authorization" -> "afscgg")
+    } thenReturn "afscgg"
     
-    mockHttpServer
+    httpServerMock
       .givenThat {
         get(urlEqualTo(testHttpResource)) willReturn {
           aResponse withBody expectedEventPayloadJson
@@ -83,13 +90,19 @@ class AppMarketEventFetcherTest extends HttpServiceTestSuite with AkkaSpec {
     )
 
     //When
-    val parsedEvent = tested.fetchRawAppMarketEvent(
+    val parsedEventFuture = tested.fetchRawAppMarketEvent(
       eventFetchUrl = testEventUrl,
       clientKey = testClientKey
     )
 
     //Then
-    parsedEvent shouldEqual expectedEvent
+    whenReady(
+      future = parsedEventFuture,
+      timeout = Timeout(5 seconds)
+    ) { result =>
+      result shouldEqual expectedEvent
+    }
   }
-
+  
+  //TODO: Add tests to parse all new event types !!
 }
