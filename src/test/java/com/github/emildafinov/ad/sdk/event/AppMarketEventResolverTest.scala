@@ -14,7 +14,6 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
   it should "send the `event resolved` callback" in {
     //Given
     val testEventId = "1234qwer"
-    val testResolveEndpointUrl = dummyUrl
     val testEventProcessingResult = ApiResults.unknownError()
     httpServerMock.
       givenThat(
@@ -24,7 +23,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
       )
 
     //When
-    val eventNotificatoinFuture = tested.sendEventResolvedCallback(
+    val eventNotificationFuture = tested.sendEventResolvedCallback(
       resolveEndpointBaseUrl = s"http://localhost:${httpServerMock.port()}",
       eventId = testEventId,
       eventProcessingResult = testEventProcessingResult
@@ -32,7 +31,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     //Then
     whenReady(
-      future = eventNotificatoinFuture,
+      future = eventNotificationFuture,
       timeout = Timeout(5 seconds)
     ) { _ =>
       httpServerMock

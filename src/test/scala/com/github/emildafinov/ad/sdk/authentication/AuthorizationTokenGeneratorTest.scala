@@ -134,4 +134,20 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     //Then
     headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
   }
+  
+  it should "fail signing a request with illegal name" in {
+    //Given
+    val testHTTPMethod = "ILLEgAl"
+    val testUrl = "http://www.google.com"
+
+    //Then
+    an [IllegalArgumentException] shouldBe thrownBy {
+      //When
+      testedService.generateAuthorizationHeader(
+        httpMethodName = testHTTPMethod,
+        resourceUrl = testUrl,
+        marketplaceCredentials = mockCredentials
+      )  
+    }
+  }
 }
