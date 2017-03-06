@@ -11,10 +11,42 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
   val tested = new AppMarketEventResolver()
 
-  it should "send the `event resolved` callback" in {
+  it should "send a failed `event resolved` callback" in {
     //Given
     val testEventId = "1234qwer"
     val testEventProcessingResult = ApiResults.unknownError()
+    httpServerMock.
+      givenThat(
+        post(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result")) willReturn {
+          aResponse().withStatus(200)
+        }
+      )
+
+    //When
+    val eventNotificationFuture = tested.sendEventResolvedCallback(
+      resolveEndpointBaseUrl = s"http://localhost:${httpServerMock.port()}",
+      eventId = testEventId,
+      eventProcessingResult = testEventProcessingResult
+    )
+
+    //Then
+    whenReady(
+      future = eventNotificationFuture,
+      timeout = Timeout(5 seconds)
+    ) { _ =>
+      httpServerMock
+        .verify(
+          postRequestedFor(
+            urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result")
+          )
+        )
+    }
+  }
+
+  it should "send a successful `event resolved` callback" in {
+    //Given
+    val testEventId = "1234qwer"
+    val testEventProcessingResult = ApiResults.success()
     httpServerMock.
       givenThat(
         post(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result")) willReturn {
