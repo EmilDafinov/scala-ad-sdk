@@ -4,10 +4,6 @@ import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, postRequestedFor, urlPathEqualTo}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.time.Span
-
-import scala.concurrent.duration.span._
 
 class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with WiremockHttpServiceTestSuite {
 

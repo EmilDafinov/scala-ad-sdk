@@ -9,7 +9,7 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   behavior of "UnimplementedEventHandler"
 
-  val testedHandler = new UnimplementedEventHandler(classOf[Object])
+  val testedHandler = UnimplementedEventHandler(classOf[Object])
 
   it should "throw when processing an event" in {
     //Given
