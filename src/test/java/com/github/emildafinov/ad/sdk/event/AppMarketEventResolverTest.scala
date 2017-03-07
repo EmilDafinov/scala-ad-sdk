@@ -34,9 +34,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     when {
       credentialsSupplier.readCredentialsFor(testKey)
-    } thenReturn Optional.of[MarketplaceCredentials](
-      testClientCredentials
-    )
+    } thenReturn testClientCredentials
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(
@@ -92,12 +90,10 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     )
     when {
       credentialsSupplier.readCredentialsFor(testClientKey)
-    } thenReturn Optional.of[MarketplaceCredentials](
-      ClientCredentials(
+    } thenReturn ClientCredentials(
         clientKey = testClientKey,
         clientSecret = testSecret
       )
-    )
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(

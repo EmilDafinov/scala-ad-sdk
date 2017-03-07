@@ -31,26 +31,21 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                                 clientKey: String,
                                 eventProcessingResult: ApiResult): Future[Unit] = {
     val clientCredentials = cs.readCredentialsFor(clientKey)
-    if (clientCredentials.isPresent) {
-      val credentials = clientCredentials.get()
-      for {
-        requestEntity <- Marshal(eventProcessingResult).to[RequestEntity]
-        response <- Http().singleRequest(
-          resolveEventRequest(
-            resolveEndpointBaseUrl,
-            eventId,
-            requestEntity,
-            credentials
-          )
+    for {
+      requestEntity <- Marshal(eventProcessingResult).to[RequestEntity]
+      response <- Http().singleRequest(
+        resolveEventRequest(
+          resolveEndpointBaseUrl,
+          eventId,
+          requestEntity,
+          clientCredentials
         )
-      } yield
-        if (response.status.isSuccess)
-          logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
-        else
-          logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
-    } else {
-      Future.failed(new CouldNotResolveEventException(s"Failed resolving the event with if $eventId due to missing credentals"))
-    }
+      )
+    } yield
+      if (response.status.isSuccess)
+        logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
+      else
+        logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
   }
 
   class CouldNotResolveEventException(message: String) extends Exception(message)
@@ -61,8 +56,8 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                                   clientCredentials: MarketplaceCredentials) = {
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
     val authorizationHeader = Authorization(
-        OAuth2BearerToken(
-          bearerTokenGenerator.generateAuthorizationHeader(
+      OAuth2BearerToken(
+        bearerTokenGenerator.generateAuthorizationHeader(
           httpMethodName = "POST",
           resourceUrl = resourceUrl,
           marketplaceCredentials = clientCredentials

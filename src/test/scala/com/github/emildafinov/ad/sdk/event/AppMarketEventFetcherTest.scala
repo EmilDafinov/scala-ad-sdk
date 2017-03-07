@@ -37,7 +37,7 @@ class AppMarketEventFetcherTest
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
-    } thenReturn Optional.empty[MarketplaceCredentials]
+    } thenThrow new RuntimeException()
 
     //When
     val futureEvent = tested.fetchRawAppMarketEvent(
@@ -45,7 +45,7 @@ class AppMarketEventFetcherTest
       clientKey = testClientKey
     )
     //Then
-    a[CouldNotFetchRawMarketplaceEventException] should be thrownBy {
+    a[RuntimeException] should be thrownBy {
       Await.result(futureEvent, atMost = Inf)
     }
   }
@@ -64,9 +64,7 @@ class AppMarketEventFetcherTest
     
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
-    } thenReturn Optional.of[MarketplaceCredentials](
-      testAppmarketCredentials
-    )
+    } thenReturn testAppmarketCredentials
     
     when {
       mockAuthorizationTokenGenerator.generateAuthorizationHeader(

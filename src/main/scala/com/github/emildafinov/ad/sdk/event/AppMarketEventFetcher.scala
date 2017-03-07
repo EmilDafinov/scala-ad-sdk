@@ -40,12 +40,12 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
         .convertTo[Event]
 
     eventFuture recover {
-      case NonFatal(e) => throw new CouldNotFetchRawMarketplaceEventException(e)
+      case NonFatal(_) => throw new CouldNotFetchRawMarketplaceEventException()
     }
   }
 
   private def signedFetchRequest(eventFetchUrl: String, clientKey: String) = Future {
-      val marketplaceCredentials = credentialsSupplier.readCredentialsFor(clientKey).get()
+      val marketplaceCredentials = credentialsSupplier.readCredentialsFor(clientKey)
       val bearerTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
         "GET",
         eventFetchUrl,
@@ -63,4 +63,4 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
 
 case class ClientCredentials(clientKey: String, clientSecret: String) extends MarketplaceCredentials
 
-class CouldNotFetchRawMarketplaceEventException(cause: Throwable) extends Exception(cause)
+class CouldNotFetchRawMarketplaceEventException extends RuntimeException
