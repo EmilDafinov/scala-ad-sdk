@@ -14,7 +14,7 @@ import com.typesafe.scalalogging.StrictLogging
 import scala.concurrent.{ExecutionContext, Future}
 
 class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
-                             cs: CredentialsSupplier)
+                             credentialsSupplier: CredentialsSupplier)
                             (implicit
                              ec: ExecutionContext,
                              as: ActorSystem,
@@ -24,31 +24,28 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
     *
     * @param resolveEndpointBaseUrl Base Url of the AppMarket
     * @param eventId                the id of the event that was resolved
+    * @param clientKey              the client key used to sign the event resolved message                              
     * @param eventProcessingResult  the payload returned to the AppMarket
     */
   def sendEventResolvedCallback(resolveEndpointBaseUrl: String,
                                 eventId: String,
                                 clientKey: String,
                                 eventProcessingResult: ApiResult): Future[Unit] = {
-    val clientCredentials = cs.readCredentialsFor(clientKey)
+
     for {
       requestEntity <- Marshal(eventProcessingResult).to[RequestEntity]
-      response <- Http().singleRequest(
-        resolveEventRequest(
-          resolveEndpointBaseUrl,
-          eventId,
-          requestEntity,
-          clientCredentials
-        )
+      request = resolveEventRequest(
+        resolveEndpointBaseUrl,
+        eventId,
+        requestEntity,
+        credentialsSupplier.readCredentialsFor(clientKey)
       )
-    } yield
-      if (response.status.isSuccess)
+      response <- Http().singleRequest(request)
+    } yield if (response.status.isSuccess)
         logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
       else
         logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
   }
-
-  class CouldNotResolveEventException(message: String) extends Exception(message)
 
   private def resolveEventRequest(resolveEndpointBaseUrl: String,
                                   eventId: String,

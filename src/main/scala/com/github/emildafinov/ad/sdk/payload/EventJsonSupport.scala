@@ -13,5 +13,4 @@ trait EventJsonSupport extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val subscriptionOrderResponseFormat: RootJsonFormat[SubscriptionResponseEvent] = jsonFormat2(SubscriptionResponseEvent)
   implicit val eventFormat: RootJsonFormat[Event] = jsonFormat3(Event)
   implicit val apiResultFormat: RootJsonFormat[ApiResult] = jsonFormat5(ApiResult)
-
 }
