@@ -7,7 +7,10 @@ case class ApiResult(success: Boolean = true,
                      userIdentifier: String)
 
 object ApiResults {
-  def success() = ???
+  def success() = ApiResult(
+    accountIdentifier = "someAccount",
+    userIdentifier = "someUser"
+  )
 
   def failure(message: String): ApiResult = ???
   

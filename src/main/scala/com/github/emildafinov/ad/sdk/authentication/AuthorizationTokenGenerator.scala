@@ -14,7 +14,9 @@ class AuthorizationTokenGenerator extends StrictLogging {
     * @param resourceUrl the resource for which we want to generate an authorization value
     * @return The OAuth bearer token value
     */
-  def generateAuthorizationHeader(httpMethodName: String, resourceUrl: String, marketplaceCredentials: MarketplaceCredentials): String = {
+  def generateAuthorizationHeader(httpMethodName: String, 
+                                  resourceUrl: String, 
+                                  marketplaceCredentials: MarketplaceCredentials): String = {
 
     val consumer = new CommonsHttpOAuthConsumer(
       marketplaceCredentials.clientKey(), 

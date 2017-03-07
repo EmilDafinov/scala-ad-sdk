@@ -3,6 +3,6 @@ package com.github.emildafinov.ad.sdk;
 /**
  * A connector instance.
  */
-public interface AppdirectConnector {
+public interface AppMarketConnector {
 	void start();
 }

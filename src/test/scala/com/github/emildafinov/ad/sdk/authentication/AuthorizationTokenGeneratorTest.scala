@@ -36,7 +36,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a PUT request" in {
@@ -52,7 +52,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a POST request" in {
@@ -68,7 +68,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a DELETE request" in {
@@ -84,7 +84,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a HEAD request" in {
@@ -100,7 +100,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a OPTIONS request" in {
@@ -116,7 +116,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
 
   it should "sign a TRACE request" in {
@@ -132,7 +132,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
 
     //Then
-    headerValue shouldBe aValidOauthSignatureForConsumerKey(sampleConsumerKey)
+    headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
   
   it should "fail signing a request with illegal name" in {

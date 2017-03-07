@@ -45,12 +45,14 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
         appMarketEventResolver.sendEventResolvedCallback(
           resolveEndpointBaseUrl = rawEvent.marketplace.baseUrl,
           eventId = rawEventId,
+          clientKey = clientKey,
           eventProcessingResult = toMarketplaceResponse(eventProcessingResult)
         )
       case _ =>
         appMarketEventResolver.sendEventResolvedCallback(
           resolveEndpointBaseUrl = rawEvent.marketplace.baseUrl,
           eventId = rawEventId,
+          clientKey = clientKey,
           eventProcessingResult = ApiResults.failure("An unknown error has occurred")
         )
     }
