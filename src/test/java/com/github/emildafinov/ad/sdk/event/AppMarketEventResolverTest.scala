@@ -1,13 +1,13 @@
 package com.github.emildafinov.ad.sdk.event
 
-import java.util.Optional
-
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier}
 import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
+
+import scala.concurrent.Await
 
 class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with WiremockHttpServiceTestSuite {
 
@@ -46,9 +46,9 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
       s"""OAuth oauth_consumer_key="$testKey", oauth_nonce="abcder", oauth_signature="fgbhndr6yhdrtgf", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1404540540", oauth_version="1.0""""
 
     httpServerMock.
-      givenThat(
+      stubFor(
         post(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result"))
-          .withHeader("Authorization", matching(s"""OAuth oauth_consumer_key="$testKey", oauth_nonce=".*", oauth_signature=".*", oauth_signature_method="HMAC-SHA1", oauth_timestamp=".*", oauth_version="1.0""""))
+          .withHeader("Authorization", containing("OAuth"))
           .willReturn {
             aResponse().withStatus(200)
           }
@@ -63,10 +63,8 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     )
 
     //Then
-    whenReady(
-      future = eventNotificationFuture,
-      timeout = Timeout(5 seconds)
-    ) { _ =>
+    whenReady(future = eventNotificationFuture, 
+              timeout = Timeout(5 seconds)) { _ =>
       httpServerMock
         .verify(
           postRequestedFor(
@@ -104,13 +102,13 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     } thenReturn
       s"""OAuth oauth_consumer_key="$testClientKey", oauth_nonce="abcder", oauth_signature="fgbhndr6yhdrtgf", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1404540540", oauth_version="1.0""""
 
-    httpServerMock.
-      givenThat(
+    httpServerMock
+      .stubFor(
         post(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result"))
-          .withHeader("Authorization", containing("OAuth "))
-          .willReturn {
+            .withHeader("Authorization", containing("OAuth"))
+          .willReturn(
             aResponse().withStatus(200)
-          }
+          )
       )
 
     //When
@@ -122,15 +120,13 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     )
 
     //Then
-    whenReady(
-      future = eventNotificationFuture,
-      timeout = Timeout(5 seconds)
-    ) { _ =>
+    whenReady(future = eventNotificationFuture, 
+              timeout = Timeout(5 seconds)) { _ =>
       httpServerMock
         .verify(
           postRequestedFor(
             urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result")
-          )
+          ) withHeader("Authorization", containing("OAuth "))
         )
     }
   }
