@@ -39,14 +39,14 @@ class AppMarketEventFetcherTest
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenThrow new RuntimeException()
 
-    //When
-    val futureEvent = tested.fetchRawAppMarketEvent(
-      eventFetchUrl = testEventUrl,
-      clientKey = testClientKey
-    )
+    
     //Then
     a[RuntimeException] should be thrownBy {
-      Await.result(futureEvent, atMost = Inf)
+      //When
+      tested.fetchRawAppMarketEvent(
+        eventFetchUrl = testEventUrl,
+        clientKey = testClientKey
+      )
     }
   }
   
@@ -88,18 +88,13 @@ class AppMarketEventFetcherTest
     )
 
     //When
-    val parsedEventFuture = tested.fetchRawAppMarketEvent(
+    val parsedEvent = tested.fetchRawAppMarketEvent(
       eventFetchUrl = testEventUrl,
       clientKey = testClientKey
     )
 
     //Then
-    whenReady(
-      future = parsedEventFuture,
-      timeout = Timeout(5 seconds)
-    ) { result =>
-      result shouldEqual expectedEvent
-    }
+    parsedEvent shouldEqual expectedEvent
   }
   
   //TODO: Add tests to parse all new event types !!

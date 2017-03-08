@@ -16,7 +16,7 @@ trait RawEventHandlersModule {
 
   private lazy val authorizationTokenGenerator = new AuthorizationTokenGenerator()
   private implicit lazy val eventResolver = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
-  private implicit lazy val eventFetcher = new AppMarketEventFetcher(
+  lazy val eventFetcher = new AppMarketEventFetcher(
     credentialsSupplier = credentialsSupplier,
     authorizationTokenGenerator = authorizationTokenGenerator
   )

@@ -20,50 +20,23 @@ class RawEventHandlerTest extends UnitTestSpec {
   val mockEventTransformer: (Event, String) => Long = mock[(Event, String) => Long]
   val mockClientHandler: EventHandler[Long, Int] = mock[EventHandler[Long, Int]]
   val mockToMarketplaceResponse: (Int) => ApiResult = mock[Int => ApiResult]
-  val mockEventFetcher: AppMarketEventFetcher = mock[AppMarketEventFetcher]
   val mockEventResolver: AppMarketEventResolver = mock[AppMarketEventResolver]
 
   val tested = new RawEventHandler(
     transformToClientEvent = mockEventTransformer,
     clientEventHandler = mockClientHandler,
     toMarketplaceResponse = mockToMarketplaceResponse
-  )(
-    appMarketEventResolver = mockEventResolver,
-    appMarketEventFetcher = mockEventFetcher
-  )
+  )(appMarketEventResolver = mockEventResolver)
 
   before {
-    reset(mockEventTransformer, mockClientHandler, mockToMarketplaceResponse, mockEventFetcher, mockEventResolver)
-  }
-
-  it should "throw and not call the client handler if signed fetch fails" in {
-    //Given
-    val testUrl = "http://example.com"
-    val testClientKey = "testClientKey"
-    
-    when {
-      mockEventFetcher.fetchRawAppMarketEvent(any(), any())
-    } thenThrow classOf[CouldNotFetchRawMarketplaceEventException]
-
-    //When
-    ScalaFutures.whenReady {
-      tested.processEventFrom(testUrl, testClientKey).failed
-    } {
-      //Then
-      _ shouldBe a[CouldNotFetchRawMarketplaceEventException]
-    }
-    verify(mockClientHandler, never())
-      .handle(any())
+    reset(mockEventTransformer, mockClientHandler, mockToMarketplaceResponse, mockEventResolver)
   }
 
   it should "throw and not call the client handler if the rich event parsing fails" in {
     //Given
     val testUrl = "http://example.com"
     val testClientKey = "testClientKey"
-    
-    when {
-      mockEventFetcher.fetchRawAppMarketEvent(any(), any())
-    } thenReturn Future.successful(mock[Event])
+    val testEventPayload = mock[Event]
 
     when {
       mockEventTransformer.apply(any(), any())
@@ -72,7 +45,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady {
-      tested.processEventFrom(testUrl, testClientKey).failed
+      tested.processEventFrom(testEventPayload, testUrl, testClientKey).failed
     } {
       //Then
       _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
@@ -86,16 +59,12 @@ class RawEventHandlerTest extends UnitTestSpec {
     //Given
     val testEventFetchUrl = "http://example.com/events/someEventIdHere"
     val testClientKey = "testClientKey"
-    
-    when {
-      mockEventFetcher.fetchRawAppMarketEvent(testEventFetchUrl, testClientKey)
-    } thenReturn Future.successful {
-      Event(
-        `type` = "type",
-        marketplace = MarketInfo("testPartner", "http://example.com"),
-        creator = UserInfo()
-      )
-    }
+
+    val testEvent = Event(
+      `type` = "type",
+      marketplace = MarketInfo("testPartner", "http://example.com"),
+      creator = UserInfo()
+    )
 
     when {
       mockClientHandler.handle(any())
@@ -106,7 +75,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady(
-      future = tested.processEventFrom(testEventFetchUrl, testClientKey), 
+      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientKey), 
       timeout = Timeout(1 second)
     ) { result =>
       //Then

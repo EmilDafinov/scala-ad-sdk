@@ -11,7 +11,8 @@ import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator
 import com.github.emildafinov.ad.sdk.payload.{Event, EventJsonSupport}
 import spray.json._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
 
@@ -27,8 +28,10 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
                            (implicit as: ActorSystem,
                             am: Materializer,
                             ec: ExecutionContext) extends EventJsonSupport {
-
-  def fetchRawAppMarketEvent(eventFetchUrl: String, clientKey: String): Future[Event] = {
+  
+  val appMarketTimeoutInterval: FiniteDuration = 15 seconds
+  
+  def fetchRawAppMarketEvent(eventFetchUrl: String, clientKey: String): Event = {
     
     val eventFuture = for {
       eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientKey)
@@ -42,6 +45,10 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
     eventFuture recover {
       case NonFatal(_) => throw new CouldNotFetchRawMarketplaceEventException()
     }
+    Await.result(
+      awaitable = eventFuture,
+      atMost = appMarketTimeoutInterval
+    )
   }
 
   private def signedFetchRequest(eventFetchUrl: String, clientKey: String) = Future {

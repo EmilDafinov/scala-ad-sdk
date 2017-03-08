@@ -7,13 +7,15 @@ import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventExce
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, EventJsonSupport}
 import spray.json._
 
+import scala.language.postfixOps
+
 /**
   * Describes the SDK-defined routes that handle communication with the AppMarket
   */
 private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with EventJsonSupport with EventResultMarshallersModule {
   this: RawEventHandlersModule
     with AkkaDependenciesModule =>
-
+  
 
   lazy val integrationExceptionHandler = ExceptionHandler {
     case _: CouldNotFetchRawMarketplaceEventException =>
@@ -48,11 +50,19 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
       }
     }
 
+  def extractIdFrom(eventFetchUrl: String): String = eventFetchUrl split "/" last
   def subscriptionOrder(implicit eventFetchUrl: String): Route =
     path("subscription" / "order") {
       complete {
         val dummyKey = "sdfsd"
-        subscriptionOrderRawEventHandler.processEventFrom(eventFetchUrl, dummyKey)
+        val rawEvent = eventFetcher.fetchRawAppMarketEvent(eventFetchUrl, dummyKey)
+        val rawEventId = extractIdFrom(eventFetchUrl)
+        
+        subscriptionOrderRawEventHandler.processEventFrom(
+          rawEvent = rawEvent,
+          rawEventId = rawEventId,
+          clientKey = dummyKey
+        )
       }
     }
 

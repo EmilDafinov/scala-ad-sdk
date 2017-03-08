@@ -7,8 +7,6 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
-import scala.concurrent.Await
-
 class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with WiremockHttpServiceTestSuite {
 
   behavior of "AppMarketEventResolver"
