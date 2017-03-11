@@ -1,16 +1,12 @@
 package com.github.emildafinov.ad.sdk.event
 
-import java.util.Optional
-
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier}
 import com.github.emildafinov.ad.sdk.payload.{Event, MarketInfo, UserInfo}
+import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
-import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration.Inf
 import scala.io.Source
 import scala.language.postfixOps
 
@@ -34,7 +30,10 @@ class AppMarketEventFetcherTest
     //Given
     val testEventUrl = dummyUrl
     val testClientKey = "testKey"
-
+    val testEventCoordinates = EventCoordinates(
+      clientId = testClientKey,
+      eventFetchUrl = testEventUrl
+    )
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenThrow new RuntimeException()
@@ -43,18 +42,17 @@ class AppMarketEventFetcherTest
     //Then
     a[RuntimeException] should be thrownBy {
       //When
-      tested.fetchRawAppMarketEvent(
-        eventFetchUrl = testEventUrl,
-        clientKey = testClientKey
-      )
+      tested.fetchRawAppMarketEvent(testEventCoordinates)
     }
   }
-  
+
+
   it should "parse a raw subscription order event" in {
     //Given
+    val testEventId = "someEventIdHere"
     val testClientKey = "testKey"
     val testHost = s"http://localhost:${httpServerMock.port()}"
-    val testHttpResource = "/events/someEventIdHere"
+    val testHttpResource = s"/events/$testEventId"
     val testEventUrl = testHost + testHttpResource
     
     val testClientSecret = "abcdef"
@@ -78,6 +76,7 @@ class AppMarketEventFetcherTest
           aResponse withBody expectedEventPayloadJson
         }
       }
+    
     val expectedEvent = Event(
       `type` = "SUBSCRIPTION_ORDER",
       marketplace = MarketInfo(
@@ -86,15 +85,16 @@ class AppMarketEventFetcherTest
       ),
       creator = UserInfo()
     )
-
-    //When
-    val parsedEvent = tested.fetchRawAppMarketEvent(
-      eventFetchUrl = testEventUrl,
-      clientKey = testClientKey
+    val testEventCoordinates = EventCoordinates(
+      clientId = testClientKey,
+      eventFetchUrl = testEventUrl
     )
+    //When
+    val (parsedEventId, parsedEvent) = tested.fetchRawAppMarketEvent(testEventCoordinates)
 
     //Then
     parsedEvent shouldEqual expectedEvent
+    parsedEventId shouldEqual testEventId
   }
   
   //TODO: Add tests to parse all new event types !!

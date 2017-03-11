@@ -5,7 +5,7 @@ import scala.util.control.NonFatal
 
 class OauthSignatureParser {
 
-  def parse(oauthHeaderValue: String): OauthSignature = 
+  def parse(oauthHeaderValue: String): OauthParameters = 
     try {
       val fieldsAndValues = oauthHeaderValue
         .stripPrefix("OAuth ")
@@ -18,9 +18,9 @@ class OauthSignatureParser {
           fieldAndValue(0) -> fieldAndValue(1).drop(1).dropRight(1)
         } toMap
   
-      OauthSignature(
+      OauthParameters(
         signatureMethod = oauthParametersAsMap("oauth_signature_method"),
-        signature = oauthParametersAsMap("oauth_signature"),
+        oauthSignature = oauthParametersAsMap("oauth_signature"),
         timestamp = oauthParametersAsMap("oauth_timestamp"),
         consumerKey = oauthParametersAsMap("oauth_consumer_key"),
         nonce = oauthParametersAsMap("oauth_nonce"),

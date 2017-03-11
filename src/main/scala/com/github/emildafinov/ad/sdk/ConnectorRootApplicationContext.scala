@@ -4,7 +4,7 @@ import com.github.emildafinov.ad.sdk.configuration.ApplicationConfigurationModul
 import com.github.emildafinov.ad.sdk.event.RawEventHandlersModule
 import com.github.emildafinov.ad.sdk.event.parsers.RichEventParsersModule
 import com.github.emildafinov.ad.sdk.internal.ClientDefinedDependenciesModule
-import com.github.emildafinov.ad.sdk.server.{AppMarketCommunicationRoutesModule, HealthRoutes, RoutesModule}
+import com.github.emildafinov.ad.sdk.server._
 import com.github.emildafinov.ad.sdk.service.DummyServiceModule
 
 private[sdk] trait ConnectorRootApplicationContext
@@ -14,6 +14,8 @@ private[sdk] trait ConnectorRootApplicationContext
   with RichEventParsersModule
   with HealthRoutes
   with RawEventHandlersModule
+  with EventResultMarshallersModule
+  with CustomDirectivesModule
   with AppMarketCommunicationRoutesModule
   with RoutesModule {
 

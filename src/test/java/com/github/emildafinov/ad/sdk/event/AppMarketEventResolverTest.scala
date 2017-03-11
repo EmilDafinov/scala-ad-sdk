@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier}
 import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -25,7 +25,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val testSecret = "testSecret"
     val testEventResolutionEndpoint = s"http://localhost:${httpServerMock.port()}"
 
-    val testClientCredentials = ClientCredentials(
+    val testClientCredentials = AppMarketCredentials(
       clientKey = testKey,
       clientSecret = testSecret
     )
@@ -80,16 +80,13 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val testSecret = "testSecret"
     val testEventResolutionEndpoint = s"http://localhost:${httpServerMock.port()}"
 
-    val testClientCredentials = ClientCredentials(
+    val testClientCredentials = AppMarketCredentials(
       clientKey = testClientKey,
       clientSecret = testSecret
     )
     when {
       credentialsSupplier.readCredentialsFor(testClientKey)
-    } thenReturn ClientCredentials(
-        clientKey = testClientKey,
-        clientSecret = testSecret
-      )
+    } thenReturn testClientCredentials
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(

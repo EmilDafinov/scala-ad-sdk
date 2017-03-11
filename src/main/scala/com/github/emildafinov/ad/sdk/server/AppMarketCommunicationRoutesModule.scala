@@ -4,7 +4,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule}
-import com.github.emildafinov.ad.sdk.payload.{ApiResults, EventJsonSupport}
+import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event, EventJsonSupport}
 import spray.json._
 
 import scala.language.postfixOps
@@ -12,8 +12,13 @@ import scala.language.postfixOps
 /**
   * Describes the SDK-defined routes that handle communication with the AppMarket
   */
-private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with EventJsonSupport with EventResultMarshallersModule {
+private[sdk] trait AppMarketCommunicationRoutesModule 
+  extends Directives  
+    with EventJsonSupport {
+  
   this: RawEventHandlersModule
+    with EventResultMarshallersModule
+    with CustomDirectivesModule
     with AkkaDependenciesModule =>
   
 
@@ -41,62 +46,60 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
       }
   }
 
+  
   def appMarketIntegrationRoutes: Route =
     handleExceptions(integrationExceptionHandler) {
-      (pathPrefix("integration") & parameter("eventUrl")) { implicit eventFetchUrl =>
-        subscriptionOrder ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
-          addonOrder ~ addonCancel ~
-          userAssignment ~ userUnassignment
+      val clientId = "dummy"
+      (pathPrefix("integration") & signedFetchEvent(clientId, eventFetcher)) { (eventId, rawMarketplaceEvent) =>
+        subscriptionOrder(eventId, rawMarketplaceEvent, clientId)
+//        ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
+//          addonOrder ~ addonCancel ~
+//          userAssignment ~ userUnassignment
       }
-    }
+     }
 
-  def extractIdFrom(eventFetchUrl: String): String = eventFetchUrl split "/" last
-  def subscriptionOrder(implicit eventFetchUrl: String): Route =
+  def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "order") {
       complete {
-        val dummyKey = "sdfsd"
-        val rawEvent = eventFetcher.fetchRawAppMarketEvent(eventFetchUrl, dummyKey)
-        val rawEventId = extractIdFrom(eventFetchUrl)
-        
         subscriptionOrderRawEventHandler.processEventFrom(
-          rawEvent = rawEvent,
-          rawEventId = rawEventId,
-          clientKey = dummyKey
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
         )
       }
     }
 
-  def subscriptionCancel(implicit eventFetchUrl: String): Route =
+  def subscriptionCancel(implicit eventCoordinates: EventCoordinates): Route =
     path("subscription" / "cancel") {
       complete(???)
     }
 
-  def subscriptionChange(implicit eventFetchUrl: String): Route =
+  def subscriptionChange(implicit eventCoordinates: EventCoordinates): Route =
     path("subscription" / "change") {
       complete(???)
     }
 
-  def subscriptionNotice(implicit eventFetchUrl: String): Route =
+  def subscriptionNotice(implicit eventCoordinates: EventCoordinates): Route =
     path("subscription" / "notice") {
       complete(???)
     }
 
-  def addonOrder(implicit eventFetchUrl: String): Route =
+  def addonOrder(implicit eventCoordinates: EventCoordinates): Route =
     path("subscription" / "addon" / "order") {
       complete(???)
     }
 
-  def addonCancel(implicit eventFetchUrl: String): Route =
+  def addonCancel(implicit eventCoordinates: EventCoordinates): Route =
     path("subscription" / "addon" / "cancel") {
       complete(???)
     }
 
-  def userAssignment(implicit eventFetchUrl: String): Route =
+  def userAssignment(implicit eventCoordinates: EventCoordinates): Route =
     path("user" / "assignment") {
       complete(???)
     }
 
-  def userUnassignment(implicit eventFetchUrl: String): Route =
+  def userUnassignment(implicit eventCoordinates: EventCoordinates): Route =
     path("user" / "unassignment") {
       complete(???)
     }
