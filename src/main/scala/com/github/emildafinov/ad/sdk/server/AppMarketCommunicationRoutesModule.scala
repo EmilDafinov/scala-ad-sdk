@@ -3,7 +3,7 @@ package com.github.emildafinov.ad.sdk.server
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
-import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule}
+import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule, RoutingDependenciesModule}
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event, EventJsonSupport}
 import spray.json._
 
@@ -12,15 +12,13 @@ import scala.language.postfixOps
 /**
   * Describes the SDK-defined routes that handle communication with the AppMarket
   */
-private[sdk] trait AppMarketCommunicationRoutesModule 
-  extends Directives  
-    with EventJsonSupport {
-  
+private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with EventJsonSupport {
+
   this: RawEventHandlersModule
     with EventResultMarshallersModule
     with CustomDirectivesModule
-    with AkkaDependenciesModule =>
-  
+    with AkkaDependenciesModule
+    with RoutingDependenciesModule =>
 
   lazy val integrationExceptionHandler = ExceptionHandler {
     case _: CouldNotFetchRawMarketplaceEventException =>
@@ -33,7 +31,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule
           )
         )
       }
-      
+
     case _: MalformedRawMarketplaceEventPayloadException =>
       complete {
         HttpResponse(
@@ -45,18 +43,20 @@ private[sdk] trait AppMarketCommunicationRoutesModule
         )
       }
   }
-
   
   def appMarketIntegrationRoutes: Route =
-    handleExceptions(integrationExceptionHandler) {
-      val clientId = "dummy"
-      (pathPrefix("integration") & signedFetchEvent(clientId, eventFetcher)) { (eventId, rawMarketplaceEvent) =>
-        subscriptionOrder(eventId, rawMarketplaceEvent, clientId)
-//        ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
-//          addonOrder ~ addonCancel ~
-//          userAssignment ~ userUnassignment
+    authenticateAppMarketRequest { clientId =>
+      pathPrefix("integration") {
+        handleExceptions(integrationExceptionHandler) {
+          signedFetchEvent(clientId) { case (eventId, rawMarketplaceEvent) =>
+            subscriptionOrder(eventId, rawMarketplaceEvent, clientId)
+            //        ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
+            //          addonOrder ~ addonCancel ~
+            //          userAssignment ~ userUnassignment
+          }
+        }
       }
-     }
+    }
 
   def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "order") {

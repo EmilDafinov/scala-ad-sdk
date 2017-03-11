@@ -3,7 +3,6 @@ package com.github.emildafinov.ad.sdk.authentication
 import com.typesafe.scalalogging.StrictLogging
 import oauth.signpost.OAuthConsumer
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
-import org.apache.http.client.methods
 import org.apache.http.client.methods._
 
 class AuthorizationTokenGenerator extends StrictLogging {
@@ -31,11 +30,11 @@ class AuthorizationTokenGenerator extends StrictLogging {
     * Generate the signature, with a pre-defined value of the timestamp and the nonce.
     * Useful for validating incoming requests
     *
-    * @param httpMethodName
-    * @param resourceUrl
-    * @param timeStamp
-    * @param nonce
-    * @param marketplaceCredentials
+    * @param httpMethodName the method name used to sign
+    * @param resourceUrl the url used to sign
+    * @param timeStamp the timestamp used to sign (usually taken from the request we want to validate)
+    * @param nonce the nonce used to sign (usually taken from the request we want to validate)
+    * @param marketplaceCredentials the key/secret pair that we use to sign
     * @return
     */
   def generateAuthorizationHeader(httpMethodName: String,
