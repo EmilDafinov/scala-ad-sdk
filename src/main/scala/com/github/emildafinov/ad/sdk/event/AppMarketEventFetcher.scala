@@ -35,7 +35,7 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
                             ec: ExecutionContext) extends EventJsonSupport {
 
   def fetchRawAppMarketEvent(eventCoordinates: EventCoordinates): (String, Event) = {
-
+  
     val parsedRawEvent = (for {
       eventFetchRequest <- signedFetchRequest(eventCoordinates.eventFetchUrl, eventCoordinates.clientId)
       response <- Http().singleRequest(eventFetchRequest)
@@ -48,7 +48,7 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
       extractIdFrom(eventCoordinates.eventFetchUrl) -> eventPayload
 
     } recover {
-      case NonFatal(_) => throw new CouldNotFetchRawMarketplaceEventException()
+      case NonFatal(e) => throw new CouldNotFetchRawMarketplaceEventException(e)
     }
 
     Await.result(
@@ -76,4 +76,4 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
 
 }
 
-class CouldNotFetchRawMarketplaceEventException extends RuntimeException
+class CouldNotFetchRawMarketplaceEventException(cause: Throwable) extends RuntimeException(cause)

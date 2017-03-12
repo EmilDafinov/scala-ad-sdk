@@ -43,58 +43,58 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
         )
       }
   }
-  
+
   def appMarketIntegrationRoutes: Route =
     authenticateAppMarketRequest { clientId =>
       pathPrefix("integration") {
         handleExceptions(integrationExceptionHandler) {
           signedFetchEvent(clientId) { case (eventId, rawMarketplaceEvent) =>
             subscriptionOrder(eventId, rawMarketplaceEvent, clientId) ~
-            subscriptionCancel(eventId, rawMarketplaceEvent, clientId) ~
-            subscriptionChange(eventId, rawMarketplaceEvent, clientId) ~
-            subscriptionNotice(eventId, rawMarketplaceEvent, clientId) ~
-            userAssignment(eventId, rawMarketplaceEvent, clientId) ~
-            userUnassignment(eventId, rawMarketplaceEvent, clientId)
+              subscriptionCancel(eventId, rawMarketplaceEvent, clientId) ~
+              subscriptionChange(eventId, rawMarketplaceEvent, clientId) ~
+              subscriptionNotice(eventId, rawMarketplaceEvent, clientId) ~
+              userAssignment(eventId, rawMarketplaceEvent, clientId) ~
+              userUnassignment(eventId, rawMarketplaceEvent, clientId)
           }
         }
       }
     }
-  private def isForAddon(event: Event) = event.payload.account.parentAccountIdentifier != null
+
+  private def isForAddon(event: Event) = //event.payload.flatMap(_.account).map(_.parentAccountIdentifier)) isDefined
+    event.payload.account.flatMap(_.parentAccountIdentifier) isDefined
+
   def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "order") {
       complete {
-        if (isForAddon(event)) {
-          addonSubscriptionOrderRawEventHandler.processEventFrom(
-            rawEvent = event,
-            rawEventId = eventId,
-            clientKey = clientId
-          )
-        } else {
-          subscriptionOrderRawEventHandler.processEventFrom(
-            rawEvent = event,
-            rawEventId = eventId,
-            clientKey = clientId
-          )
-        }
+        val clientEventHandler = 
+          if (isForAddon(event)) 
+            addonSubscriptionOrderRawEventHandler
+          else 
+            subscriptionOrderRawEventHandler
+        
+        clientEventHandler.processEventFrom(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
       }
     }
 
   def subscriptionCancel(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "cancel") {
       complete {
-        if (isForAddon(event)) {
-          addonSubscriptionCancelRawEventHandler.processEventFrom(
-            rawEvent = event,
-            rawEventId = eventId,
-            clientKey = clientId
-          )
-        } else {
-          subscriptionCancelRawEventHandler.processEventFrom(
-            rawEvent = event,
-            rawEventId = eventId,
-            clientKey = clientId
-          )
-        }
+
+        val clientEventHandler =
+          if (isForAddon(event)) 
+            addonSubscriptionCancelRawEventHandler
+          else 
+            subscriptionCancelRawEventHandler
+
+        clientEventHandler.processEventFrom(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
       }
     }
 
@@ -111,7 +111,20 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
 
   def subscriptionNotice(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "notice") {
-      complete(???)
+      complete {
+        val clientEventHandler = event.payload.notice.map(_.`type`) match {
+          case Some("CLOSED") => subscriptionClosedRawEventHandler
+          case Some("DEACTIVATED") => subscriptionDeactivatedRawEventHandler
+          case Some("REACTIVATED") => subscriptionReactivatedRawEventHandler
+          case Some("UPCOMING_INVOICE") => subscriptionUpcomingInvoiceRawEventHandler
+          case _ => throw new MalformedRawMarketplaceEventPayloadException(null)
+        }
+        clientEventHandler.processEventFrom(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
+      }
     }
 
   def userAssignment(eventId: String, event: Event, clientId: String): Route =

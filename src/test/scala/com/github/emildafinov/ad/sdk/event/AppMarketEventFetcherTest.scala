@@ -1,7 +1,7 @@
 package com.github.emildafinov.ad.sdk.event
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier}
-import com.github.emildafinov.ad.sdk.payload.{Event, MarketInfo, UserInfo}
+import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
@@ -10,9 +10,9 @@ import org.mockito.Mockito.{reset, when}
 import scala.io.Source
 import scala.language.postfixOps
 
-class AppMarketEventFetcherTest 
-  extends UnitTestSpec 
-    with AkkaSpec 
+class AppMarketEventFetcherTest
+  extends UnitTestSpec
+    with AkkaSpec
     with WiremockHttpServiceTestSuite {
 
   behavior of "AppMarketEventFetcher"
@@ -38,7 +38,7 @@ class AppMarketEventFetcherTest
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenThrow new RuntimeException()
 
-    
+
     //Then
     a[RuntimeException] should be thrownBy {
       //When
@@ -54,36 +54,49 @@ class AppMarketEventFetcherTest
     val testHost = s"http://localhost:${httpServerMock.port()}"
     val testHttpResource = s"/events/$testEventId"
     val testEventUrl = testHost + testHttpResource
-    
+
     val testClientSecret = "abcdef"
     val testAppmarketCredentials = AppMarketCredentials(clientKey = testClientKey, clientSecret = testClientSecret)
 
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_order_event_payload.json") ).mkString
-    
+    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_order_event_payload.json")).mkString
+
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenReturn testAppmarketCredentials
-    
+
     when {
       mockAuthorizationTokenGenerator.generateAuthorizationHeader(
-        "GET",testEventUrl, testAppmarketCredentials
+        "GET", testEventUrl, testAppmarketCredentials
       )
     } thenReturn "afscgg"
-    
+
     httpServerMock
       .givenThat {
         get(urlEqualTo(testHttpResource)) willReturn {
           aResponse withBody expectedEventPayloadJson
         }
       }
-    
+
     val expectedEvent = Event(
       `type` = "SUBSCRIPTION_ORDER",
-      marketplace = MarketInfo(
+      marketplace = Marketplace(
         partner = "APPDIRECT",
         baseUrl = "http://sample.appdirect.com:8888"
       ),
-      creator = UserInfo()
+      creator = User(),
+      payload = Payload(
+        company = Company(),
+        account = Option(
+          Account(
+            parentAccountIdentifier = Option("abc")
+          )
+        ),
+        notice = Option(
+          Notice(
+            `type` = "DFD"
+          )
+        )
+      )
     )
     val testEventCoordinates = EventCoordinates(
       clientId = testClientKey,
@@ -96,6 +109,6 @@ class AppMarketEventFetcherTest
     parsedEvent shouldEqual expectedEvent
     parsedEventId shouldEqual testEventId
   }
-  
+
   //TODO: Add tests to parse all new event types !!
 }

@@ -14,7 +14,7 @@ class SubscriptionOrderEventParserTest extends UnitTestSpec {
   it should "parse a SubscriptionOrder from the incoming event" in {
     //Given
     val expectedId = "expectedEventId"
-    val testEvent = Event(`type` = null, marketplace = null,  creator = null)
+    val testEvent = Event(`type` = null, marketplace = null,  creator = null, null)
     val expectedSubscriptionOrder = SubscriptionOrderEvent(id = expectedId)
 
     //When

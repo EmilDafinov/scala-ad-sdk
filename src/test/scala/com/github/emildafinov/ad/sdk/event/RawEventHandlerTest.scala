@@ -62,8 +62,23 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     val testEvent = Event(
       `type` = "type",
-      marketplace = MarketInfo("testPartner", "http://example.com"),
-      creator = UserInfo()
+      marketplace = Marketplace("testPartner", "http://example.com"),
+      creator = User(),
+      payload =
+        Payload(
+          company = null,
+          account = Option(
+            Account(
+              parentAccountIdentifier = Option("")
+            )
+          ),
+          notice = Option(
+            Notice(
+              `type` = "fsdfs"
+            )
+          )
+        )
+
     )
 
     when {
@@ -75,7 +90,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady(
-      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientKey), 
+      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientKey),
       timeout = Timeout(1 second)
     ) { result =>
       //Then

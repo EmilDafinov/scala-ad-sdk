@@ -13,7 +13,7 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   it should "throw when processing an event" in {
     //Given
-    val testEvent = Event(null, null, null)
+    val testEvent = Event(null, null, null, null)
 
     //Then
     an [OperationNotSupportedException] shouldBe thrownBy {

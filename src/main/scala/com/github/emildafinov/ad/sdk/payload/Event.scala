@@ -1,10 +1,18 @@
 package com.github.emildafinov.ad.sdk.payload
 
 case class Event(`type`: String,
-                 marketplace: MarketInfo,
-                 creator: UserInfo,
-                 payload: EventPayload)
+                 marketplace: Marketplace,
+                 creator: User,
+                 payload: Payload)
 
-case class EventPayload(account: Account)
+case class Marketplace(partner: String, baseUrl: String)
+case class User()
+case class Payload(account: Option[Account] = None,
+                   notice: Option[Notice]= None,
+                   company: Company)
 
-case class Account(parentAccountIdentifier: String)
+case class Account(parentAccountIdentifier: Option[String] = None)
+
+case class Notice(`type`: String)
+
+case class Company()
