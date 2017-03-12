@@ -49,19 +49,59 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
       pathPrefix("integration") {
         handleExceptions(integrationExceptionHandler) {
           signedFetchEvent(clientId) { case (eventId, rawMarketplaceEvent) =>
-            subscriptionOrder(eventId, rawMarketplaceEvent, clientId)
-            //        ~ subscriptionCancel ~ subscriptionChange ~ subscriptionNotice ~
-            //          addonOrder ~ addonCancel ~
-            //          userAssignment ~ userUnassignment
+            subscriptionOrder(eventId, rawMarketplaceEvent, clientId) ~
+            subscriptionCancel(eventId, rawMarketplaceEvent, clientId) ~
+            subscriptionChange(eventId, rawMarketplaceEvent, clientId) ~
+            subscriptionNotice(eventId, rawMarketplaceEvent, clientId) ~
+            userAssignment(eventId, rawMarketplaceEvent, clientId) ~
+            userUnassignment(eventId, rawMarketplaceEvent, clientId)
           }
         }
       }
     }
-
+  private def isForAddon(event: Event) = event.payload.account.parentAccountIdentifier != null
   def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "order") {
       complete {
-        subscriptionOrderRawEventHandler.processEventFrom(
+        if (isForAddon(event)) {
+          addonSubscriptionOrderRawEventHandler.processEventFrom(
+            rawEvent = event,
+            rawEventId = eventId,
+            clientKey = clientId
+          )
+        } else {
+          subscriptionOrderRawEventHandler.processEventFrom(
+            rawEvent = event,
+            rawEventId = eventId,
+            clientKey = clientId
+          )
+        }
+      }
+    }
+
+  def subscriptionCancel(eventId: String, event: Event, clientId: String): Route =
+    path("subscription" / "cancel") {
+      complete {
+        if (isForAddon(event)) {
+          addonSubscriptionCancelRawEventHandler.processEventFrom(
+            rawEvent = event,
+            rawEventId = eventId,
+            clientKey = clientId
+          )
+        } else {
+          subscriptionCancelRawEventHandler.processEventFrom(
+            rawEvent = event,
+            rawEventId = eventId,
+            clientKey = clientId
+          )
+        }
+      }
+    }
+
+  def subscriptionChange(eventId: String, event: Event, clientId: String): Route =
+    path("subscription" / "change") {
+      complete {
+        subscriptionChangedRawEventHandler.processEventFrom(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = clientId
@@ -69,39 +109,31 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
       }
     }
 
-  def subscriptionCancel(implicit eventCoordinates: EventCoordinates): Route =
-    path("subscription" / "cancel") {
-      complete(???)
-    }
-
-  def subscriptionChange(implicit eventCoordinates: EventCoordinates): Route =
-    path("subscription" / "change") {
-      complete(???)
-    }
-
-  def subscriptionNotice(implicit eventCoordinates: EventCoordinates): Route =
+  def subscriptionNotice(eventId: String, event: Event, clientId: String): Route =
     path("subscription" / "notice") {
       complete(???)
     }
 
-  def addonOrder(implicit eventCoordinates: EventCoordinates): Route =
-    path("subscription" / "addon" / "order") {
-      complete(???)
-    }
-
-  def addonCancel(implicit eventCoordinates: EventCoordinates): Route =
-    path("subscription" / "addon" / "cancel") {
-      complete(???)
-    }
-
-  def userAssignment(implicit eventCoordinates: EventCoordinates): Route =
+  def userAssignment(eventId: String, event: Event, clientId: String): Route =
     path("user" / "assignment") {
-      complete(???)
+      complete {
+        userAssignmentRawEventHandler.processEventFrom(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
+      }
     }
 
-  def userUnassignment(implicit eventCoordinates: EventCoordinates): Route =
+  def userUnassignment(eventId: String, event: Event, clientId: String): Route =
     path("user" / "unassignment") {
-      complete(???)
+      complete {
+        userUnassignmentRawEventHandler.processEventFrom(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
+      }
     }
 }
 
