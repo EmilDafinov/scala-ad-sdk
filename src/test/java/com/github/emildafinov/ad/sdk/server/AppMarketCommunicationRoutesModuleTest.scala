@@ -32,10 +32,10 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
     parser
   )
   
-  private val testedDirective = ConnectorAuthenticationDirective(authFactory)
+  private val testedDirective = ConnectorAuthenticationDirective(authFactory, connectorCredentialsSupplier)
   
   private val testedRoute =  testedDirective{ clientId =>
-    complete(clientId)
+    complete(clientId.clientKey())
   }
   
   it should "authenticate the caller successfully" in {

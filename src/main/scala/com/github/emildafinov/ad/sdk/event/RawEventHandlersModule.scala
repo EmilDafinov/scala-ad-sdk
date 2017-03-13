@@ -14,7 +14,7 @@ trait RawEventHandlersModule {
     with RoutingDependenciesModule
     with EventResultMarshallersModule =>
 
-  private implicit lazy val eventResolver = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
+  private implicit lazy val eventResolver = new AppMarketEventResolver(authorizationTokenGenerator)
 
   lazy val subscriptionOrderRawEventHandler: RawEventHandler[SubscriptionOrder, SubscriptionOrderResponse] =
     new RawEventHandler(

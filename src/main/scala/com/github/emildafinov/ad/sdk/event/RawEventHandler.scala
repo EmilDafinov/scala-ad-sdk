@@ -3,6 +3,7 @@ package com.github.emildafinov.ad.sdk.event
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
 import com.github.emildafinov.ad.sdk.EventHandler
+import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults, Event}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -26,7 +27,7 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
   
   
 
-  def processEventFrom(rawEvent: Event, rawEventId: String,  clientKey: String)
+  def processEventFrom(rawEvent: Event, rawEventId: String,  clientKey: MarketplaceCredentials)
                       (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
     
     val richEvent = transformToClientEvent(rawEvent, rawEventId)

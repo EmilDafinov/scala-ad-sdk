@@ -17,7 +17,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
   val authorizationTokenGenerator: AuthorizationTokenGenerator = mock[AuthorizationTokenGenerator]
 
-  val tested = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
+  val tested = new AppMarketEventResolver(authorizationTokenGenerator)
 
   it should "send a failed `event resolved` callback" in {
     //Given
@@ -58,7 +58,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val eventNotificationFuture = tested.sendEventResolvedCallback(
       resolveEndpointBaseUrl = testEventResolutionEndpoint,
       eventId = testEventId,
-      clientKey = testKey,
+      clientKey = testClientCredentials,
       eventProcessingResult = testEventProcessingResult
     )
 
@@ -112,7 +112,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val eventNotificationFuture = tested.sendEventResolvedCallback(
       resolveEndpointBaseUrl = s"http://localhost:${httpServerMock.port()}",
       eventId = testEventId,
-      clientKey = testClientKey,
+      clientKey = testClientCredentials,
       eventProcessingResult = testEventProcessingResult
     )
 

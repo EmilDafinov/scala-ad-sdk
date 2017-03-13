@@ -3,6 +3,7 @@ package com.github.emildafinov.ad.sdk.server
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
+import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule, RoutingDependenciesModule}
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
@@ -50,16 +51,16 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
   }
 
   def appMarketIntegrationRoutes: Route =
-    authenticateAppMarketRequest { clientId =>
+    authenticateAppMarketRequest { clientCredentials =>
       pathPrefix("integration") {
         handleExceptions(integrationExceptionHandler) {
-          signedFetchEvent(clientId) { case (eventId, rawMarketplaceEvent) =>
-            subscriptionOrder(eventId, rawMarketplaceEvent, clientId) ~
-              subscriptionCancel(eventId, rawMarketplaceEvent, clientId) ~
-              subscriptionChange(eventId, rawMarketplaceEvent, clientId) ~
-              subscriptionNotice(eventId, rawMarketplaceEvent, clientId) ~
-              userAssignment(eventId, rawMarketplaceEvent, clientId) ~
-              userUnassignment(eventId, rawMarketplaceEvent, clientId)
+          signedFetchEvent(clientCredentials) { case (eventId, rawMarketplaceEvent) =>
+            subscriptionOrder(eventId, rawMarketplaceEvent, clientCredentials) ~
+              subscriptionCancel(eventId, rawMarketplaceEvent, clientCredentials) ~
+              subscriptionChange(eventId, rawMarketplaceEvent, clientCredentials) ~
+              subscriptionNotice(eventId, rawMarketplaceEvent, clientCredentials) ~
+              userAssignment(eventId, rawMarketplaceEvent, clientCredentials) ~
+              userUnassignment(eventId, rawMarketplaceEvent, clientCredentials)
           }
         }
       }
@@ -68,7 +69,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
   private def isForAddon(event: Event) = //event.payload.flatMap(_.account).map(_.parentAccountIdentifier)) isDefined
     event.payload.account.flatMap(_.parentAccountIdentifier) isDefined
 
-  def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
+  def subscriptionOrder(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("subscription" / "order") {
       complete {
         val clientEventHandler = 
@@ -85,7 +86,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
       }
     }
 
-  def subscriptionCancel(eventId: String, event: Event, clientId: String): Route =
+  def subscriptionCancel(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("subscription" / "cancel") {
       complete {
 
@@ -103,7 +104,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
       }
     }
 
-  def subscriptionChange(eventId: String, event: Event, clientId: String): Route =
+  def subscriptionChange(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("subscription" / "change") {
       complete {
         subscriptionChangedRawEventHandler.processEventFrom(
@@ -114,7 +115,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
       }
     }
 
-  def subscriptionNotice(eventId: String, event: Event, clientId: String): Route =
+  def subscriptionNotice(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("subscription" / "notice") {
       complete {
         val clientEventHandler = event.payload.notice.map(_.`type`) match {
@@ -132,7 +133,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
       }
     }
 
-  def userAssignment(eventId: String, event: Event, clientId: String): Route =
+  def userAssignment(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("user" / "assignment") {
       complete {
         userAssignmentRawEventHandler.processEventFrom(
@@ -143,7 +144,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
       }
     }
 
-  def userUnassignment(eventId: String, event: Event, clientId: String): Route =
+  def userUnassignment(eventId: String, event: Event, clientId: MarketplaceCredentials): Route =
     path("user" / "unassignment") {
       complete {
         userUnassignmentRawEventHandler.processEventFrom(

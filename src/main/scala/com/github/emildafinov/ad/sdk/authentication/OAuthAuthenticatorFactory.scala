@@ -11,7 +11,7 @@ class OAuthAuthenticatorFactory(credentialsSupplier: CredentialsSupplier,
 
   def authenticatorFunction(requestHttpMethodName: String, requestUrl: String)
                            (credentialsInRequest: Option[HttpCredentials])
-                           (implicit ex: ExecutionContext): Future[AuthenticationResult[String]] =
+                           (implicit ex: ExecutionContext): Future[AuthenticationResult[MarketplaceCredentials]] =
     Future {
       credentialsInRequest match {
         case Some(callerCredentials) =>
@@ -30,7 +30,7 @@ class OAuthAuthenticatorFactory(credentialsSupplier: CredentialsSupplier,
           val expectedOAuthTokenParameters = oauthSignatureParser.parse(expectedOAuthToken)
 
           if (expectedOAuthTokenParameters.oauthSignature == callerCredentials.params("oauth_signature")) {
-            Right(requestClientKey)
+            Right(connectorCredentials)
           } else {
             Left(HttpChallenge(scheme = "OAuth", realm = None))
           }

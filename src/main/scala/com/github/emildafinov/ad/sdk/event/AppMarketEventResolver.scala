@@ -15,8 +15,7 @@ import org.json4s.jackson.Serialization
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
-class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
-                             credentialsSupplier: CredentialsSupplier)
+class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator)
                             (implicit
                              ec: ExecutionContext,
                              as: ActorSystem,
@@ -33,19 +32,16 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
     */
   def sendEventResolvedCallback(resolveEndpointBaseUrl: String,
                                 eventId: String,
-                                clientKey: String,
+                                clientKey: MarketplaceCredentials,
                                 eventProcessingResult: ApiResult): Future[Unit] = {
 
     val requestEntity = Serialization.write(eventProcessingResult)
-    val credentials = credentialsSupplier
-      .readCredentialsFor(clientKey)
-      .orElseThrow(() => new UnknownClientKeyException)
 
     val request = resolveEventRequest(
         resolveEndpointBaseUrl,
         eventId,
         requestEntity,
-        credentials
+        clientKey
       )
 
     Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>

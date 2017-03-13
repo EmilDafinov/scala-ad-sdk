@@ -2,6 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
+import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{EventHandler, UnitTestSpec}
 import org.mockito.Matchers.any
@@ -32,12 +33,14 @@ class RawEventHandlerTest extends UnitTestSpec {
     reset(mockEventTransformer, mockClientHandler, mockToMarketplaceResponse, mockEventResolver)
   }
 
+
   it should "throw and not call the client handler if the rich event parsing fails" in {
     //Given
     val testUrl = "http://example.com"
     val testClientKey = "testClientKey"
+    val testClientSecret = "testSecret"
     val testEventPayload = mock[Event]
-
+    val testCredentials = AppMarketCredentials(testClientKey, testClientSecret)
     when {
       mockEventTransformer.apply(any(), any())
     } thenThrow classOf[MalformedRawMarketplaceEventPayloadException]
@@ -45,7 +48,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady {
-      tested.processEventFrom(testEventPayload, testUrl, testClientKey).failed
+      tested.processEventFrom(testEventPayload, testUrl, testCredentials).failed
     } {
       //Then
       _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
@@ -59,7 +62,8 @@ class RawEventHandlerTest extends UnitTestSpec {
     //Given
     val testEventFetchUrl = "http://example.com/events/someEventIdHere"
     val testClientKey = "testClientKey"
-
+    val testClientSecret = "testClientSecret"
+    val testClientCredentials = AppMarketCredentials(testClientKey, testClientSecret)
     val testEvent = Event(
       `type` = "type",
       marketplace = Marketplace("testPartner", "http://example.com"),
@@ -90,7 +94,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady(
-      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientKey),
+      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientCredentials),
       timeout = Timeout(1 second)
     ) { result =>
       //Then
