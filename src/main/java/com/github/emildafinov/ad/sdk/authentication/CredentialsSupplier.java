@@ -1,5 +1,10 @@
 package com.github.emildafinov.ad.sdk.authentication;
 
+import java.util.Optional;
+
+/**
+ * Allows the connector to
+ */
 public interface CredentialsSupplier {
-	MarketplaceCredentials readCredentialsFor(String clientKey);
+	Optional<MarketplaceCredentials> readCredentialsFor(String clientKey);
 }

@@ -6,7 +6,7 @@ import akka.http.scaladsl.model.HttpMethods.POST
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.ApiResult
 import com.typesafe.scalalogging.StrictLogging
 import org.json4s.DefaultFormats
@@ -37,11 +37,15 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                                 eventProcessingResult: ApiResult): Future[Unit] = {
 
     val requestEntity = Serialization.write(eventProcessingResult)
+    val credentials = credentialsSupplier
+      .readCredentialsFor(clientKey)
+      .orElseThrow(() => new UnknownClientKeyException)
+
     val request = resolveEventRequest(
         resolveEndpointBaseUrl,
         eventId,
         requestEntity,
-        credentialsSupplier.readCredentialsFor(clientKey)
+        credentials
       )
 
     Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>

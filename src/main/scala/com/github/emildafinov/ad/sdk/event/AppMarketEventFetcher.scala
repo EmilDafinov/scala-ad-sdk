@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.Event
 import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import org.json4s._
@@ -55,7 +55,10 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
   }
 
   private def signedFetchRequest(eventFetchUrl: String, clientKey: String) = Future {
-    val marketplaceCredentials = credentialsSupplier.readCredentialsFor(clientKey)
+    val marketplaceCredentials = credentialsSupplier
+      .readCredentialsFor(clientKey)
+        .orElseThrow(() => new UnknownClientKeyException)
+
     val bearerTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
       "GET",
       eventFetchUrl,

@@ -1,6 +1,8 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier}
+import java.util.Optional
+
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
@@ -62,7 +64,7 @@ class AppMarketEventFetcherTest
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
-    } thenReturn testAppmarketCredentials
+    } thenReturn Optional.of[MarketplaceCredentials](testAppmarketCredentials)
 
     when {
       mockAuthorizationTokenGenerator.generateAuthorizationHeader(

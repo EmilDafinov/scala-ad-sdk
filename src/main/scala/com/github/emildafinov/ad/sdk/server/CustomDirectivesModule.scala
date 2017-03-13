@@ -17,7 +17,4 @@ trait CustomDirectivesModule extends Directives {
 
   val authenticateAppMarketRequest: Directive1[String] = 
     ConnectorAuthenticationDirective(authenticatorFactory)
-
-  
-
 }

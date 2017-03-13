@@ -1,6 +1,8 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier}
+import java.util.Optional
+
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
 import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -32,7 +34,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     when {
       credentialsSupplier.readCredentialsFor(testKey)
-    } thenReturn testClientCredentials
+    } thenReturn Optional.of[MarketplaceCredentials](testClientCredentials)
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(
@@ -86,7 +88,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     )
     when {
       credentialsSupplier.readCredentialsFor(testClientKey)
-    } thenReturn testClientCredentials
+    } thenReturn Optional.of[MarketplaceCredentials](testClientCredentials)
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(

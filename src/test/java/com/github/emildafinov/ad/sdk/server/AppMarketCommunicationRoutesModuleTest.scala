@@ -1,5 +1,7 @@
 package com.github.emildafinov.ad.sdk.server
 
+import java.util.Optional
+
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.testkit.ScalatestRouteTest
@@ -16,9 +18,11 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
 
   private val connectorCredentialsSupplier: CredentialsSupplier = (clientKey: String) =>
     if (clientKey == expectedClientKey)
-      AppMarketCredentials(
-        clientKey = expectedClientKey,
-        clientSecret = expectedClientSecret
+      Optional.of(
+        AppMarketCredentials(
+          clientKey = expectedClientKey,
+          clientSecret = expectedClientSecret
+        )
       )
     else throw new NoSuchElementException(s"The client key $clientKey is not known by the connector")
 

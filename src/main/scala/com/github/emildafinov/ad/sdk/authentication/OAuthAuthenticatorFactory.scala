@@ -17,7 +17,9 @@ class OAuthAuthenticatorFactory(credentialsSupplier: CredentialsSupplier,
         case Some(callerCredentials) =>
 
           val requestClientKey = callerCredentials.params("oauth_consumer_key")
-          val connectorCredentials = credentialsSupplier.readCredentialsFor(requestClientKey)
+          val connectorCredentials = credentialsSupplier
+            .readCredentialsFor(requestClientKey)
+            .orElseThrow(() => new UnknownClientKeyException())
           val expectedOAuthToken = authorizationTokenGenerator.generateAuthorizationHeader(
             httpMethodName = requestHttpMethodName,
             resourceUrl = requestUrl,
