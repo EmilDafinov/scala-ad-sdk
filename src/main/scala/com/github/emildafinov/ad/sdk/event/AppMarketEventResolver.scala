@@ -44,7 +44,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
         credentialsSupplier.readCredentialsFor(clientKey)
       )
 
-    Http().singleRequest(request) map { _ =>
+    Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>
         logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
     } recover {
       case NonFatal(_) => 
@@ -56,6 +56,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                                   eventId: String,
                                   requestEntity: String,
                                   clientCredentials: MarketplaceCredentials) = {
+    
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
     val authorizationHeader = Authorization(
       OAuth2BearerToken(

@@ -33,6 +33,7 @@ private[sdk] trait ConnectorStarter extends StrictLogging {
             logger.info("Http server stopped")
           }
       }
+    
     httpExt.bindAndHandle(
       handler = health, 
       interface = connectorHttpServerInterface, 

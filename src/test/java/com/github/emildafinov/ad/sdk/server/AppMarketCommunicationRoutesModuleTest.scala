@@ -5,6 +5,7 @@ import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.authentication._
+import com.github.emildafinov.ad.sdk.server.routing.directives.ConnectorAuthenticationDirective
 
 class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with ScalatestRouteTest with Directives {
 

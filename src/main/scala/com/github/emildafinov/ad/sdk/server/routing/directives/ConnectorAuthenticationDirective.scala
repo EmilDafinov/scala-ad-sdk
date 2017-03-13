@@ -1,8 +1,8 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.server.routing.directives
 
 import akka.http.scaladsl.server.Directive1
-import com.github.emildafinov.ad.sdk.authentication.OAuthAuthenticatorFactory
 import akka.http.scaladsl.server.Directives._
+import com.github.emildafinov.ad.sdk.authentication.OAuthAuthenticatorFactory
 
 import scala.concurrent.ExecutionContext
 

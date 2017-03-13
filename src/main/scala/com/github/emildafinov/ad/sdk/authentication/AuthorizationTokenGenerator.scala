@@ -43,7 +43,6 @@ class AuthorizationTokenGenerator extends StrictLogging {
                                   nonce: String,
                                   marketplaceCredentials: MarketplaceCredentials): String = 
     signWithConsumer(
-
       new ValidatingOAuthConsumer(
         consumerKey = marketplaceCredentials.clientKey(),
         consumerSecret = marketplaceCredentials.clientSecret(),
@@ -56,14 +55,15 @@ class AuthorizationTokenGenerator extends StrictLogging {
                               (httpMethodName: String,
                                resourceUrl: String,
                                marketplaceCredentials: MarketplaceCredentials): String = {
+
     val request = httpMethodName match {
-      case requestMethod if requestMethod.equalsIgnoreCase("GET") => new HttpGet(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("POST") => new HttpPost(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("PUT") => new HttpPut(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("DELETE") => new HttpDelete(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("HEAD") => new HttpHead(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("OPTIONS") => new HttpOptions(resourceUrl)
-      case requestMethod if requestMethod.equalsIgnoreCase("TRACE") => new HttpTrace(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpGet.METHOD_NAME) => new HttpGet(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpPost.METHOD_NAME) => new HttpPost(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpPut.METHOD_NAME) => new HttpPut(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpDelete.METHOD_NAME) => new HttpDelete(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpHead.METHOD_NAME) => new HttpHead(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpOptions.METHOD_NAME) => new HttpOptions(resourceUrl)
+      case requestMethod if requestMethod.equalsIgnoreCase(HttpTrace.METHOD_NAME) => new HttpTrace(resourceUrl)
       case _ => throw new IllegalArgumentException(s"Request method $httpMethodName is not supported")
     }
 

@@ -1,9 +1,10 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.server.routing.directives
 
+import akka.http.scaladsl.server.Directives.parameter
 import akka.http.scaladsl.server.{Directive, Directives}
 import com.github.emildafinov.ad.sdk.event.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.Event
-import Directives.parameter
+import com.github.emildafinov.ad.sdk.server.EventCoordinates
 
 object SignedFetchDirective {
 

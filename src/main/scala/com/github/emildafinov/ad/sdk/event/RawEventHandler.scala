@@ -53,4 +53,4 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
   }
 }
 
-class MalformedRawMarketplaceEventPayloadException(cause: Throwable) extends Exception(cause)
+

@@ -73,4 +73,4 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
 
 }
 
-class CouldNotFetchRawMarketplaceEventException(cause: Throwable) extends RuntimeException(cause)
+
