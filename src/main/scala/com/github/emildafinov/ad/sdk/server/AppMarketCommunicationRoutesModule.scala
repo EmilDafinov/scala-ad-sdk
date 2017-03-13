@@ -6,6 +6,7 @@ import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule, RoutingDependenciesModule}
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
+import com.github.emildafinov.ad.sdk.server.routing.directives.CustomDirectivesModule
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.json4s._
 import org.json4s.jackson.Serialization

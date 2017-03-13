@@ -5,6 +5,7 @@ import com.github.emildafinov.ad.sdk.event.{RawEventHandlersModule, RoutingDepen
 import com.github.emildafinov.ad.sdk.event.parsers.RichEventParsersModule
 import com.github.emildafinov.ad.sdk.internal.ClientDefinedDependenciesModule
 import com.github.emildafinov.ad.sdk.server._
+import com.github.emildafinov.ad.sdk.server.routing.directives.CustomDirectivesModule
 
 private[sdk] trait ConnectorRootApplicationContext
   extends ApplicationConfigurationModule
