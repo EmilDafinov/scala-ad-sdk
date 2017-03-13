@@ -9,10 +9,8 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito
 import org.mockito.Mockito.{never, reset, verify, when}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
-import org.scalatest.concurrent.ScalaFutures
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.language.postfixOps
 
 class RawEventHandlerTest extends UnitTestSpec {
@@ -82,7 +80,6 @@ class RawEventHandlerTest extends UnitTestSpec {
             )
           )
         )
-
     )
 
     when {

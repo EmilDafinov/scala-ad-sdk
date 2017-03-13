@@ -13,8 +13,8 @@ trait CustomDirectivesModule extends Directives {
     with RoutingDependenciesModule
     with AkkaDependenciesModule =>
   
-  def signedFetchEvent(clientId: MarketplaceCredentials): Directive[(String, Event)] =
-    SignedFetchDirective(eventFetcher, clientId.clientKey())
+  def signedFetchEvent(clientCredentials: MarketplaceCredentials): Directive[(String, Event)] =
+    SignedFetchDirective(eventFetcher, clientCredentials)
 
   val authenticateAppMarketRequest: Directive1[MarketplaceCredentials] = 
     ConnectorAuthenticationDirective(authenticatorFactory, credentialsSupplier)
