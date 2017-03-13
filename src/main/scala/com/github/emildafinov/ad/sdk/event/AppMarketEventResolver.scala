@@ -2,23 +2,27 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.marshalling.Marshal
 import akka.http.scaladsl.model.HttpMethods.POST
+import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
-import akka.http.scaladsl.model.{HttpRequest, RequestEntity}
 import akka.stream.Materializer
 import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
-import com.github.emildafinov.ad.sdk.payload.{ApiResult, EventJsonSupport}
+import com.github.emildafinov.ad.sdk.payload.ApiResult
 import com.typesafe.scalalogging.StrictLogging
+import org.json4s.DefaultFormats
+import org.json4s.jackson.Serialization
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.control.NonFatal
 
 class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                              credentialsSupplier: CredentialsSupplier)
                             (implicit
                              ec: ExecutionContext,
                              as: ActorSystem,
-                             ma: Materializer) extends EventJsonSupport with StrictLogging {
+                             ma: Materializer) extends StrictLogging {
+
+  implicit val formats = DefaultFormats
   /**
     * Calls the resolve event endpoint of the AppMarket in order to notify it that an event has been resolved
     *
@@ -32,24 +36,25 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
                                 clientKey: String,
                                 eventProcessingResult: ApiResult): Future[Unit] = {
 
-    for {
-      requestEntity <- Marshal(eventProcessingResult).to[RequestEntity]
-      request = resolveEventRequest(
+    val requestEntity = Serialization.write(eventProcessingResult)
+    val request = resolveEventRequest(
         resolveEndpointBaseUrl,
         eventId,
         requestEntity,
         credentialsSupplier.readCredentialsFor(clientKey)
       )
-      response <- Http().singleRequest(request)
-    } yield if (response.status.isSuccess)
+
+    Http().singleRequest(request) map { _ =>
         logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
-      else
+    } recover {
+      case NonFatal(_) => 
         logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
+    }
   }
 
   private def resolveEventRequest(resolveEndpointBaseUrl: String,
                                   eventId: String,
-                                  requestEntity: RequestEntity,
+                                  requestEntity: String,
                                   clientCredentials: MarketplaceCredentials) = {
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
     val authorizationHeader = Authorization(

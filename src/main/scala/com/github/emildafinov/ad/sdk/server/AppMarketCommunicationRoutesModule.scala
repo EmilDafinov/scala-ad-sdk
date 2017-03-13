@@ -4,22 +4,27 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule, RoutingDependenciesModule}
-import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event, EventJsonSupport}
-import spray.json._
+import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
+import de.heikoseeberger.akkahttpjson4s.Json4sSupport
+import org.json4s._
+import org.json4s.jackson.Serialization
+import org.json4s.jackson.Serialization.write
 
 import scala.language.postfixOps
 
 /**
   * Describes the SDK-defined routes that handle communication with the AppMarket
   */
-private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with EventJsonSupport {
+private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Json4sSupport {
 
   this: RawEventHandlersModule
     with EventResultMarshallersModule
     with CustomDirectivesModule
     with AkkaDependenciesModule
     with RoutingDependenciesModule =>
-
+  
+  private implicit val formats = Serialization.formats(NoTypeHints)
+  
   lazy val integrationExceptionHandler = ExceptionHandler {
     case _: CouldNotFetchRawMarketplaceEventException =>
       complete {
@@ -27,7 +32,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
           StatusCodes.InternalServerError,
           entity = HttpEntity(
             contentType = ContentTypes.`application/json`,
-            string = ApiResults.failure("Could not perform signed fetch").toJson.prettyPrint
+            string = write(ApiResults.failure("Could not perform signed fetch"))
           )
         )
       }
@@ -38,7 +43,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Ev
           StatusCodes.BadRequest,
           entity = HttpEntity(
             contentType = ContentTypes.`application/json`,
-            string = ApiResults.failure("The event payload was malformed").toJson.prettyPrint
+            string = write(ApiResults.failure("The event payload was malformed"))
           )
         )
       }

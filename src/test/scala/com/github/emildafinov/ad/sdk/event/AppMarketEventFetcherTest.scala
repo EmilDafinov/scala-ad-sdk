@@ -86,16 +86,8 @@ class AppMarketEventFetcherTest
       creator = User(),
       payload = Payload(
         company = Company(),
-        account = Option(
-          Account(
-            parentAccountIdentifier = Option("abc")
-          )
-        ),
-        notice = Option(
-          Notice(
-            `type` = "DFD"
-          )
-        )
+        account = None,
+        notice = None
       )
     )
     val testEventCoordinates = EventCoordinates(
