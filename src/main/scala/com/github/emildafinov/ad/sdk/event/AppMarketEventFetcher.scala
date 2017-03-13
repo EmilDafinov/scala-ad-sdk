@@ -7,9 +7,8 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, UnknownClientKeyException}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.Event
-import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
@@ -33,16 +32,16 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
 
   implicit val formats = DefaultFormats
   
-  def fetchRawAppMarketEvent(eventCoordinates: EventCoordinates): (String, Event) = {
+  def fetchRawAppMarketEvent(clientCredentials: MarketplaceCredentials, eventFetchUrl: String): (String, Event) = {
   
     val parsedRawEvent = (for {
-      eventFetchRequest <- signedFetchRequest(eventCoordinates.eventFetchUrl, eventCoordinates.clientId)
+      eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials.clientKey())
       response <- Http().singleRequest(eventFetchRequest)
       responseBody <- response.entity.dataBytes.runFold(ByteString(""))(_ ++ _)
       responseBodyString = responseBody.decodeString("utf8")
     } yield parse(responseBodyString).extract[Event]) map { eventPayload =>
 
-      extractIdFrom(eventCoordinates.eventFetchUrl) -> eventPayload
+      extractIdFrom(eventFetchUrl) -> eventPayload
 
     } recover {
       case NonFatal(e) => throw new CouldNotFetchRawMarketplaceEventException(e)

@@ -5,7 +5,6 @@ import akka.http.scaladsl.server.Directives.parameter
 import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
 import com.github.emildafinov.ad.sdk.event.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.Event
-import com.github.emildafinov.ad.sdk.server.EventCoordinates
 
 object SignedFetchDirective {
 
@@ -18,6 +17,6 @@ object SignedFetchDirective {
     */
   def apply(eventFetcher: AppMarketEventFetcher, clientCredentials: MarketplaceCredentials): Directive[(String, Event)] =
     parameter("eventUrl") map { eventFetchUrl =>
-      eventFetcher.fetchRawAppMarketEvent(EventCoordinates(clientCredentials.clientKey(), eventFetchUrl))
+      eventFetcher.fetchRawAppMarketEvent(clientCredentials, eventFetchUrl)
     }
 }

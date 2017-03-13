@@ -4,7 +4,6 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
 import com.github.emildafinov.ad.sdk.payload._
-import com.github.emildafinov.ad.sdk.server.EventCoordinates
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
@@ -32,10 +31,9 @@ class AppMarketEventFetcherTest
     //Given
     val testEventUrl = dummyUrl
     val testClientKey = "testKey"
-    val testEventCoordinates = EventCoordinates(
-      clientId = testClientKey,
-      eventFetchUrl = testEventUrl
-    )
+    val testClientSecret = "testSecret"
+    val testCredentials = AppMarketCredentials(testClientKey, testClientSecret)
+    
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenThrow new RuntimeException()
@@ -44,7 +42,7 @@ class AppMarketEventFetcherTest
     //Then
     a[RuntimeException] should be thrownBy {
       //When
-      tested.fetchRawAppMarketEvent(testEventCoordinates)
+      tested.fetchRawAppMarketEvent(testCredentials, testEventUrl)
     }
   }
 
@@ -92,12 +90,9 @@ class AppMarketEventFetcherTest
         notice = None
       )
     )
-    val testEventCoordinates = EventCoordinates(
-      clientId = testClientKey,
-      eventFetchUrl = testEventUrl
-    )
+
     //When
-    val (parsedEventId, parsedEvent) = tested.fetchRawAppMarketEvent(testEventCoordinates)
+    val (parsedEventId, parsedEvent) = tested.fetchRawAppMarketEvent(testAppmarketCredentials, testEventUrl)
 
     //Then
     parsedEvent shouldEqual expectedEvent
