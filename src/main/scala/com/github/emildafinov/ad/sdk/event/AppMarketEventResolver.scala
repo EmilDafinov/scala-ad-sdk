@@ -24,40 +24,35 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator)
   implicit val formats = DefaultFormats
   /**
     * Calls the resolve event endpoint of the AppMarket in order to notify it that an event has been resolved
-    *
-    * @param resolutionHost Base Url of the AppMarket
-    * @param eventId                the id of the event that was resolved
-    * @param clientCredentials              the client key used to sign the event resolved message                              
+    *     
     * @param eventProcessingResult  the payload returned to the AppMarket
     */
-  def sendEventResolvedCallback(resolutionHost: String,
-                                eventId: String,
-                                clientCredentials: MarketplaceCredentials)
-                               (eventProcessingResult: ApiResult): Future[Unit] = {
+  def sendEventResolvedCallback(eventReturnAddress: EventReturnAddress,
+                               eventProcessingResult: ApiResult): Future[Unit] = {
 
-    val requestEntity = Serialization.write(eventProcessingResult)
 
     val request = resolveEventRequest(
-        resolutionHost,
-        eventId,
-        requestEntity,
-        clientCredentials
+        eventReturnAddress.marketplaceBaseUrl,
+        eventReturnAddress.eventId,
+        eventProcessingResult,
+        eventReturnAddress.clientCredentials
       )
 
     Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>
-        logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolutionHost")
+        logger.info(s"Successfully resolved event ${eventReturnAddress.eventId} from AppMarket instance at ${eventReturnAddress.marketplaceBaseUrl}")
     } recover {
       case NonFatal(_) => 
-        logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolutionHost")
+        logger.error(s"Failed sending a resolution message for event ${eventReturnAddress.eventId} from AppMarket instance at ${eventReturnAddress.marketplaceBaseUrl}")
     }
   }
 
   private def resolveEventRequest(resolveEndpointBaseUrl: String,
                                   eventId: String,
-                                  requestEntity: String,
+                                  requestBody: ApiResult,
                                   clientCredentials: MarketplaceCredentials) = {
     
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
+    val requestEntity = Serialization.write(requestBody)
     val authorizationHeader = Authorization(
       OAuth2BearerToken(
         bearerTokenGenerator.generateAuthorizationHeader(

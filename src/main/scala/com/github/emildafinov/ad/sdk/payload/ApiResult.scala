@@ -14,9 +14,9 @@ object ApiResults {
 
   def failure(message: String): ApiResult = ???
   
-  def unknownError(): ApiResult = ApiResult(
+  def unknownError(message: String = "An unknown error has occurred"): ApiResult = ApiResult(
     success = false,
-    message = "An unknown error has occurred",
+    message = message,
     errorCode = "UNKNOWN_ERROR",
     accountIdentifier = "",
     userIdentifier = ""

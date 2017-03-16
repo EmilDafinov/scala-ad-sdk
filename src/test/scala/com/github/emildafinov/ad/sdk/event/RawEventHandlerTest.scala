@@ -34,7 +34,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
   it should "throw and not call the client handler if the rich event parsing fails" in {
     //Given
-    val testUrl = "http://example.com"
+    val testEventId = "eventId"
     val testClientKey = "testClientKey"
     val testClientSecret = "testSecret"
     val testEventPayload = mock[Event]
@@ -46,7 +46,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady {
-      tested.processEventFrom(testEventPayload, testUrl, testCredentials).failed
+      tested.processRawEvent(testEventId, testEventPayload, testCredentials).failed
     } {
       //Then
       _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
@@ -58,7 +58,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
   it should "not wait for the client processing to complete before returning" in {
     //Given
-    val testEventFetchUrl = "http://example.com/events/someEventIdHere"
+    val testEventId = "eventId"
     val testClientKey = "testClientKey"
     val testClientSecret = "testClientSecret"
     val testClientCredentials = AppMarketCredentials(testClientKey, testClientSecret)
@@ -91,7 +91,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady(
-      future = tested.processEventFrom(testEvent, testEventFetchUrl, testClientCredentials),
+      future = tested.processRawEvent(testEventId, testEvent, testClientCredentials),
       timeout = Timeout(1 second)
     ) { result =>
       //Then

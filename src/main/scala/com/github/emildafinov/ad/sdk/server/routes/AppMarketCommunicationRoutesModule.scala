@@ -81,7 +81,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
           else 
             subscriptionOrderRawEventHandler
         
-        clientEventHandler.processEventFrom(
+        clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials
@@ -99,7 +99,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
           else 
             subscriptionCancelRawEventHandler
 
-        clientEventHandler.processEventFrom(
+        clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials
@@ -110,7 +110,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
   def subscriptionChange(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
     path("subscription" / "change") {
       complete {
-        subscriptionChangedRawEventHandler.processEventFrom(
+        subscriptionChangedRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials
@@ -128,7 +128,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
           case Some("UPCOMING_INVOICE") => subscriptionUpcomingInvoiceRawEventHandler
           case _ => throw new MalformedRawMarketplaceEventPayloadException(null)
         }
-        clientEventHandler.processEventFrom(
+        clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials
@@ -139,7 +139,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
   def userAssignment(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
     path("user" / "assignment") {
       complete {
-        userAssignmentRawEventHandler.processEventFrom(
+        userAssignmentRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials
@@ -150,7 +150,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
   def userUnassignment(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
     path("user" / "unassignment") {
       complete {
-        userUnassignmentRawEventHandler.processEventFrom(
+        userUnassignmentRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
           clientKey = callerCredentials

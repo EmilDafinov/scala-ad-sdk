@@ -4,11 +4,10 @@ import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
 import com.github.emildafinov.ad.sdk.EventHandler
 import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
-import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults, Event}
+import com.github.emildafinov.ad.sdk.payload.{ApiResult, Event}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps
-import scala.util.Success
 
 /**
   * Asynchronously handles a raw marketplace event of a particular type.
@@ -25,16 +24,14 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
                             toMarketplaceResponse: B => ApiResult)
                            (implicit appMarketEventResolver: AppMarketEventResolver) {
   
-  
+  def processRawEvent(rawEventId: String, rawEvent: Event, clientKey: MarketplaceCredentials)
+                     (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
 
-  def processEventFrom(rawEvent: Event, rawEventId: String,  clientKey: MarketplaceCredentials)
-                      (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
-    
-    val richEvent = transformToClientEvent(rawEvent, rawEventId)
+    val clientVisibleEvent = transformToClientEvent(rawEvent, rawEventId)
 
     Future {
       clientEventHandler.handle(
-        richEvent, 
+        clientVisibleEvent, 
         new EventResolutionPromise(
           appMarketEventResolver, 
           toMarketplaceResponse, 
@@ -46,6 +43,7 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
         )
       )
     }
+
     HttpResponse(status = Accepted)
   }
 }
