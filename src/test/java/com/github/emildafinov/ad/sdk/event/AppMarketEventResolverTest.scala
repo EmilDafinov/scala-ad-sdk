@@ -56,9 +56,9 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     //When
     val eventNotificationFuture = tested.sendEventResolvedCallback(
-      resolveEndpointBaseUrl = testEventResolutionEndpoint,
+      resolutionHost = testEventResolutionEndpoint,
       eventId = testEventId,
-      clientKey = testClientCredentials,
+      clientCredentials = testClientCredentials)(
       eventProcessingResult = testEventProcessingResult
     )
 
@@ -110,9 +110,9 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     //When
     val eventNotificationFuture = tested.sendEventResolvedCallback(
-      resolveEndpointBaseUrl = s"http://localhost:${httpServerMock.port()}",
+      resolutionHost = s"http://localhost:${httpServerMock.port()}",
       eventId = testEventId,
-      clientKey = testClientCredentials,
+      clientCredentials = testClientCredentials)(
       eventProcessingResult = testEventProcessingResult
     )
 

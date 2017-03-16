@@ -25,30 +25,30 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator)
   /**
     * Calls the resolve event endpoint of the AppMarket in order to notify it that an event has been resolved
     *
-    * @param resolveEndpointBaseUrl Base Url of the AppMarket
+    * @param resolutionHost Base Url of the AppMarket
     * @param eventId                the id of the event that was resolved
-    * @param clientKey              the client key used to sign the event resolved message                              
+    * @param clientCredentials              the client key used to sign the event resolved message                              
     * @param eventProcessingResult  the payload returned to the AppMarket
     */
-  def sendEventResolvedCallback(resolveEndpointBaseUrl: String,
+  def sendEventResolvedCallback(resolutionHost: String,
                                 eventId: String,
-                                clientKey: MarketplaceCredentials,
-                                eventProcessingResult: ApiResult): Future[Unit] = {
+                                clientCredentials: MarketplaceCredentials)
+                               (eventProcessingResult: ApiResult): Future[Unit] = {
 
     val requestEntity = Serialization.write(eventProcessingResult)
 
     val request = resolveEventRequest(
-        resolveEndpointBaseUrl,
+        resolutionHost,
         eventId,
         requestEntity,
-        clientKey
+        clientCredentials
       )
 
     Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>
-        logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
+        logger.info(s"Successfully resolved event $eventId from AppMarket instance at $resolutionHost")
     } recover {
       case NonFatal(_) => 
-        logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolveEndpointBaseUrl")
+        logger.error(s"Failed sending a resolution message for event $eventId from AppMarket instance at $resolutionHost")
     }
   }
 
