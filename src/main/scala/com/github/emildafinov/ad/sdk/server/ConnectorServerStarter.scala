@@ -1,11 +1,12 @@
-package com.github.emildafinov.ad.sdk
+package com.github.emildafinov.ad.sdk.server
 
 import akka.http.scaladsl.Http
+import com.github.emildafinov.ad.sdk.ConnectorRootApplicationContext
 import com.typesafe.scalalogging.StrictLogging
 
 import scala.util.{Failure, Success}
 
-private[sdk] trait ConnectorStarter extends StrictLogging {
+private[sdk] trait ConnectorServerStarter extends StrictLogging {
   this: ConnectorRootApplicationContext =>
 
   def start(): Unit = {

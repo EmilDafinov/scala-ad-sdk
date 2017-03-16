@@ -1,9 +1,10 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.server.routes
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
+import com.github.emildafinov.ad.sdk.event.marshallers.EventResultMarshallersModule
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException, RawEventHandlersModule, RoutingDependenciesModule}
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
 import com.github.emildafinov.ad.sdk.server.routing.directives.CustomDirectivesModule

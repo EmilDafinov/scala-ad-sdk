@@ -1,7 +1,7 @@
 package com.github.emildafinov.ad.sdk.server
 
 import com.github.emildafinov.ad.sdk.UnitTestSpec
-import com.github.emildafinov.ad.sdk.event.parsers.SubscriptionOrderEventParser
+import com.github.emildafinov.ad.sdk.event.unmarshallers.SubscriptionOrderEventParser
 import com.github.emildafinov.ad.sdk.event.payloads.SubscriptionOrderEvent
 import com.github.emildafinov.ad.sdk.payload.Event
 

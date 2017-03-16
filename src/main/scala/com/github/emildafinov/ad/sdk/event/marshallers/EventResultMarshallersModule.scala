@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.event.marshallers
 
 import com.github.emildafinov.ad.sdk.event.responses._
 import com.github.emildafinov.ad.sdk.payload.ApiResult

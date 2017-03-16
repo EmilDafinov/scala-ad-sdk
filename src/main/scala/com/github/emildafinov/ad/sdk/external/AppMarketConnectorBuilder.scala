@@ -4,7 +4,8 @@ import com.github.emildafinov.ad.sdk.authentication.CredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
 import com.github.emildafinov.ad.sdk.event.responses._
 import com.github.emildafinov.ad.sdk.internal._
-import com.github.emildafinov.ad.sdk.{AppMarketConnector, ConnectorRootApplicationContext, ConnectorStarter, EventHandler}
+import com.github.emildafinov.ad.sdk.server.ConnectorServerStarter
+import com.github.emildafinov.ad.sdk.{AppMarketConnector, ConnectorRootApplicationContext, EventHandler}
 
 /**
   * Main entry point of the SDK. A client would use this class to construct their own
@@ -92,7 +93,7 @@ class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
   }
 
   def build(): AppMarketConnector = {
-    new ClientDefinedDependenciesModule with ConnectorRootApplicationContext with ConnectorStarter with AppMarketConnector {
+    new ClientDefinedDependenciesModule with ConnectorRootApplicationContext with ConnectorServerStarter with AppMarketConnector {
       override val subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = AppMarketConnectorBuilder.this.subscriptionCancelHandler
       override val userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = AppMarketConnectorBuilder.this.userAssignedHandler
       override val subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = AppMarketConnectorBuilder.this.subscriptionChangeHandler

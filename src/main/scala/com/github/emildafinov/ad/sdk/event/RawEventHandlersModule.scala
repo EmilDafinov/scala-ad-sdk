@@ -1,11 +1,11 @@
 package com.github.emildafinov.ad.sdk.event
 
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
-import com.github.emildafinov.ad.sdk.event.parsers.RichEventParsersModule
+import com.github.emildafinov.ad.sdk.event.marshallers.EventResultMarshallersModule
+import com.github.emildafinov.ad.sdk.event.unmarshallers.RichEventParsersModule
 import com.github.emildafinov.ad.sdk.event.payloads.SubscriptionOrder
 import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
 import com.github.emildafinov.ad.sdk.internal.ClientDefinedDependenciesModule
-import com.github.emildafinov.ad.sdk.server.EventResultMarshallersModule
 
 trait RawEventHandlersModule {
   this: ClientDefinedDependenciesModule

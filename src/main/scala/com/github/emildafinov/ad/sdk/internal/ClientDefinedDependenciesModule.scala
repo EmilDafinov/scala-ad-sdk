@@ -5,6 +5,10 @@ import com.github.emildafinov.ad.sdk.authentication.CredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
 import com.github.emildafinov.ad.sdk.event.responses._
 
+/**
+  * Abstract trait whose implementation should define all the dependencies that a user of the SDK can
+  * implmenent
+  */
 private[sdk] trait ClientDefinedDependenciesModule {
   val subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse]
   val subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse]
