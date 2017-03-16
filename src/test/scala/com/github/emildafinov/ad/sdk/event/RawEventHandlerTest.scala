@@ -52,7 +52,7 @@ class RawEventHandlerTest extends UnitTestSpec {
       _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
     }
     verify(mockClientHandler, never())
-      .handle(any())
+      .handle(any(), any())
   }
 
 
@@ -83,7 +83,7 @@ class RawEventHandlerTest extends UnitTestSpec {
     )
 
     when {
-      mockClientHandler.handle(any())
+      mockClientHandler.handle(any(), any())
     } thenAnswer { _ =>
       Thread.sleep(Long.MaxValue) //Wait a very long time
       1
@@ -98,7 +98,7 @@ class RawEventHandlerTest extends UnitTestSpec {
       result shouldEqual HttpResponse(status = Accepted)
 
       verify(mockClientHandler, Mockito.atMost(1))
-        .handle(any())
+        .handle(any(), any())
     }
   }
 }

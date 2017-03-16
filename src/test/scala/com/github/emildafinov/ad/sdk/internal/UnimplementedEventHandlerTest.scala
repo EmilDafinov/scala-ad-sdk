@@ -3,13 +3,16 @@ package com.github.emildafinov.ad.sdk.internal
 import javax.naming.OperationNotSupportedException
 
 import com.github.emildafinov.ad.sdk.UnitTestSpec
+import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.payload.Event
 
 class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   behavior of "UnimplementedEventHandler"
 
-  val testedHandler = UnimplementedEventHandler(classOf[Object])
+  private val testedHandler = UnimplementedEventHandler(classOf[Object])
+
+  private val mockResolver = mock[EventResolver[Nothing]]
 
   it should "throw when processing an event" in {
     //Given
@@ -19,7 +22,7 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
     an [OperationNotSupportedException] shouldBe thrownBy {
 
       //When
-      testedHandler handle testEvent
+      testedHandler.handle(testEvent, mockResolver)
     }
   }
 }
