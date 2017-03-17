@@ -9,11 +9,14 @@ trait RoutingDependenciesModule {
     with AkkaDependenciesModule =>
   
   lazy val authorizationTokenGenerator = new AuthorizationTokenGenerator()
+  
   lazy implicit val eventFetcher = new AppMarketEventFetcher(
     credentialsSupplier = credentialsSupplier,
     authorizationTokenGenerator = authorizationTokenGenerator
   )
+  
   lazy val oauthSignatureParser = new OauthSignatureParser()
+  
   lazy val authenticatorFactory = new OAuthAuthenticatorFactory(
     credentialsSupplier, 
     authorizationTokenGenerator, 

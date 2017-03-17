@@ -21,13 +21,117 @@ import scala.language.postfixOps
 private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Json4sSupport {
 
   this: RawEventHandlersModule
-    with EventResultMarshallersModule
     with CustomDirectivesModule
-    with AkkaDependenciesModule
-    with RoutingDependenciesModule =>
-  
+    with AkkaDependenciesModule =>
+
   private implicit val formats = Serialization.formats(NoTypeHints)
-  
+
+  def appMarketIntegrationRoutes: Route =
+    authenticateAppMarketRequest { clientCredentials =>
+      pathPrefix("integration") {
+        handleExceptions(integrationExceptionHandler) {
+          signedFetchEvent(clientCredentials) { case (eventId, rawMarketplaceEvent) =>
+
+            subscriptionOrder(eventId, rawMarketplaceEvent, clientCredentials.clientKey()) ~
+            subscriptionCancel(eventId, rawMarketplaceEvent, clientCredentials.clientKey()) ~
+            subscriptionChange(eventId, rawMarketplaceEvent, clientCredentials.clientKey()) ~
+            subscriptionNotice(eventId, rawMarketplaceEvent, clientCredentials.clientKey()) ~
+            userAssignment(eventId, rawMarketplaceEvent, clientCredentials.clientKey()) ~
+            userUnassignment(eventId, rawMarketplaceEvent, clientCredentials.clientKey())
+          }
+        }
+      }
+    }
+
+  private def isForAddon(event: Event) =
+    event.payload.account.flatMap(_.parentAccountIdentifier) isDefined
+
+  def subscriptionOrder(eventId: String, event: Event, clientId: String): Route =
+    path("subscription" / "order") {
+      complete {
+        val clientEventHandler =
+          if (isForAddon(event))
+            addonSubscriptionOrderRawEventHandler
+          else
+            subscriptionOrderRawEventHandler
+
+        clientEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = clientId
+        )
+      }
+    }
+
+  def subscriptionCancel(eventId: String, event: Event, callerCredentials: String): Route =
+    path("subscription" / "cancel") {
+      complete {
+
+        val clientEventHandler =
+          if (isForAddon(event))
+            addonSubscriptionCancelRawEventHandler
+          else
+            subscriptionCancelRawEventHandler
+
+        clientEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = callerCredentials
+        )
+      }
+    }
+
+  def subscriptionChange(eventId: String, event: Event, callerCredentials: String): Route =
+    path("subscription" / "change") {
+      complete {
+        subscriptionChangedRawEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = callerCredentials
+        )
+      }
+    }
+
+  def subscriptionNotice(eventId: String, event: Event, callerCredentials: String): Route =
+    path("subscription" / "notice") {
+      complete {
+        val clientEventHandler = event.payload.notice.map(_.`type`) match {
+          case Some("CLOSED") => subscriptionClosedRawEventHandler
+          case Some("DEACTIVATED") => subscriptionDeactivatedRawEventHandler
+          case Some("REACTIVATED") => subscriptionReactivatedRawEventHandler
+          case Some("UPCOMING_INVOICE") => subscriptionUpcomingInvoiceRawEventHandler
+          case _ => throw new MalformedRawMarketplaceEventPayloadException(null)
+        }
+        clientEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = callerCredentials
+        )
+      }
+    }
+
+  def userAssignment(eventId: String, event: Event, callerCredentials: String): Route =
+    path("user" / "assignment") {
+      complete {
+        userAssignmentRawEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = callerCredentials
+        )
+      }
+    }
+
+  def userUnassignment(eventId: String, event: Event, callerCredentials: String): Route =
+    path("user" / "unassignment") {
+      complete {
+        userUnassignmentRawEventHandler.processRawEvent(
+          rawEvent = event,
+          rawEventId = eventId,
+          clientKey = callerCredentials
+        )
+      }
+    }
+
   lazy val integrationExceptionHandler = ExceptionHandler {
     case _: CouldNotFetchRawMarketplaceEventException =>
       complete {
@@ -51,112 +155,6 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         )
       }
   }
-
-  def appMarketIntegrationRoutes: Route =
-    authenticateAppMarketRequest { clientCredentials =>
-      pathPrefix("integration") {
-        handleExceptions(integrationExceptionHandler) {
-          signedFetchEvent(clientCredentials) { case (eventId, rawMarketplaceEvent) =>
-            
-            subscriptionOrder(eventId, rawMarketplaceEvent, clientCredentials) ~
-            subscriptionCancel(eventId, rawMarketplaceEvent, clientCredentials) ~
-            subscriptionChange(eventId, rawMarketplaceEvent, clientCredentials) ~
-            subscriptionNotice(eventId, rawMarketplaceEvent, clientCredentials) ~
-            userAssignment(eventId, rawMarketplaceEvent, clientCredentials) ~
-            userUnassignment(eventId, rawMarketplaceEvent, clientCredentials)
-          }
-        }
-      }
-    }
-
-  private def isForAddon(event: Event) = //event.payload.flatMap(_.account).map(_.parentAccountIdentifier)) isDefined
-    event.payload.account.flatMap(_.parentAccountIdentifier) isDefined
-
-  def subscriptionOrder(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("subscription" / "order") {
-      complete {
-        val clientEventHandler = 
-          if (isForAddon(event)) 
-            addonSubscriptionOrderRawEventHandler
-          else 
-            subscriptionOrderRawEventHandler
-        
-        clientEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
-
-  def subscriptionCancel(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("subscription" / "cancel") {
-      complete {
-
-        val clientEventHandler =
-          if (isForAddon(event)) 
-            addonSubscriptionCancelRawEventHandler
-          else 
-            subscriptionCancelRawEventHandler
-
-        clientEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
-
-  def subscriptionChange(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("subscription" / "change") {
-      complete {
-        subscriptionChangedRawEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
-
-  def subscriptionNotice(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("subscription" / "notice") {
-      complete {
-        val clientEventHandler = event.payload.notice.map(_.`type`) match {
-          case Some("CLOSED") => subscriptionClosedRawEventHandler
-          case Some("DEACTIVATED") => subscriptionDeactivatedRawEventHandler
-          case Some("REACTIVATED") => subscriptionReactivatedRawEventHandler
-          case Some("UPCOMING_INVOICE") => subscriptionUpcomingInvoiceRawEventHandler
-          case _ => throw new MalformedRawMarketplaceEventPayloadException(null)
-        }
-        clientEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
-
-  def userAssignment(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("user" / "assignment") {
-      complete {
-        userAssignmentRawEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
-
-  def userUnassignment(eventId: String, event: Event, callerCredentials: MarketplaceCredentials): Route =
-    path("user" / "unassignment") {
-      complete {
-        userUnassignmentRawEventHandler.processRawEvent(
-          rawEvent = event,
-          rawEventId = eventId,
-          clientKey = callerCredentials.clientKey()
-        )
-      }
-    }
 }
 
 
