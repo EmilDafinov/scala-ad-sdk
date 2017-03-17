@@ -4,7 +4,7 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
 import com.github.emildafinov.ad.sdk.payload.ApiResults
-import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
+import com.github.emildafinov.ad.sdk.{AkkaSpec, EventReturnAddressImpl, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
@@ -17,7 +17,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
   val authorizationTokenGenerator: AuthorizationTokenGenerator = mock[AuthorizationTokenGenerator]
 
-  val tested = new AppMarketEventResolver(authorizationTokenGenerator)
+  val tested = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
 
   it should "send a failed `event resolved` callback" in {
     //Given
@@ -56,10 +56,10 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     //When
     val eventNotificationFuture = tested.sendEventResolvedCallback(
-      EventReturnAddress(
-        eventId = testEventId,
-        marketplaceBaseUrl = testEventResolutionEndpoint,
-        testClientCredentials
+      new EventReturnAddressImpl(
+        testEventId,
+        testEventResolutionEndpoint,
+        testClientCredentials.clientKey
       ),
       eventProcessingResult = testEventProcessingResult
     )
@@ -112,10 +112,10 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     //When
     val eventNotificationFuture = tested.sendEventResolvedCallback(
-      EventReturnAddress(
-        eventId = testEventId,
-        marketplaceBaseUrl = s"http://localhost:${httpServerMock.port()}",
-        testClientCredentials
+      new EventReturnAddressImpl(
+        testEventId,
+        s"http://localhost:${httpServerMock.port()}",
+        testClientCredentials.clientKey
       ),
       eventProcessingResult = testEventProcessingResult
     )

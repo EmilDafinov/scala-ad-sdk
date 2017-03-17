@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
-import com.github.emildafinov.ad.sdk.EventHandler
+import com.github.emildafinov.ad.sdk.{EventHandler, EventReturnAddressImpl}
 import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, Event}
 
@@ -34,11 +34,11 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
         clientVisibleEvent, 
         new EventResolutionPromise(
           appMarketEventResolver, 
-          toMarketplaceResponse, 
-          EventReturnAddress(
-            eventId = rawEventId, 
-            marketplaceBaseUrl = rawEvent.marketplace.baseUrl, 
-            clientCredentials = clientKey
+          toMarketplaceResponse,
+          new EventReturnAddressImpl(
+            rawEventId, 
+            rawEvent.marketplace.baseUrl, 
+            clientKey.clientKey()
           )
         )
       )

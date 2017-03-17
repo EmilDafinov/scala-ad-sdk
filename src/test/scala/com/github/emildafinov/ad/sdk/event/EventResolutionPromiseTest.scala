@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.UnitTestSpec
+import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
 import org.mockito.ArgumentCaptor
@@ -21,10 +21,10 @@ class EventResolutionPromiseTest extends UnitTestSpec {
       clientKey = "clientKey",
       clientSecret = "clientSecret"
     )
-    val testReturnAddress = EventReturnAddress(
-      eventId = testEventId,
-      marketplaceBaseUrl = testResolutionHost,
-      clientCredentials = testCredentials
+    val testReturnAddress = new EventReturnAddressImpl(
+      testEventId,
+      testResolutionHost,
+      testCredentials.clientKey
     )
     val testErrorMessage = "errorMessage"
     val returnMessageCaptor = ArgumentCaptor.forClass(classOf[ApiResult])

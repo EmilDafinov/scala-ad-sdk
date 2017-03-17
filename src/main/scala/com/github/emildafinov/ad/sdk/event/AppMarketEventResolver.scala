@@ -6,6 +6,7 @@ import akka.http.scaladsl.model.HttpMethods.POST
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
+import com.github.emildafinov.ad.sdk.EventReturnAddress
 import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.ApiResult
 import com.typesafe.scalalogging.StrictLogging
@@ -15,7 +16,8 @@ import org.json4s.jackson.Serialization
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
-class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator)
+class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator, 
+                             credentialsSupplier: CredentialsSupplier)
                             (implicit
                              ec: ExecutionContext,
                              as: ActorSystem,
@@ -35,7 +37,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator)
         eventReturnAddress.marketplaceBaseUrl,
         eventReturnAddress.eventId,
         eventProcessingResult,
-        eventReturnAddress.clientCredentials
+        credentialsSupplier.readCredentialsFor(eventReturnAddress.clientId()).orElseThrow(() => new IllegalArgumentException())
       )
 
     Http().singleRequest(request) map { case httpResponse if httpResponse.status.isSuccess =>
