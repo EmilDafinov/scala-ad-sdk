@@ -15,26 +15,22 @@ import scala.language.postfixOps
   * @param transformToClientEvent a function that takes a raw [[Event]] and a string representing the eventId and p
   *                               produces the event instance visible to the client handler
   * @param clientEventHandler     the logic that is being executed from the client connector upon receival of the event]
-  * @param toMarketplaceResponse  function that marshals the result of the client event handling into an [ApiResult
   * @tparam A Rich event type
-  * @tparam B Result of processing the rich event
   */
 class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
-                            clientEventHandler: EventHandler[A, B],
-                            toMarketplaceResponse: B => ApiResult)
+                            clientEventHandler: EventHandler[A])
                            (implicit appMarketEventResolver: AppMarketEventResolver) {
   
   def processRawEvent(rawEventId: String, rawEvent: Event, clientKey: MarketplaceCredentials)
                      (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
 
-    val clientVisibleEvent = transformToClientEvent(rawEvent, rawEventId)
-
     Future {
       clientEventHandler.handle(
-        clientVisibleEvent, 
-        new EventResolutionPromise(
-          appMarketEventResolver, 
-          toMarketplaceResponse
+        transformToClientEvent(rawEvent, rawEventId),
+        new EventReturnAddressImpl(
+          rawEventId,
+          rawEvent.marketplace.baseUrl,
+          clientKey.clientKey()
         )
       )
     }

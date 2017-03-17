@@ -19,77 +19,66 @@ trait RawEventHandlersModule {
   lazy val subscriptionOrderRawEventHandler: RawEventHandler[SubscriptionOrder, SubscriptionOrderResponse] =
     new RawEventHandler(
       transformToClientEvent = subscriptionOrderEventParser,
-      clientEventHandler = subscriptionOrderHandler,
-      toMarketplaceResponse = subscriptionOrderResponseMarshaller
+      clientEventHandler = subscriptionOrderHandler
     )
 
   lazy val subscriptionCancelRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionCancelEventParser,
-      clientEventHandler = subscriptionCancelHandler,
-      toMarketplaceResponse = subscriptionCancelResponseMarshaller
+      clientEventHandler = subscriptionCancelHandler
     )
 
   lazy val subscriptionChangedRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionCancelEventParser,
-      clientEventHandler = subscriptionCancelHandler,
-      toMarketplaceResponse = subscriptionCancelResponseMarshaller
+      clientEventHandler = subscriptionCancelHandler
     )
 
   lazy val subscriptionDeactivatedRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionDeactivatedEventParser,
-      clientEventHandler = subscriptionDeactivatedHandler,
-      toMarketplaceResponse = subscriptionDeactivatedResponseMarshaller
+      clientEventHandler = subscriptionDeactivatedHandler
     )
 
   lazy val subscriptionReactivatedRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionReactivatedEventParser,
-      clientEventHandler = subscriptionReactivatedHandler,
-      toMarketplaceResponse = subscriptionReactivatedResponseMarshaller
+      clientEventHandler = subscriptionReactivatedHandler
     )
 
   lazy val subscriptionClosedRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionClosedEventParser,
-      clientEventHandler = subscriptionClosedHandler,
-      toMarketplaceResponse = subscriptionClosedResponseMarshaller
+      clientEventHandler = subscriptionClosedHandler
     )
 
   lazy val subscriptionUpcomingInvoiceRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = subscriptionUpcomingInvoiceEventParser,
-      clientEventHandler = subscriptionUpcomingInvoiceHandler,
-      toMarketplaceResponse = subscriptionUpcomingInvoiceResponseMarshaller
+      clientEventHandler = subscriptionUpcomingInvoiceHandler
     )
 
   lazy val userAssignmentRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = userAssignmentEventParser,
-      clientEventHandler = userAssignedHandler,
-      toMarketplaceResponse = userAssignmentResponseMarshaller
+      clientEventHandler = userAssignedHandler
     )
 
   lazy val userUnassignmentRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = userUnassignmentEventParser,
-      clientEventHandler = userUnassignedHandler,
-      toMarketplaceResponse = userUnassignmentResponseMarshaller
+      clientEventHandler = userUnassignedHandler
     )
 
   lazy val addonSubscriptionOrderRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = addonSubscriptionOrderEventParser,
-      clientEventHandler = addonSubscriptionOrderHandler,
-      toMarketplaceResponse = addonSubscriptionOrderResponseMarshaller
+      clientEventHandler = addonSubscriptionOrderHandler
     )
 
   lazy val addonSubscriptionCancelRawEventHandler =
     new RawEventHandler(
       transformToClientEvent = addonSubscriptionCancelEventParser,
-      clientEventHandler = addonSubscriptionCancelHandler,
-      toMarketplaceResponse = addonSubscriptionCancelResponseMarshaller
+      clientEventHandler = addonSubscriptionCancelHandler
     )
 }

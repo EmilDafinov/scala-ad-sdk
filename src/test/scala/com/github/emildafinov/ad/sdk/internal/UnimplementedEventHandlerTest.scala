@@ -2,9 +2,9 @@ package com.github.emildafinov.ad.sdk.internal
 
 import javax.naming.OperationNotSupportedException
 
-import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.payload.Event
+import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
 
 class UnimplementedEventHandlerTest extends UnitTestSpec {
 
@@ -14,15 +14,17 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   private val mockResolver = mock[EventResolver[Nothing]]
 
+
   it should "throw when processing an event" in {
     //Given
     val testEvent = Event(null, null, null, null)
+    val mockReturnAddress = new EventReturnAddressImpl(null, null, null)
 
     //Then
     an [OperationNotSupportedException] shouldBe thrownBy {
 
       //When
-      testedHandler.handle(testEvent, mockResolver)
+      testedHandler.handle(testEvent, mockReturnAddress)
     }
   }
 }

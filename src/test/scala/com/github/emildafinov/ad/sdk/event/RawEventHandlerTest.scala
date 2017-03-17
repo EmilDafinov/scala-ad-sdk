@@ -17,44 +17,17 @@ class RawEventHandlerTest extends UnitTestSpec {
   behavior of "RawEventHandler"
 
   val mockEventTransformer: (Event, String) => Long = mock[(Event, String) => Long]
-  val mockClientHandler: EventHandler[Long, Int] = mock[EventHandler[Long, Int]]
-  val mockToMarketplaceResponse: (Int) => ApiResult = mock[Int => ApiResult]
+  val mockClientHandler: EventHandler[Long] = mock[EventHandler[Long]]
   val mockEventResolver: AppMarketEventResolver = mock[AppMarketEventResolver]
 
   val tested = new RawEventHandler(
     transformToClientEvent = mockEventTransformer,
-    clientEventHandler = mockClientHandler,
-    toMarketplaceResponse = mockToMarketplaceResponse
+    clientEventHandler = mockClientHandler
   )(appMarketEventResolver = mockEventResolver)
 
   before {
-    reset(mockEventTransformer, mockClientHandler, mockToMarketplaceResponse, mockEventResolver)
+    reset(mockEventTransformer, mockClientHandler, mockEventResolver)
   }
-
-
-  it should "throw and not call the client handler if the rich event parsing fails" in {
-    //Given
-    val testEventId = "eventId"
-    val testClientKey = "testClientKey"
-    val testClientSecret = "testSecret"
-    val testEventPayload = mock[Event]
-    val testCredentials = AppMarketCredentials(testClientKey, testClientSecret)
-    when {
-      mockEventTransformer.apply(any(), any())
-    } thenThrow classOf[MalformedRawMarketplaceEventPayloadException]
-
-
-    //When
-    whenReady {
-      tested.processRawEvent(testEventId, testEventPayload, testCredentials).failed
-    } {
-      //Then
-      _ shouldBe a[MalformedRawMarketplaceEventPayloadException]
-    }
-    verify(mockClientHandler, never())
-      .handle(any(), any())
-  }
-
 
   it should "not wait for the client processing to complete before returning" in {
     //Given

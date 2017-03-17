@@ -21,72 +21,72 @@ import com.github.emildafinov.ad.sdk.{AppMarketConnector, ConnectorRootApplicati
   * @param credentialsSupplier  allows the retrieval of the client secret shared between the connector and the 
   *                             marketplace for a given client key.
   */
-class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse],
-                                subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse],
+class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder],
+                                subscriptionCancelHandler: EventHandler[SubscriptionCancel],
                                 credentialsSupplier: CredentialsSupplier) {
 
   require(subscriptionOrderHandler != null)
   require(subscriptionCancelHandler != null)
 
-  private var subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = UnimplementedEventHandler(classOf[SubscriptionChange])
-  private var addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = UnimplementedEventHandler(classOf[AddonSubscriptionCancel])
-  private var addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = UnimplementedEventHandler(classOf[AddonSubscriptionOrder])
-  private var userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = UnimplementedEventHandler(classOf[UserAssignment])
-  private var userUnassignedHandler: EventHandler[UserUnassignment, UserUnassignmentResponse] = UnimplementedEventHandler(classOf[UserUnassignment])
-  private var subscriptionClosedHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse] = UnimplementedEventHandler(classOf[SubscriptionClosed])
-  private var subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse] = UnimplementedEventHandler(classOf[SubscriptionDeactivated])
-  private var subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse] = UnimplementedEventHandler(classOf[SubscriptionReactivated])
-  private var upcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse] = UnimplementedEventHandler(classOf[SubscriptionUpcomingInvoice])
+  private var subscriptionChangeHandler: EventHandler[SubscriptionChange] = UnimplementedEventHandler(classOf[SubscriptionChange])
+  private var addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel] = UnimplementedEventHandler(classOf[AddonSubscriptionCancel])
+  private var addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder] = UnimplementedEventHandler(classOf[AddonSubscriptionOrder])
+  private var userAssignedHandler: EventHandler[UserAssignment] = UnimplementedEventHandler(classOf[UserAssignment])
+  private var userUnassignedHandler: EventHandler[UserUnassignment] = UnimplementedEventHandler(classOf[UserUnassignment])
+  private var subscriptionClosedHandler: EventHandler[SubscriptionClosed] = UnimplementedEventHandler(classOf[SubscriptionClosed])
+  private var subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated] = UnimplementedEventHandler(classOf[SubscriptionDeactivated])
+  private var subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated] = UnimplementedEventHandler(classOf[SubscriptionReactivated])
+  private var upcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice] = UnimplementedEventHandler(classOf[SubscriptionUpcomingInvoice])
   
-  def subscriptionChangeHandler(eventHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse]): AppMarketConnectorBuilder = {
+  def subscriptionChangeHandler(eventHandler: EventHandler[SubscriptionChange]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionChangeHandler = eventHandler
     this
   }
 
-  def addonSubscriptionCancelHandler(eventHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse]): AppMarketConnectorBuilder = {
+  def addonSubscriptionCancelHandler(eventHandler: EventHandler[AddonSubscriptionCancel]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     addonSubscriptionCancelHandler = eventHandler
     this
   }
 
-  def addonSubscriptionOrderHandler(eventHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse]): AppMarketConnectorBuilder = {
+  def addonSubscriptionOrderHandler(eventHandler: EventHandler[AddonSubscriptionOrder]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     addonSubscriptionOrderHandler = eventHandler
     this
   }
 
-  def userAssignedHandler(eventHandler: EventHandler[UserAssignment, UserAssignmentResponse]): AppMarketConnectorBuilder = {
+  def userAssignedHandler(eventHandler: EventHandler[UserAssignment]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     userAssignedHandler = eventHandler
     this
   }
 
-  def userUnassignedHandler(eventHandler: EventHandler[UserUnassignment, UserUnassignmentResponse]): AppMarketConnectorBuilder = {
+  def userUnassignedHandler(eventHandler: EventHandler[UserUnassignment]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     userUnassignedHandler = eventHandler
     this
   }
 
-  def subscriptionClosedHandler(eventHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse]): AppMarketConnectorBuilder = {
+  def subscriptionClosedHandler(eventHandler: EventHandler[SubscriptionClosed]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionClosedHandler = eventHandler
     this
   }
 
-  def subscriptionDeactivatedHandler(eventHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse]): AppMarketConnectorBuilder = {
+  def subscriptionDeactivatedHandler(eventHandler: EventHandler[SubscriptionDeactivated]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionDeactivatedHandler = eventHandler
     this
   }
 
-  def subscriptionReactivatedHandler(eventHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse]): AppMarketConnectorBuilder = {
+  def subscriptionReactivatedHandler(eventHandler: EventHandler[SubscriptionReactivated]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     subscriptionReactivatedHandler = eventHandler
     this
   }
 
-  def upcomingInvoiceHandler(eventHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse]): AppMarketConnectorBuilder = {
+  def upcomingInvoiceHandler(eventHandler: EventHandler[SubscriptionUpcomingInvoice]): AppMarketConnectorBuilder = {
     require(eventHandler != null, "The AppMarketplace event handlers cannot be null !")
     upcomingInvoiceHandler = eventHandler
     this
@@ -94,17 +94,17 @@ class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
 
   def build(): AppMarketConnector = {
     new ClientDefinedDependenciesModule with ConnectorRootApplicationContext with ConnectorServerStarter with AppMarketConnector {
-      override val subscriptionCancelHandler: EventHandler[SubscriptionCancel, SubscriptionCancelResponse] = AppMarketConnectorBuilder.this.subscriptionCancelHandler
-      override val userAssignedHandler: EventHandler[UserAssignment, UserAssignmentResponse] = AppMarketConnectorBuilder.this.userAssignedHandler
-      override val subscriptionChangeHandler: EventHandler[SubscriptionChange, SubscriptionChangeResponse] = AppMarketConnectorBuilder.this.subscriptionChangeHandler
-      override val addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel, AddonSubscriptionCancelResponse] = AppMarketConnectorBuilder.this.addonSubscriptionCancelHandler
-      override val addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder, AddonSubscriptionOrderResponse] = AppMarketConnectorBuilder.this.addonSubscriptionOrderHandler
-      override val subscriptionClosedHandler: EventHandler[SubscriptionClosed, SubscriptionClosedResponse] = AppMarketConnectorBuilder.this.subscriptionClosedHandler
-      override val subscriptionOrderHandler: EventHandler[SubscriptionOrder, SubscriptionOrderResponse] = AppMarketConnectorBuilder.this.subscriptionOrderHandler
-      override val userUnassignedHandler: EventHandler[UserUnassignment, UserUnassignmentResponse] = AppMarketConnectorBuilder.this.userUnassignedHandler
-      override val subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated, SubscriptionReactivatedResponse] = AppMarketConnectorBuilder.this.subscriptionReactivatedHandler
-      override val subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated, SubscriptionDeactivatedResponse] = AppMarketConnectorBuilder.this.subscriptionDeactivatedHandler
-      override val subscriptionUpcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice, SubscriptionUpcomingInvoiceResponse] = AppMarketConnectorBuilder.this.upcomingInvoiceHandler
+      override val subscriptionCancelHandler: EventHandler[SubscriptionCancel] = AppMarketConnectorBuilder.this.subscriptionCancelHandler
+      override val userAssignedHandler: EventHandler[UserAssignment] = AppMarketConnectorBuilder.this.userAssignedHandler
+      override val subscriptionChangeHandler: EventHandler[SubscriptionChange] = AppMarketConnectorBuilder.this.subscriptionChangeHandler
+      override val addonSubscriptionCancelHandler: EventHandler[AddonSubscriptionCancel] = AppMarketConnectorBuilder.this.addonSubscriptionCancelHandler
+      override val addonSubscriptionOrderHandler: EventHandler[AddonSubscriptionOrder] = AppMarketConnectorBuilder.this.addonSubscriptionOrderHandler
+      override val subscriptionClosedHandler: EventHandler[SubscriptionClosed] = AppMarketConnectorBuilder.this.subscriptionClosedHandler
+      override val subscriptionOrderHandler: EventHandler[SubscriptionOrder] = AppMarketConnectorBuilder.this.subscriptionOrderHandler
+      override val userUnassignedHandler: EventHandler[UserUnassignment] = AppMarketConnectorBuilder.this.userUnassignedHandler
+      override val subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated] = AppMarketConnectorBuilder.this.subscriptionReactivatedHandler
+      override val subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated] = AppMarketConnectorBuilder.this.subscriptionDeactivatedHandler
+      override val subscriptionUpcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice] = AppMarketConnectorBuilder.this.upcomingInvoiceHandler
       override val credentialsSupplier: CredentialsSupplier = AppMarketConnectorBuilder.this.credentialsSupplier
     }
   }
