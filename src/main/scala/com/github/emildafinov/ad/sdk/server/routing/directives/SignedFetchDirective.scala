@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.server.routing.directives
 
 import akka.http.scaladsl.server.Directive
 import akka.http.scaladsl.server.Directives.parameter
-import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
+import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
 import com.github.emildafinov.ad.sdk.event.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.Event
 
@@ -15,7 +15,7 @@ object SignedFetchDirective {
     * @param clientCredentials the id of the client who sent the request
     * @return
     */
-  def apply(eventFetcher: AppMarketEventFetcher, clientCredentials: MarketplaceCredentials): Directive[(String, Event)] =
+  def apply(eventFetcher: AppMarketEventFetcher, clientCredentials: AppMarketCredentials): Directive[(String, Event)] =
     parameter("eventUrl") map { eventFetchUrl =>
       eventFetcher.fetchRawAppMarketEvent(clientCredentials, eventFetchUrl)
     }

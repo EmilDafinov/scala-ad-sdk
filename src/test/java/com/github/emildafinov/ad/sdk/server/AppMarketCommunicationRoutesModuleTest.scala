@@ -16,10 +16,10 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
   private val expectedClientSecret = "cclientecret"
   private val authorizationTokenGenerator = new AuthorizationTokenGenerator()
 
-  private val connectorCredentialsSupplier: CredentialsSupplier = (clientKey: String) =>
+  private val connectorCredentialsSupplier: AppMarketCredentialsSupplier = (clientKey: String) =>
     if (clientKey == expectedClientKey)
       Optional.of(
-        AppMarketCredentials(
+        AppMarketCredentialsImpl(
           clientKey = expectedClientKey,
           clientSecret = expectedClientSecret
         )
@@ -41,7 +41,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
   it should "authenticate the caller successfully" in {
     //Given
     val testRequestUrl = "http://example.com"
-    val testMarketplaceCredentials = AppMarketCredentials(
+    val testMarketplaceCredentials = AppMarketCredentialsImpl(
       clientKey = expectedClientKey,
       clientSecret = expectedClientSecret
     )
@@ -63,7 +63,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
     //Given
     val testRequestUrl = "http://example.com"
     val unknownClientKey = expectedClientKey + "fsdfsd"
-    val testClientCredentials = AppMarketCredentials(
+    val testClientCredentials = AppMarketCredentialsImpl(
       clientKey = unknownClientKey,
       clientSecret = expectedClientSecret
     )

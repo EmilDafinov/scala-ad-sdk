@@ -17,7 +17,7 @@ class AuthorizationTokenGenerator extends StrictLogging {
     */
   def generateAuthorizationHeader(httpMethodName: String,
                                   resourceUrl: String,
-                                  marketplaceCredentials: MarketplaceCredentials): String = {
+                                  marketplaceCredentials: AppMarketCredentials): String = {
     signWithConsumer(
       new CommonsHttpOAuthConsumer(
         marketplaceCredentials.clientKey(),
@@ -30,18 +30,18 @@ class AuthorizationTokenGenerator extends StrictLogging {
     * Generate the signature, with a pre-defined value of the timestamp and the nonce.
     * Useful for validating incoming requests
     *
-    * @param httpMethodName the method name used to sign
-    * @param resourceUrl the url used to sign
-    * @param timeStamp the timestamp used to sign (usually taken from the request we want to validate)
-    * @param nonce the nonce used to sign (usually taken from the request we want to validate)
+    * @param httpMethodName the http method name used to create the signature
+    * @param resourceUrl the url used to create the signature
+    * @param timeStamp the timestamp used to sign (usually taken from a request we want to validate)
+    * @param nonce the nonce used to sign (usually taken from a request we want to validate)
     * @param marketplaceCredentials the key/secret pair that we use to sign
-    * @return
+    * @return The OAuth 1.0 token value
     */
   def generateAuthorizationHeader(httpMethodName: String,
                                   resourceUrl: String,
                                   timeStamp: String,
                                   nonce: String,
-                                  marketplaceCredentials: MarketplaceCredentials): String = 
+                                  marketplaceCredentials: AppMarketCredentials): String = 
     signWithConsumer(
       new ValidatingOAuthConsumer(
         consumerKey = marketplaceCredentials.clientKey(),
@@ -54,7 +54,7 @@ class AuthorizationTokenGenerator extends StrictLogging {
   private def signWithConsumer(consumer: OAuthConsumer)
                               (httpMethodName: String,
                                resourceUrl: String,
-                               marketplaceCredentials: MarketplaceCredentials): String = {
+                               marketplaceCredentials: AppMarketCredentials): String = {
 
     val request = httpMethodName match {
       case requestMethod if requestMethod.equalsIgnoreCase(HttpGet.METHOD_NAME) => new HttpGet(resourceUrl)

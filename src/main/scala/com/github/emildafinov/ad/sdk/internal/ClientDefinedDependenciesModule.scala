@@ -1,7 +1,7 @@
 package com.github.emildafinov.ad.sdk.internal
 
 import com.github.emildafinov.ad.sdk.EventHandler
-import com.github.emildafinov.ad.sdk.authentication.CredentialsSupplier
+import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
 import com.github.emildafinov.ad.sdk.event.responses._
 
@@ -22,5 +22,5 @@ private[sdk] trait ClientDefinedDependenciesModule {
   val subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated]
   val subscriptionUpcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice]
   
-  val credentialsSupplier: CredentialsSupplier
+  val credentialsSupplier: AppMarketCredentialsSupplier
 }

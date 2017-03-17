@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import com.github.emildafinov.ad.sdk.EventReturnAddress
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials, UnknownClientKeyException}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.ApiResult
 import com.typesafe.scalalogging.StrictLogging
 import org.json4s.DefaultFormats
@@ -17,7 +17,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
 class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator, 
-                             credentialsSupplier: CredentialsSupplier)
+                             credentialsSupplier: AppMarketCredentialsSupplier)
                             (implicit
                              ec: ExecutionContext,
                              as: ActorSystem,
@@ -51,7 +51,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
   private def resolveEventRequest(resolveEndpointBaseUrl: String,
                                   eventId: String,
                                   requestBody: ApiResult,
-                                  clientCredentials: MarketplaceCredentials) = {
+                                  clientCredentials: AppMarketCredentials) = {
     
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
     val requestEntity = Serialization.write(requestBody)

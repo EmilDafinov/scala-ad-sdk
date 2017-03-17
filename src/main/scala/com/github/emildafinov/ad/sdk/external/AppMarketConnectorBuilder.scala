@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.external
 
-import com.github.emildafinov.ad.sdk.authentication.CredentialsSupplier
+import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
 import com.github.emildafinov.ad.sdk.event.responses._
 import com.github.emildafinov.ad.sdk.internal._
@@ -23,7 +23,7 @@ import com.github.emildafinov.ad.sdk.{AppMarketConnector, ConnectorRootApplicati
   */
 class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[SubscriptionOrder],
                                 subscriptionCancelHandler: EventHandler[SubscriptionCancel],
-                                credentialsSupplier: CredentialsSupplier) {
+                                credentialsSupplier: AppMarketCredentialsSupplier) {
 
   require(subscriptionOrderHandler != null)
   require(subscriptionCancelHandler != null)
@@ -105,7 +105,7 @@ class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
       override val subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated] = AppMarketConnectorBuilder.this.subscriptionReactivatedHandler
       override val subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated] = AppMarketConnectorBuilder.this.subscriptionDeactivatedHandler
       override val subscriptionUpcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice] = AppMarketConnectorBuilder.this.upcomingInvoiceHandler
-      override val credentialsSupplier: CredentialsSupplier = AppMarketConnectorBuilder.this.credentialsSupplier
+      override val credentialsSupplier: AppMarketCredentialsSupplier = AppMarketConnectorBuilder.this.credentialsSupplier
     }
   }
 }

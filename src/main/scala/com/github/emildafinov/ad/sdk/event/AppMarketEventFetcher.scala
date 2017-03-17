@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials, UnknownClientKeyException}
+import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials, UnknownClientKeyException}
 import com.github.emildafinov.ad.sdk.payload.Event
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
@@ -23,7 +23,7 @@ import scala.util.control.NonFatal
   * @param authorizationTokenGenerator used to generate the OAuth bearer token used to sign the request
   * @param appMarketTimeoutInterval    timeout for retrieving the event payload.
   */
-class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
+class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
                             authorizationTokenGenerator: AuthorizationTokenGenerator,
                             appMarketTimeoutInterval: FiniteDuration = 15 seconds)
                            (implicit as: ActorSystem,
@@ -32,7 +32,7 @@ class AppMarketEventFetcher(credentialsSupplier: CredentialsSupplier,
 
   implicit val formats = DefaultFormats
   
-  def fetchRawAppMarketEvent(clientCredentials: MarketplaceCredentials, eventFetchUrl: String): (String, Event) = {
+  def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, eventFetchUrl: String): (String, Event) = {
   
     val parsedRawEvent = (for {
       eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials.clientKey())

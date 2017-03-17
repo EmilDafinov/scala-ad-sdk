@@ -18,7 +18,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
   val sampleConsumerSecret = "sampleSecret"
   val testedService = new AuthorizationTokenGenerator()
 
-  val mockCredentials = AppMarketCredentials(
+  val mockCredentials = AppMarketCredentialsImpl(
     clientKey = sampleConsumerKey,
     clientSecret = sampleConsumerSecret
   )

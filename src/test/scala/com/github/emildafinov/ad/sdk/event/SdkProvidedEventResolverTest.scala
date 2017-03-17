@@ -1,7 +1,7 @@
 package com.github.emildafinov.ad.sdk.event
 
 import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
-import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
+import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsImpl
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{eq => mockEq}
@@ -17,7 +17,7 @@ class SdkProvidedEventResolverTest extends UnitTestSpec {
     val mockMarshaller = (any: String) => ApiResults.success()
     val testResolutionHost = "http://example.com"
     val testEventId = "eventId"
-    val testCredentials = AppMarketCredentials(
+    val testCredentials = AppMarketCredentialsImpl(
       clientKey = "clientKey",
       clientSecret = "clientSecret"
     )

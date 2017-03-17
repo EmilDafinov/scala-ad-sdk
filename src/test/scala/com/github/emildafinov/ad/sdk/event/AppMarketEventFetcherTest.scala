@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import java.util.Optional
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentialsImpl, AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
@@ -18,7 +18,7 @@ class AppMarketEventFetcherTest
 
   behavior of "AppMarketEventFetcher"
 
-  private val mockCredentialsSuppler = mock[CredentialsSupplier]
+  private val mockCredentialsSuppler = mock[AppMarketCredentialsSupplier]
   private val mockAuthorizationTokenGenerator = mock[AuthorizationTokenGenerator]
 
   val tested: AppMarketEventFetcher = new AppMarketEventFetcher(credentialsSupplier = mockCredentialsSuppler, authorizationTokenGenerator = mockAuthorizationTokenGenerator)
@@ -32,7 +32,7 @@ class AppMarketEventFetcherTest
     val testEventUrl = dummyUrl
     val testClientKey = "testKey"
     val testClientSecret = "testSecret"
-    val testCredentials = AppMarketCredentials(testClientKey, testClientSecret)
+    val testCredentials = AppMarketCredentialsImpl(testClientKey, testClientSecret)
     
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
@@ -56,13 +56,13 @@ class AppMarketEventFetcherTest
     val testEventUrl = testHost + testHttpResource
 
     val testClientSecret = "abcdef"
-    val testAppmarketCredentials = AppMarketCredentials(clientKey = testClientKey, clientSecret = testClientSecret)
+    val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
 
     val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_order_event_payload.json")).mkString
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
-    } thenReturn Optional.of[MarketplaceCredentials](testAppmarketCredentials)
+    } thenReturn Optional.of[AppMarketCredentials](testAppmarketCredentials)
 
     when {
       mockAuthorizationTokenGenerator.generateAuthorizationHeader(

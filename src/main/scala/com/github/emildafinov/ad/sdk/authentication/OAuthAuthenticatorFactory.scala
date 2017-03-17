@@ -5,13 +5,13 @@ import akka.http.scaladsl.server.Directives
 
 import scala.concurrent.{ExecutionContext, Future}
 import Directives._
-class OAuthAuthenticatorFactory(credentialsSupplier: CredentialsSupplier,
+class OAuthAuthenticatorFactory(credentialsSupplier: AppMarketCredentialsSupplier,
                                 authorizationTokenGenerator: AuthorizationTokenGenerator,
                                 oauthSignatureParser: OauthSignatureParser) {
 
   def authenticatorFunction(requestHttpMethodName: String, requestUrl: String)
                            (credentialsInRequest: Option[HttpCredentials])
-                           (implicit ex: ExecutionContext): Future[AuthenticationResult[MarketplaceCredentials]] =
+                           (implicit ex: ExecutionContext): Future[AuthenticationResult[AppMarketCredentials]] =
     Future {
       credentialsInRequest match {
         case Some(callerCredentials) =>

@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import java.util.Optional
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator, CredentialsSupplier, MarketplaceCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentialsImpl, AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials}
 import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, EventReturnAddressImpl, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
@@ -13,7 +13,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
   behavior of "AppMarketEventResolver"
 
-  val credentialsSupplier: CredentialsSupplier = mock[CredentialsSupplier]
+  val credentialsSupplier: AppMarketCredentialsSupplier = mock[AppMarketCredentialsSupplier]
 
   val authorizationTokenGenerator: AuthorizationTokenGenerator = mock[AuthorizationTokenGenerator]
 
@@ -27,14 +27,14 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val testSecret = "testSecret"
     val testEventResolutionEndpoint = s"http://localhost:${httpServerMock.port()}"
 
-    val testClientCredentials = AppMarketCredentials(
+    val testClientCredentials = AppMarketCredentialsImpl(
       clientKey = testKey,
       clientSecret = testSecret
     )
 
     when {
       credentialsSupplier.readCredentialsFor(testKey)
-    } thenReturn Optional.of[MarketplaceCredentials](testClientCredentials)
+    } thenReturn Optional.of[AppMarketCredentials](testClientCredentials)
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(
@@ -84,13 +84,13 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     val testSecret = "testSecret"
     val testEventResolutionEndpoint = s"http://localhost:${httpServerMock.port()}"
 
-    val testClientCredentials = AppMarketCredentials(
+    val testClientCredentials = AppMarketCredentialsImpl(
       clientKey = testClientKey,
       clientSecret = testSecret
     )
     when {
       credentialsSupplier.readCredentialsFor(testClientKey)
-    } thenReturn Optional.of[MarketplaceCredentials](testClientCredentials)
+    } thenReturn Optional.of[AppMarketCredentials](testClientCredentials)
 
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(
