@@ -34,12 +34,7 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
         clientVisibleEvent, 
         new EventResolutionPromise(
           appMarketEventResolver, 
-          toMarketplaceResponse,
-          new EventReturnAddressImpl(
-            rawEventId, 
-            rawEvent.marketplace.baseUrl, 
-            clientKey.clientKey()
-          )
+          toMarketplaceResponse
         )
       )
     }

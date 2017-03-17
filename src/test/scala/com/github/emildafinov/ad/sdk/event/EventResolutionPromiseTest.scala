@@ -28,10 +28,10 @@ class EventResolutionPromiseTest extends UnitTestSpec {
     )
     val testErrorMessage = "errorMessage"
     val returnMessageCaptor = ArgumentCaptor.forClass(classOf[ApiResult])
-    val tested = new EventResolutionPromise[String](appMarketEventResolverMock, mockMarshaller, testReturnAddress)
+    val tested = new EventResolutionPromise[String](appMarketEventResolverMock, mockMarshaller)
 
     //When
-    tested.resolveWithFailure(testErrorMessage)
+    tested.resolveWithFailure(testErrorMessage, testReturnAddress)
     
     //Then
     verify(appMarketEventResolverMock)

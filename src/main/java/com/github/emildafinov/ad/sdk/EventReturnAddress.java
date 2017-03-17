@@ -4,5 +4,4 @@ public interface EventReturnAddress {
 	String eventId();
 	String marketplaceBaseUrl();
 	String clientId();
-	
 }
