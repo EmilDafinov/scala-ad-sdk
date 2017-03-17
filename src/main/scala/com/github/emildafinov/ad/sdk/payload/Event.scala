@@ -1,8 +1,9 @@
 package com.github.emildafinov.ad.sdk.payload
 
+import com.github.emildafinov.ad.sdk.payload.EventType.EventType
 import com.github.emildafinov.ad.sdk.payload.NoticeType.NoticeType
 
-case class Event(`type`: String,
+case class Event(`type`: EventType,
                  marketplace: Marketplace,
                  creator: User,
                  payload: Payload)

@@ -8,9 +8,9 @@ import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import akka.util.ByteString
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator, UnknownClientKeyException}
-import com.github.emildafinov.ad.sdk.payload.{Event, NoticeType}
+import com.github.emildafinov.ad.sdk.payload.{Event, EventType, NoticeType}
 import org.json4s._
-import org.json4s.ext.EnumNameSerializer
+import org.json4s.ext.{EnumNameSerializer, EnumSerializer}
 import org.json4s.jackson.JsonMethods._
 
 import scala.concurrent.duration._
@@ -31,7 +31,7 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
                             am: Materializer,
                             ec: ExecutionContext) {
 
-  implicit val formats: Formats = DefaultFormats + new EnumNameSerializer(NoticeType)
+  implicit val formats: Formats = DefaultFormats + new EnumNameSerializer(NoticeType) + new EnumNameSerializer(EventType) 
   
   def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, eventFetchUrl: String): (String, Event) = {
   

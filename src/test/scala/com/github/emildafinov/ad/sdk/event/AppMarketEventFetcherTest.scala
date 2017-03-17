@@ -3,6 +3,7 @@ package com.github.emildafinov.ad.sdk.event
 import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
+import com.github.emildafinov.ad.sdk.payload.EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
@@ -78,7 +79,7 @@ class AppMarketEventFetcherTest
       }
 
     val expectedEvent = Event(
-      `type` = "SUBSCRIPTION_ORDER",
+      `type` = SUBSCRIPTION_ORDER,
       marketplace = Marketplace(
         partner = "APPDIRECT",
         baseUrl = "http://sample.appdirect.com:8888"
@@ -130,7 +131,7 @@ class AppMarketEventFetcherTest
       }
 
     val expectedEvent = Event(
-      `type` = "SUBSCRIPTION_NOTICE",
+      `type` = SUBSCRIPTION_NOTICE,
       marketplace = Marketplace(
         partner = "APPDIRECT",
         baseUrl = "http://sample.appdirect.com"

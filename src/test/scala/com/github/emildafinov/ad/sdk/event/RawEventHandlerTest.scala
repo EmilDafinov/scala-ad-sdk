@@ -2,6 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
+import com.github.emildafinov.ad.sdk.payload.EventType.SUBSCRIPTION_ORDER
 import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.server.RawEventHandler
@@ -35,7 +36,7 @@ class RawEventHandlerTest extends UnitTestSpec {
     val testEventId = "eventId"
     val testClientKey = "testClientKey"
     val testEvent = Event(
-      `type` = "type",
+      `type` = SUBSCRIPTION_ORDER,
       marketplace = Marketplace("testPartner", "http://example.com"),
       creator = User(),
       payload =
