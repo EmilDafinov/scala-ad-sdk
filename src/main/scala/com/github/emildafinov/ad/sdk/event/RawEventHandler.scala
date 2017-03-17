@@ -18,8 +18,7 @@ import scala.language.postfixOps
   * @tparam A Rich event type
   */
 class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
-                            clientEventHandler: EventHandler[A])
-                           (implicit appMarketEventResolver: AppMarketEventResolver) {
+                            clientEventHandler: EventHandler[A]) {
   
   def processRawEvent(rawEventId: String, rawEvent: Event, clientKey: MarketplaceCredentials)
                      (implicit ec: ExecutionContext): Future[HttpResponse] = Future {

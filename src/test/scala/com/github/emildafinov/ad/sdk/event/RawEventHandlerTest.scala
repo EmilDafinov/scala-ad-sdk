@@ -23,7 +23,7 @@ class RawEventHandlerTest extends UnitTestSpec {
   val tested = new RawEventHandler(
     transformToClientEvent = mockEventTransformer,
     clientEventHandler = mockClientHandler
-  )(appMarketEventResolver = mockEventResolver)
+  )
 
   before {
     reset(mockEventTransformer, mockClientHandler, mockEventResolver)
