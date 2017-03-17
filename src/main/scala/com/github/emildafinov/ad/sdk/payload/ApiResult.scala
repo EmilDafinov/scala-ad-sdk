@@ -3,8 +3,8 @@ package com.github.emildafinov.ad.sdk.payload
 case class ApiResult(success: Boolean = true,
                      message: String = "",
                      errorCode: String = "",
-                     accountIdentifier: String,
-                     userIdentifier: String)
+                     accountIdentifier: String = "",
+                     userIdentifier: String = "")
 
 object ApiResults {
   def success() = ApiResult(
@@ -12,7 +12,10 @@ object ApiResults {
     userIdentifier = "someUser"
   )
 
-  def failure(message: String): ApiResult = ???
+  def failure(message: String): ApiResult = ApiResult(
+    success = false,
+    message = message
+  )
   
   def unknownError(message: String = "An unknown error has occurred"): ApiResult = ApiResult(
     success = false,
