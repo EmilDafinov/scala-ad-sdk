@@ -13,7 +13,7 @@ class AuthorizationTokenGenerator extends StrictLogging {
     *
     * @param httpMethodName the HTTP method name for which we need to generate an authorization value
     * @param resourceUrl    the resource for which we want to generate an authorization value
-    * @return The OAuth bearer token value
+    * @return The OAuth 1.0 token value
     */
   def generateAuthorizationHeader(httpMethodName: String,
                                   resourceUrl: String,

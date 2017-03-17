@@ -1,10 +1,9 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk.server
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
+import com.github.emildafinov.ad.sdk.payload.Event
 import com.github.emildafinov.ad.sdk.{EventHandler, EventReturnAddressImpl}
-import com.github.emildafinov.ad.sdk.authentication.MarketplaceCredentials
-import com.github.emildafinov.ad.sdk.payload.{ApiResult, Event}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.postfixOps

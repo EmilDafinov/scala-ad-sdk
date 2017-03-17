@@ -7,7 +7,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{eq => mockEq}
 import org.mockito.Mockito.verify
 
-class EventResolutionPromiseTest extends UnitTestSpec {
+class SdkProvidedEventResolverTest extends UnitTestSpec {
 
   behavior of "EventResolutionPromise"
 
@@ -28,7 +28,7 @@ class EventResolutionPromiseTest extends UnitTestSpec {
     )
     val testErrorMessage = "errorMessage"
     val returnMessageCaptor = ArgumentCaptor.forClass(classOf[ApiResult])
-    val tested = new EventResolutionPromise[String](appMarketEventResolverMock, mockMarshaller)
+    val tested = new SdkProvidedEventResolver[String](appMarketEventResolverMock, mockMarshaller)
 
     //When
     tested.resolveWithFailure(testErrorMessage, testReturnAddress)

@@ -18,7 +18,7 @@ import scala.language.postfixOps
 import scala.util.control.NonFatal
 /**
   * Returns the event id and payload.
-  * Synchoronous, because we always want to retrieve the event before releasing the connections
+  * Synchronous, because we always want to retrieve the event before releasing the connections
   * @param credentialsSupplier         for retrieving the client secret needed to generate the bearer token
   * @param authorizationTokenGenerator used to generate the OAuth bearer token used to sign the request
   * @param appMarketTimeoutInterval    timeout for retrieving the event payload.

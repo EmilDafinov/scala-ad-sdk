@@ -1,10 +1,11 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk.server
 
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.event.marshallers.EventResultMarshallersModule
-import com.github.emildafinov.ad.sdk.event.unmarshallers.RichEventParsersModule
 import com.github.emildafinov.ad.sdk.event.payloads.SubscriptionOrder
 import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
+import com.github.emildafinov.ad.sdk.event.unmarshallers.RichEventParsersModule
+import com.github.emildafinov.ad.sdk.event.{AppMarketEventResolver, RoutingDependenciesModule}
 import com.github.emildafinov.ad.sdk.internal.ClientDefinedDependenciesModule
 
 trait RawEventHandlersModule {

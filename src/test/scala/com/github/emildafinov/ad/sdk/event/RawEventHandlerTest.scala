@@ -2,12 +2,12 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
-import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
 import com.github.emildafinov.ad.sdk.payload._
+import com.github.emildafinov.ad.sdk.server.RawEventHandler
 import com.github.emildafinov.ad.sdk.{EventHandler, UnitTestSpec}
 import org.mockito.Matchers.any
 import org.mockito.Mockito
-import org.mockito.Mockito.{never, reset, verify, when}
+import org.mockito.Mockito.{reset, verify, when}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
 import scala.concurrent.ExecutionContext.Implicits.global

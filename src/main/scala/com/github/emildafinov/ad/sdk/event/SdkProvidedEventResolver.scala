@@ -5,8 +5,8 @@ import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
 
 
-class EventResolutionPromise[T](appMarketEventResolver: AppMarketEventResolver,
-                                toAppMarketResponse: T => ApiResult) extends EventResolver[T]{
+class SdkProvidedEventResolver[T](appMarketEventResolver: AppMarketEventResolver,
+                                  toAppMarketResponse: T => ApiResult) extends EventResolver[T]{
 
   override def resolveWithFailure(errorMessage: String, eventReturnAddress: EventReturnAddress): Unit = 
     appMarketEventResolver.sendEventResolvedCallback(
