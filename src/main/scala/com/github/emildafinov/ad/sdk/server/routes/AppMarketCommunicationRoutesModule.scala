@@ -4,7 +4,8 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException}
-import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
+import com.github.emildafinov.ad.sdk.payload.NoticeType.{CLOSED, DEACTIVATED, REACTIVATED, UPCOMING_INVOICE}
+import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event, NoticeType}
 import com.github.emildafinov.ad.sdk.server.RawEventHandlersModule
 import com.github.emildafinov.ad.sdk.server.routing.directives.CustomDirectivesModule
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
@@ -95,10 +96,10 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
     path("subscription" / "notice") {
       complete {
         val clientEventHandler = event.payload.notice.map(_.`type`) match {
-          case Some("CLOSED") => subscriptionClosedRawEventHandler
-          case Some("DEACTIVATED") => subscriptionDeactivatedRawEventHandler
-          case Some("REACTIVATED") => subscriptionReactivatedRawEventHandler
-          case Some("UPCOMING_INVOICE") => subscriptionUpcomingInvoiceRawEventHandler
+          case Some(CLOSED) => subscriptionClosedRawEventHandler
+          case Some(DEACTIVATED) => subscriptionDeactivatedRawEventHandler
+          case Some(REACTIVATED) => subscriptionReactivatedRawEventHandler
+          case Some(UPCOMING_INVOICE) => subscriptionUpcomingInvoiceRawEventHandler
           case _ => throw new MalformedRawMarketplaceEventPayloadException(null)
         }
         clientEventHandler.processRawEvent(

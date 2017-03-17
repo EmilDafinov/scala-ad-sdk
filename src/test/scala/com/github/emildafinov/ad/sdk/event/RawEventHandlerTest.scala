@@ -2,6 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
+import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.server.RawEventHandler
 import com.github.emildafinov.ad.sdk.{EventHandler, UnitTestSpec}
@@ -47,7 +48,7 @@ class RawEventHandlerTest extends UnitTestSpec {
           ),
           notice = Option(
             Notice(
-              `type` = "fsdfs"
+              `type` = CLOSED
             )
           )
         )

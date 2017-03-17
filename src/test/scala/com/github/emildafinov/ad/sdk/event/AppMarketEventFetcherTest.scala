@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import java.util.Optional
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentialsImpl, AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
@@ -33,7 +33,7 @@ class AppMarketEventFetcherTest
     val testClientKey = "testKey"
     val testClientSecret = "testSecret"
     val testCredentials = AppMarketCredentialsImpl(testClientKey, testClientSecret)
-    
+
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
     } thenThrow new RuntimeException()
@@ -99,5 +99,58 @@ class AppMarketEventFetcherTest
     parsedEventId shouldEqual testEventId
   }
 
+  it should "parse a raw subscription notice event with type 'closed' " in {
+    //Given
+    val testEventId = "someEventIdHere"
+    val testClientKey = "testKey"
+    val testHost = s"http://localhost:${httpServerMock.port()}"
+    val testHttpResource = s"/events/$testEventId"
+    val testEventUrl = testHost + testHttpResource
+
+    val testClientSecret = "abcdef"
+    val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
+
+    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_closed.json")).mkString
+
+    when {
+      mockCredentialsSuppler.readCredentialsFor(testClientKey)
+    } thenReturn Optional.of[AppMarketCredentials](testAppmarketCredentials)
+
+    when {
+      mockAuthorizationTokenGenerator.generateAuthorizationHeader(
+        "GET", testEventUrl, testAppmarketCredentials
+      )
+    } thenReturn "afscgg"
+
+    httpServerMock
+      .givenThat {
+        get(urlEqualTo(testHttpResource)) willReturn {
+          aResponse withBody expectedEventPayloadJson
+        }
+      }
+
+    val expectedEvent = Event(
+      `type` = "SUBSCRIPTION_NOTICE",
+      marketplace = Marketplace(
+        partner = "APPDIRECT",
+        baseUrl = "http://sample.appdirect.com"
+      ),
+      creator = User(),
+      payload = Payload(
+        company = Company(),
+        account = Some(
+          Account(None)
+        ),
+        notice = Some(Notice(NoticeType.CLOSED))
+      )
+    )
+
+    //When
+    val (parsedEventId, parsedEvent) = tested.fetchRawAppMarketEvent(testAppmarketCredentials, testEventUrl)
+
+    //Then
+    parsedEvent shouldEqual expectedEvent
+    parsedEventId shouldEqual testEventId
+  }
   //TODO: Add tests to parse all new event types !!
 }

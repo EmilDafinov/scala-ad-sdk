@@ -2,6 +2,7 @@ val AKKA_VERSION = "2.4.16"
 val AKKA_HTTP_VERSION = "10.0.4"
 val SCALATEST_VERSION = "3.0.0"
 val SIGNPOST_VERSION = "1.2.1.2"
+val JSON4S_VERSION = "3.5.0"
 
 lazy val scalaAdSdk = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
@@ -32,7 +33,8 @@ lazy val baseSettings = Seq(
     "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
     "oauth.signpost" % "oauth-signpost" % SIGNPOST_VERSION,
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
-    "org.json4s" %% "json4s-jackson" % "3.5.0",
+    "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
+    "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
     "de.heikoseeberger" %% "akka-http-json4s" % "1.13.0",
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
     "org.mockito" % "mockito-all" % "1.10.19" % "test",
