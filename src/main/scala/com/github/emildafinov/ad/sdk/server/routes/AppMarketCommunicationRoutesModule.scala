@@ -84,7 +84,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }
@@ -102,7 +102,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }
@@ -113,7 +113,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         subscriptionChangedRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }
@@ -131,7 +131,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         clientEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }
@@ -142,7 +142,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         userAssignmentRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }
@@ -153,7 +153,7 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
         userUnassignmentRawEventHandler.processRawEvent(
           rawEvent = event,
           rawEventId = eventId,
-          clientKey = callerCredentials
+          clientKey = callerCredentials.clientKey()
         )
       }
     }

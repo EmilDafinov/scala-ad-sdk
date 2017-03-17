@@ -20,7 +20,7 @@ import scala.language.postfixOps
 class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
                             clientEventHandler: EventHandler[A]) {
   
-  def processRawEvent(rawEventId: String, rawEvent: Event, clientKey: MarketplaceCredentials)
+  def processRawEvent(rawEventId: String, rawEvent: Event, clientKey: String)
                      (implicit ec: ExecutionContext): Future[HttpResponse] = Future {
 
     Future {
@@ -29,7 +29,7 @@ class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
         new EventReturnAddressImpl(
           rawEventId,
           rawEvent.marketplace.baseUrl,
-          clientKey.clientKey()
+          clientKey
         )
       )
     }

@@ -33,8 +33,6 @@ class RawEventHandlerTest extends UnitTestSpec {
     //Given
     val testEventId = "eventId"
     val testClientKey = "testClientKey"
-    val testClientSecret = "testClientSecret"
-    val testClientCredentials = AppMarketCredentials(testClientKey, testClientSecret)
     val testEvent = Event(
       `type` = "type",
       marketplace = Marketplace("testPartner", "http://example.com"),
@@ -64,7 +62,7 @@ class RawEventHandlerTest extends UnitTestSpec {
 
     //When
     whenReady(
-      future = tested.processRawEvent(testEventId, testEvent, testClientCredentials),
+      future = tested.processRawEvent(testEventId, testEvent, testClientKey),
       timeout = Timeout(1 second)
     ) { result =>
       //Then
