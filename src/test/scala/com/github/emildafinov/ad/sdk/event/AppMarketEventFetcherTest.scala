@@ -112,7 +112,7 @@ class AppMarketEventFetcherTest
     val testClientSecret = "abcdef"
     val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
 
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_closed.json")).mkString
+    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_closed_event_payload.json")).mkString
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)

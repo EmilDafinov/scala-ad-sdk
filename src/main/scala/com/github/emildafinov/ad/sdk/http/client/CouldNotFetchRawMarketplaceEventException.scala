@@ -1,3 +1,3 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk.http.client
 
 class CouldNotFetchRawMarketplaceEventException(cause: Throwable) extends RuntimeException(cause)

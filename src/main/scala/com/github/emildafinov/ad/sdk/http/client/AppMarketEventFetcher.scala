@@ -8,7 +8,6 @@ import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import akka.util.ByteString
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator, UnknownClientKeyException}
-import com.github.emildafinov.ad.sdk.event.CouldNotFetchRawMarketplaceEventException
 import com.github.emildafinov.ad.sdk.payload.{Event, EventType, NoticeType}
 import org.json4s._
 import org.json4s.ext.EnumNameSerializer
