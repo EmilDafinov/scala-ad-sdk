@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.http.server
 
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted

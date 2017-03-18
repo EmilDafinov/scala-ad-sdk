@@ -3,6 +3,7 @@ package com.github.emildafinov.ad.sdk.event
 import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}

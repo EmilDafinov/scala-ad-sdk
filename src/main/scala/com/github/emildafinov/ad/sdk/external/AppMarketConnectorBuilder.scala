@@ -4,7 +4,7 @@ import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
 import com.github.emildafinov.ad.sdk.event.responses._
 import com.github.emildafinov.ad.sdk.internal._
-import com.github.emildafinov.ad.sdk.server.ConnectorServerStarter
+import com.github.emildafinov.ad.sdk.http.server.ConnectorServerStarter
 import com.github.emildafinov.ad.sdk.{AppMarketConnector, ConnectorRootApplicationContext, EventHandler}
 
 /**

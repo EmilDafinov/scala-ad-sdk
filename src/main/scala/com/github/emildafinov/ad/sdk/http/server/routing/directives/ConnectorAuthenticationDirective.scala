@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server.routing.directives
+package com.github.emildafinov.ad.sdk.http.server.routing.directives
 
 import akka.http.scaladsl.server.Directive1
 import akka.http.scaladsl.server.Directives._
@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
   * using an authenticator function from the dependent factory
   */
 object ConnectorAuthenticationDirective {
-  def apply(af: OAuthAuthenticatorFactory, cs: AppMarketCredentialsSupplier)
+  def apply(af: OAuthAuthenticatorFactory)
            (implicit ec: ExecutionContext): Directive1[AppMarketCredentials] =
 
     (extractMethod & extractUri) tflatMap { case (httpMethod, url) =>

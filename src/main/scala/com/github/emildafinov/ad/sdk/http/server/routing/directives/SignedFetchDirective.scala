@@ -1,9 +1,9 @@
-package com.github.emildafinov.ad.sdk.server.routing.directives
+package com.github.emildafinov.ad.sdk.http.server.routing.directives
 
 import akka.http.scaladsl.server.Directive
 import akka.http.scaladsl.server.Directives.parameter
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentials
-import com.github.emildafinov.ad.sdk.event.AppMarketEventFetcher
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.Event
 
 object SignedFetchDirective {

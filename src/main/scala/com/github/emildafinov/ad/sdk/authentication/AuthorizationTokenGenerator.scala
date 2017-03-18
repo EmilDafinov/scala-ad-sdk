@@ -6,7 +6,6 @@ import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import org.apache.http.client.methods._
 
 class AuthorizationTokenGenerator extends StrictLogging {
-  private val authorizationHeaderName = "Authorization"
 
   /**
     * For a pair of HTTP method name and url, generate the appropriate "Authorization" header value
@@ -69,6 +68,6 @@ class AuthorizationTokenGenerator extends StrictLogging {
 
     consumer.sign(request)
 
-    request.getHeaders(authorizationHeaderName)(0).getValue
+    request.getHeaders("Authorization")(0).getValue
   }
 }

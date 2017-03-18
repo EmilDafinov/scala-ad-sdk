@@ -2,6 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import com.github.emildafinov.ad.sdk.EventReturnAddress
 import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
 
 

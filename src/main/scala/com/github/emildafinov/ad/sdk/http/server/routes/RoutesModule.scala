@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server.routes
+package com.github.emildafinov.ad.sdk.http.server.routes
 
 import akka.http.scaladsl.server.{Directives, Route}
 

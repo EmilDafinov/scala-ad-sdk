@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.http.server
 
 import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.event.unmarshallers.SubscriptionOrderEventParser

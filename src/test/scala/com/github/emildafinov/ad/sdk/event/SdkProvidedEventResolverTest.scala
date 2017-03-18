@@ -2,6 +2,7 @@ package com.github.emildafinov.ad.sdk.event
 
 import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsImpl
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.{eq => mockEq}

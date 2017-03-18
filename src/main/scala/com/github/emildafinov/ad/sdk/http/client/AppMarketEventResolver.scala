@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk.http.client
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -7,7 +7,7 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.stream.Materializer
 import com.github.emildafinov.ad.sdk.EventReturnAddress
-import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials, UnknownClientKeyException}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.payload.ApiResult
 import com.typesafe.scalalogging.StrictLogging
 import org.json4s.DefaultFormats

@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.http.server
 
 import akka.http.scaladsl.Http
 import com.github.emildafinov.ad.sdk.ConnectorRootApplicationContext

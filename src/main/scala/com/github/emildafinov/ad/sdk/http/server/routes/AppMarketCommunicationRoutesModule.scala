@@ -1,13 +1,15 @@
-package com.github.emildafinov.ad.sdk.server.routes
+package com.github.emildafinov.ad.sdk.http.server.routes
 
+import akka.http.scaladsl.model.ContentTypes.`application/json`
+import akka.http.scaladsl.model.StatusCodes.{BadRequest, InternalServerError}
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.event.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException}
 import com.github.emildafinov.ad.sdk.payload.NoticeType.{CLOSED, DEACTIVATED, REACTIVATED, UPCOMING_INVOICE}
-import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event, NoticeType}
-import com.github.emildafinov.ad.sdk.server.RawEventHandlersModule
-import com.github.emildafinov.ad.sdk.server.routing.directives.CustomDirectivesModule
+import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
+import com.github.emildafinov.ad.sdk.http.server.RawEventHandlersModule
+import com.github.emildafinov.ad.sdk.http.server.routing.directives.CustomDirectivesModule
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.json4s._
 import org.json4s.jackson.Serialization
@@ -136,9 +138,9 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
     case _: CouldNotFetchRawMarketplaceEventException =>
       complete {
         HttpResponse(
-          StatusCodes.InternalServerError,
+          status = InternalServerError,
           entity = HttpEntity(
-            contentType = ContentTypes.`application/json`,
+            contentType = `application/json`,
             string = write(ApiResults.failure("Could not perform signed fetch"))
           )
         )
@@ -147,9 +149,9 @@ private[sdk] trait AppMarketCommunicationRoutesModule extends Directives with Js
     case _: MalformedRawMarketplaceEventPayloadException =>
       complete {
         HttpResponse(
-          StatusCodes.BadRequest,
+          status = BadRequest,
           entity = HttpEntity(
-            contentType = ContentTypes.`application/json`,
+            contentType = `application/json`,
             string = write(ApiResults.failure("The event payload was malformed"))
           )
         )

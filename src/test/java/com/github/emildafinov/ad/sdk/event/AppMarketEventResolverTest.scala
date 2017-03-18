@@ -2,7 +2,8 @@ package com.github.emildafinov.ad.sdk.event
 
 import java.util.Optional
 
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentialsImpl, AuthorizationTokenGenerator, AppMarketCredentialsSupplier, AppMarketCredentials}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.github.emildafinov.ad.sdk.{AkkaSpec, EventReturnAddressImpl, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._

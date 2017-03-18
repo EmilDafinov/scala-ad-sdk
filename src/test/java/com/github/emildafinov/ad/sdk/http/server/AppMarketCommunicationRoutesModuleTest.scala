@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.server
+package com.github.emildafinov.ad.sdk.http.server
 
 import java.util.Optional
 
@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.github.emildafinov.ad.sdk.UnitTestSpec
 import com.github.emildafinov.ad.sdk.authentication._
-import com.github.emildafinov.ad.sdk.server.routing.directives.ConnectorAuthenticationDirective
+import com.github.emildafinov.ad.sdk.http.server.routing.directives.ConnectorAuthenticationDirective
 
 class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with ScalatestRouteTest with Directives {
 
@@ -27,18 +27,19 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
     else throw new NoSuchElementException(s"The client key $clientKey is not known by the connector")
 
   private val authFactory = new OAuthAuthenticatorFactory(
-    connectorCredentialsSupplier, 
+    connectorCredentialsSupplier,
     authorizationTokenGenerator,
     parser
   )
-  
-  private val testedDirective = ConnectorAuthenticationDirective(authFactory, connectorCredentialsSupplier)
-  
-  private val testedRoute =  testedDirective{ clientId =>
+
+  private val testedDirective = ConnectorAuthenticationDirective(authFactory)
+
+  private val testedRoute = testedDirective { clientId =>
     complete(clientId.clientKey())
   }
-  
+
   it should "authenticate the caller successfully" in {
+
     //Given
     val testRequestUrl = "http://example.com"
     val testMarketplaceCredentials = AppMarketCredentialsImpl(
@@ -53,6 +54,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
 
     //When
     Get(testRequestUrl) ~> addHeader("Authorization", header) ~> testedRoute ~> check {
+
       //Then
       status shouldEqual StatusCodes.OK
       responseAs[String] shouldEqual expectedClientKey
@@ -60,6 +62,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
   }
 
   it should "fail authenticating an unknown clientId" in {
+    
     //Given
     val testRequestUrl = "http://example.com"
     val unknownClientKey = expectedClientKey + "fsdfsd"
@@ -75,9 +78,9 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
 
     //When
     Get(testRequestUrl) ~> addHeader("Authorization", authorizationTokenValue) ~> testedRoute ~> check {
+      
       //Then
       status should not equal StatusCodes.OK
     }
   }
-  
 }
