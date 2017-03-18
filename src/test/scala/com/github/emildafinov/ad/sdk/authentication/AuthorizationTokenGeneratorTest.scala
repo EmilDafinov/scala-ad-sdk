@@ -150,4 +150,39 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
       )  
     }
   }
+  
+  it should "when used to sign two requests with the same parameters, the signatures should match" in {
+    
+    //Given
+    val testHttpMethod = "GET"
+    val testResourceUrl = "http://example.com"
+    val testClientId = "testCLientId"
+    val testClientSecret = "testClientSecret"
+    val testCredentals = AppMarketCredentialsImpl(
+      clientKey = testClientId,
+      clientSecret = testClientSecret
+    )
+    val oauthParametersParser = new OauthSignatureParser()
+    
+    val expected = testedService.generateAuthorizationHeader(
+      httpMethodName = testHttpMethod,
+      resourceUrl = testResourceUrl,
+      marketplaceCredentials = testCredentals
+    )
+    val expectedParams = oauthParametersParser.parse(expected)
+    
+    //When
+    val actual = testedService.generateAuthorizationHeader(
+      httpMethodName = testHttpMethod,
+      resourceUrl = testResourceUrl,
+      marketplaceCredentials = testCredentals,
+      timeStamp = expectedParams.timestamp,
+      nonce = expectedParams.nonce
+    )
+    val actualParams = oauthParametersParser.parse(actual)
+    
+    
+    //Then
+    expectedParams shouldEqual actualParams
+  }
 }
