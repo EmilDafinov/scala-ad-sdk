@@ -5,6 +5,7 @@ import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import oauth.signpost.http.HttpRequest
 
 import scala.language.postfixOps
+
 class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
 
   behavior of "AuthorizationTokenGenerator"
@@ -13,7 +14,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
   val mockConsumerSecret = "mockConsumerSecret"
 
   val mockConsumer: CommonsHttpOAuthConsumer = new CommonsHttpOAuthConsumer("", "")
-  val mockHttpRequest: HttpRequest = mock [oauth.signpost.http.HttpRequest]
+  val mockHttpRequest: HttpRequest = mock[oauth.signpost.http.HttpRequest]
   val sampleConsumerKey = "sampleKey"
   val sampleConsumerSecret = "sampleSecret"
   val testedService = new AuthorizationTokenGenerator()
@@ -22,15 +23,15 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     clientKey = sampleConsumerKey,
     clientSecret = sampleConsumerSecret
   )
-  
+
   it should "sign a GET request" in {
     //Given
     val testHTTPMethod = "GET"
     val testUrl = "http://www.google.com"
-    
+
     //When
     val headerValue = testedService.generateAuthorizationHeader(
-      httpMethodName =  testHTTPMethod,
+      httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
     )
@@ -134,25 +135,25 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     //Then
     headerValue shouldBe aValidOauthBearerTokenForConsumerKey(sampleConsumerKey)
   }
-  
+
   it should "fail signing a request with illegal name" in {
     //Given
     val testHTTPMethod = "ILLEgAl"
     val testUrl = "http://www.google.com"
 
     //Then
-    an [IllegalArgumentException] shouldBe thrownBy {
+    an[IllegalArgumentException] shouldBe thrownBy {
       //When
       testedService.generateAuthorizationHeader(
         httpMethodName = testHTTPMethod,
         resourceUrl = testUrl,
         marketplaceCredentials = mockCredentials
-      )  
+      )
     }
   }
-  
-  it should "when used to sign two requests with the same parameters, the signatures should match" in {
-    
+
+  it should "return matching parameters when used to sign two requests with the same http method, url, timestamp and nonce" in {
+
     //Given
     val testHttpMethod = "GET"
     val testResourceUrl = "http://example.com"
@@ -163,14 +164,14 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
       clientSecret = testClientSecret
     )
     val oauthParametersParser = new OauthSignatureParser()
-    
+
     val expected = testedService.generateAuthorizationHeader(
       httpMethodName = testHttpMethod,
       resourceUrl = testResourceUrl,
       marketplaceCredentials = testCredentals
     )
     val expectedParams = oauthParametersParser.parse(expected)
-    
+
     //When
     val actual = testedService.generateAuthorizationHeader(
       httpMethodName = testHttpMethod,
@@ -180,8 +181,8 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
       nonce = expectedParams.nonce
     )
     val actualParams = oauthParametersParser.parse(actual)
-    
-    
+
+
     //Then
     expectedParams shouldEqual actualParams
   }

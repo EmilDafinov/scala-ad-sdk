@@ -2,9 +2,9 @@ package com.github.emildafinov.ad.sdk.authentication
 
 import scala.language.postfixOps
 
-case class OauthParameters(signatureMethod: String,
+case class OauthParameters(signatureMethod: String = "HMAC-SHA1",
                            oauthSignature: String,
-                           version: String,
+                           version: String = "1.0",
                            timestamp: String,
                            consumerKey: String,
                            nonce: String) {
