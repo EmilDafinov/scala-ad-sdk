@@ -112,7 +112,7 @@ class AppMarketEventFetcherTest
     val testClientSecret = "abcdef"
     val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
 
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_closed_event_payload.json")).mkString
+    val expectedEventPayloadJson: String = readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_closed_event_payload.json")
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
@@ -155,4 +155,8 @@ class AppMarketEventFetcherTest
     parsedEventId shouldEqual testEventId
   }
   //TODO: Add tests to parse all new event types !!
+  def readResourceFile(resourcePath: String) = {
+    val expectedEventPayloadJson = Source.fromURL(getClass.getResource(resourcePath)).mkString
+    expectedEventPayloadJson
+  }
 }

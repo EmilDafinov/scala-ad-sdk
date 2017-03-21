@@ -4,6 +4,8 @@ import akka.http.scaladsl.Http
 import com.github.emildafinov.ad.sdk.ConnectorRootApplicationContext
 import com.typesafe.scalalogging.StrictLogging
 
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
 
 private[sdk] trait ConnectorServerStarter extends StrictLogging {
@@ -16,12 +18,13 @@ private[sdk] trait ConnectorServerStarter extends StrictLogging {
     
     val httpExt = Http()
     
-    httpExt.bindAndHandle(
+    val bindBaseRouteFuture = httpExt.bindAndHandle(
         handler = baseRoute,
         interface = connectorHttpServerInterface,
         port = connectorHttpServerPort
       )
-      .onComplete {
+    
+    bindBaseRouteFuture.onComplete {
         case Success(serverBinding) =>
           logger.info(s"Http server started on $connectorHttpServerInterface:$connectorHttpServerPort")
           sys.addShutdownHook {
@@ -52,5 +55,6 @@ private[sdk] trait ConnectorServerStarter extends StrictLogging {
           logger.info("Http server stopped")
         }
     }
+    Await.ready(bindBaseRouteFuture, Duration.Inf)
   }
 }

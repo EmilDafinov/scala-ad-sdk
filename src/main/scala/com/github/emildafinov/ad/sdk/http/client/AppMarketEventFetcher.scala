@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.GET
 import akka.http.scaladsl.model.HttpRequest
-import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
+import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials}
 import akka.stream.Materializer
 import akka.util.ByteString
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator, UnknownClientKeyException}
@@ -45,7 +45,8 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
       extractIdFrom(eventFetchUrl) -> eventPayload
 
     } recover {
-      case NonFatal(e) => throw new CouldNotFetchRawMarketplaceEventException(e)
+      case NonFatal(e) => 
+        throw new CouldNotFetchRawMarketplaceEventException(e)
     }
 
     Await.result(
@@ -59,7 +60,7 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
       .readCredentialsFor(clientKey)
         .orElseThrow(() => new UnknownClientKeyException)
 
-    val bearerTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
+    val authorizationTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
       "GET",
       eventFetchUrl,
       marketplaceCredentials
@@ -68,11 +69,12 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
     HttpRequest(
       method = GET,
       uri = eventFetchUrl,
-      headers = List(Authorization(OAuth2BearerToken(bearerTokenValue)))
+      headers = List(Authorization(credentials = GenericHttpCredentials(scheme = "OAuth", token = authorizationTokenValue)))
     )
   }
 
-  private def extractIdFrom(eventFetchUrl: String): String = eventFetchUrl split "/" last
+  private def extractIdFrom(eventFetchUrl: String): String = 
+    eventFetchUrl split "/" last
 
 }
 
