@@ -32,8 +32,8 @@ trait RawEventHandlersModule {
 
   lazy val subscriptionChangedRawEventHandler =
     new RawEventHandler(
-      transformToClientEvent = subscriptionCancelEventParser,
-      clientEventHandler = subscriptionCancelHandler
+      transformToClientEvent = subscriptionChangeEventParser,
+      clientEventHandler = subscriptionChangeHandler
     )
 
   lazy val subscriptionDeactivatedRawEventHandler =

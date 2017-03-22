@@ -1,7 +1,7 @@
 {
 	"type": "SUBSCRIPTION_ORDER",
 	"marketplace": {
-		"baseUrl": "http://sample.appdirect.com:8888",
+		"baseUrl": "http://sample.appdirect.com",
 		"partner": "APPDIRECT"
 	},
 	"creator": {
