@@ -16,8 +16,8 @@ import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 
-class AppMarketConnectorBuilderITTest extends UnitTestSpec 
-  with AkkaSpec 
+class AppMarketConnectorBuilderITTest extends UnitTestSpec
+  with AkkaSpec
   with WiremockHttpServiceTestSuite {
 
   behavior of "AppMarketConnector"
@@ -25,15 +25,15 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   private val subscriptionOrderHandlerMock = mock[EventHandler[SubscriptionOrder]]
 
   private val subscriptionCancelHandlerMock = mock[EventHandler[SubscriptionCancel]]
-  
+
   private val subscriptionOrderAddonHandlerMock = mock[EventHandler[AddonSubscriptionOrder]]
 
   private val credentialsSupplierMock = mock[AppMarketCredentialsSupplier]
 
   private val tokenGenerator = new AuthorizationTokenGenerator
-  
+
   private val connector = new AppMarketConnectorBuilder(
-    subscriptionOrderHandlerMock, 
+    subscriptionOrderHandlerMock,
     subscriptionCancelHandlerMock,
     credentialsSupplierMock
   )
@@ -41,25 +41,23 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     .build()
     .start()
 
-    
-  
-  
+
   it should "trigger the Subscription Order Handler" in {
-    
+
     //Given
     val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
+    val testClientSecret = "testClientSecret"
 
-    val testRequestCredentials = 
+    val testRequestCredentials =
       AppMarketCredentialsImpl(
         clientKey = testClientId,
         clientSecret = testClientSecret
       )
-    
+
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
-      
+
     val testEventId = "abcde"
     val testEventPayloadResource = s"/integration/$testEventId"
     val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
@@ -82,17 +80,17 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       marketplaceCredentials = testRequestCredentials
     )
 
-    val authHeader: HttpHeader = RawHeader("Authorization", headerValue) 
+    val authHeader: HttpHeader = RawHeader("Authorization", headerValue)
     val testRequest = HttpRequest(
       method = GET,
       uri = testConnectorUrl,
       headers = scala.collection.immutable.Seq(authHeader)
-      
+
     )
 
     //When
     whenReady(
-      future = Http().singleRequest(testRequest), 
+      future = Http().singleRequest(testRequest),
       timeout = Timeout(5 seconds)
     ) { response =>
       response.status shouldEqual Accepted

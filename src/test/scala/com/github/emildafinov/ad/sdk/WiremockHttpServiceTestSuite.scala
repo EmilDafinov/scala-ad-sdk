@@ -11,7 +11,6 @@ import org.scalatest.{BeforeAndAfterAll, Suite}
   */
 trait WiremockHttpServiceTestSuite extends BeforeAndAfterAll {
   this: Suite =>
-  val dummyUrl = "http://example.org"
 
   val httpServerMock: WireMockServer = new WireMockServer(
     options()

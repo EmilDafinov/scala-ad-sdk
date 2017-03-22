@@ -31,7 +31,7 @@ class AppMarketEventFetcherTest
 
   it should "throw an appropriate exception when no credentials are found for the key" in {
     //Given
-    val testEventUrl = dummyUrl
+    val testEventUrl = "http://example.org"
     val testClientKey = "testKey"
     val testClientSecret = "testSecret"
     val testCredentials = AppMarketCredentialsImpl(testClientKey, testClientSecret)
