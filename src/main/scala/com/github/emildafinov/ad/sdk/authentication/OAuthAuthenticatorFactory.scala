@@ -37,5 +37,7 @@ class OAuthAuthenticatorFactory(credentialsSupplier: AppMarketCredentialsSupplie
         case _ =>
           Left(HttpChallenge(scheme = "OAuth", realm = None))
       }
+    } recover {
+      case _: UnknownClientKeyException => Left(HttpChallenge(scheme = "OAuth", realm = None))
     }
 }

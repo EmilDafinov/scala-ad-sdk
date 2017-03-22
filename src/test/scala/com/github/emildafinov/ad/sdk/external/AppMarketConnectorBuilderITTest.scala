@@ -4,17 +4,18 @@ import java.util.Optional
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.GET
-import akka.http.scaladsl.model.StatusCodes.Accepted
+import akka.http.scaladsl.model.StatusCodes.{Accepted, NotFound, Unauthorized}
 import akka.http.scaladsl.model.headers.RawHeader
-import akka.http.scaladsl.model.{HttpHeader, HttpRequest}
+import akka.http.scaladsl.model.{HttpHeader, HttpRequest, StatusCodes}
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.event.payloads.{AddonSubscriptionOrder, SubscriptionCancel, SubscriptionOrder}
 import com.github.emildafinov.ad.sdk.{AkkaSpec, EventHandler, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.{Matchers, Mockito}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
-
 import com.github.emildafinov.ad.sdk.util.readResourceFile
+
+import scala.language.postfixOps
 
 class AppMarketConnectorBuilderITTest extends UnitTestSpec
   with AkkaSpec
@@ -267,4 +268,115 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       response.status shouldEqual Accepted
     }
   }
+
+  it should "return a 'Not Found' if a non-existant route is pinged" in {
+
+    //Given
+    val testClientId = "testClientId"
+    val testClientSecret = "testClentSecret"
+
+    val testRequestCredentials =
+      AppMarketCredentialsImpl(
+        clientKey = testClientId,
+        clientSecret = testClientSecret
+      )
+
+    Mockito.when {
+      credentialsSupplierMock.readCredentialsFor(testClientId)
+    } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
+
+    val testEventId = "abcde"
+    val testEventPayloadResource = s"/integration/$testEventId"
+    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
+    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
+
+    val headerValue = tokenGenerator.generateAuthorizationHeader(
+      httpMethodName = GET.value,
+      resourceUrl = testConnectorUrl,
+      marketplaceCredentials = testRequestCredentials
+    )
+
+    val authHeader: HttpHeader = RawHeader("Authorization", headerValue)
+    val testRequest = HttpRequest(
+      method = GET,
+      uri = testConnectorUrl,
+      headers = scala.collection.immutable.Seq(authHeader)
+
+    )
+
+    //When
+    whenReady(
+      future = Http().singleRequest(testRequest),
+      timeout = Timeout(5 seconds)
+    ) { response =>
+      response.status shouldEqual NotFound
+    }
+  }
+
+  it should "return a '401 Unauthorized' if the request is not signed" in {
+
+    //Given
+    val testEventId = "abcde"
+    val testEventPayloadResource = s"/integration/$testEventId"
+    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
+    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
+    
+    val testRequest = HttpRequest(
+      method = GET,
+      uri = testConnectorUrl
+    )
+
+    //When
+    whenReady(
+      future = Http().singleRequest(testRequest),
+      timeout = Timeout(5 seconds)
+    ) { response =>
+      response.status shouldEqual Unauthorized
+    }
+  }
+
+  it should "return a '401 Unauthorized' if the request is signed with unknown client credentials" in {
+
+    //Given
+    val testClientId = "testClientId"
+    val testClientSecret = "testClentSecret"
+
+    val testRequestCredentials =
+      AppMarketCredentialsImpl(
+        clientKey = testClientId,
+        clientSecret = testClientSecret
+      )
+
+    Mockito.when {
+      credentialsSupplierMock.readCredentialsFor(testClientId)
+    } thenReturn Optional.empty[AppMarketCredentials]
+
+    val testEventId = "abcde"
+    val testEventPayloadResource = s"/integration/$testEventId"
+    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
+    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
+
+    val headerValue = tokenGenerator.generateAuthorizationHeader(
+      httpMethodName = GET.value,
+      resourceUrl = testConnectorUrl,
+      marketplaceCredentials = testRequestCredentials
+    )
+
+    val authHeader: HttpHeader = RawHeader("Authorization", headerValue)
+    val testRequest = HttpRequest(
+      method = GET,
+      uri = testConnectorUrl,
+      headers = scala.collection.immutable.Seq(authHeader)
+
+    )
+
+    //When
+    whenReady(
+      future = Http().singleRequest(testRequest),
+      timeout = Timeout(5 seconds)
+    ) { response =>
+      response.status shouldEqual Unauthorized
+    }
+  }
+  
 }
