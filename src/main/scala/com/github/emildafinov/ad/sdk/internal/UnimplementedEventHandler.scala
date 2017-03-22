@@ -1,12 +1,16 @@
 package com.github.emildafinov.ad.sdk.internal
 
+import javax.naming.OperationNotSupportedException
+
 import com.github.emildafinov.ad.sdk.{EventHandler, EventReturnAddress}
 import com.typesafe.scalalogging.StrictLogging
 
 private[sdk] class UnimplementedEventHandler[U](eventType: Class[U]) extends EventHandler[U] with StrictLogging {
   
-  override def handle(event: U, eventReturnAddress: EventReturnAddress): Unit =
+  override def handle(event: U, eventReturnAddress: EventReturnAddress): Unit = {
     logger.error(s"Events of type ${eventType.getCanonicalName} are not supported.")
+    throw new OperationNotSupportedException
+  }
 }
 
 private[sdk] object UnimplementedEventHandler {

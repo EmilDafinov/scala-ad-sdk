@@ -14,7 +14,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.{Matchers, Mockito}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
-import scala.io.Source
+import com.github.emildafinov.ad.sdk.util.readResourceFile
 
 class AppMarketConnectorBuilderITTest extends UnitTestSpec 
   with AkkaSpec 
@@ -42,10 +42,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     .start()
 
     
-  def readResourceFile(resourcePath: String) = {
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource(resourcePath)).mkString
-    expectedEventPayloadJson
-  }
+  
   
   it should "trigger the Subscription Order Handler" in {
     

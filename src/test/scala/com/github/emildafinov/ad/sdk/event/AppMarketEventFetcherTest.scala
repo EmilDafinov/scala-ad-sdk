@@ -83,7 +83,7 @@ class AppMarketEventFetcherTest
       `type` = SUBSCRIPTION_ORDER,
       marketplace = Marketplace(
         partner = "APPDIRECT",
-        baseUrl = "http://sample.appdirect.com:8888"
+        baseUrl = "http://sample.appdirect.com"
       ),
       creator = User(),
       payload = Payload(
