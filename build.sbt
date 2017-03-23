@@ -12,7 +12,7 @@ lazy val baseSettings = Seq(
 
   organization := "com.github.emildafinov",
   name := "scala-ad-sdk",
-  version := "1.91",
+  version := "1.92",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
   resolvers += Resolver.bintrayRepo("lhotari","releases"),
@@ -31,7 +31,6 @@ lazy val baseSettings = Seq(
     "io.github.lhotari" %% "akka-http-health" % "1.0.3",
     "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
     "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
-    "oauth.signpost" % "oauth-signpost" % SIGNPOST_VERSION,
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
     "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
     "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
