@@ -20,14 +20,13 @@ class OAuthAuthenticatorFactory(credentialsSupplier: AppMarketCredentialsSupplie
           val connectorCredentials = credentialsSupplier
             .readCredentialsFor(requestClientKey)
             .orElseThrow(() => new UnknownClientKeyException())
-          val expectedOAuthToken = authorizationTokenGenerator.generateAuthorizationHeader(
-            httpMethodName = requestHttpMethodName,
-            resourceUrl = requestUrl,
-            timeStamp = callerCredentials.params("oauth_timestamp"),
-            nonce = callerCredentials.params("oauth_nonce"),
-            marketplaceCredentials = connectorCredentials
+          val expectedOAuthTokenParameters = expectedOauthParameters(
+            requestHttpMethodName, 
+            requestUrl,
+            callerCredentials.params("oauth_timestamp"), 
+            callerCredentials.params("oauth_nonce"), 
+            connectorCredentials
           )
-          val expectedOAuthTokenParameters = oauthSignatureParser.parse(expectedOAuthToken)
 
           if (expectedOAuthTokenParameters.oauthSignature == callerCredentials.params("oauth_signature")) {
             Right(connectorCredentials)
@@ -40,4 +39,19 @@ class OAuthAuthenticatorFactory(credentialsSupplier: AppMarketCredentialsSupplie
     } recover {
       case _: UnknownClientKeyException => Left(HttpChallenge(scheme = "OAuth", realm = None))
     }
+
+  private def expectedOauthParameters(requestHttpMethodName: String, 
+                                      requestUrl: String,
+                                      callerTimestamp: String,
+                                      callerNonce: String,
+                                      connectorCredentials: AppMarketCredentials) = {
+    val expectedOAuthToken = authorizationTokenGenerator.generateAuthorizationHeader(
+      httpMethodName = requestHttpMethodName,
+      resourceUrl = requestUrl,
+      timeStamp = callerTimestamp,
+      nonce = callerNonce,
+      marketplaceCredentials = connectorCredentials
+    )
+    oauthSignatureParser.parse(expectedOAuthToken)
+  }
 }
