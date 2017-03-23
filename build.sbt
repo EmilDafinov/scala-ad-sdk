@@ -15,7 +15,6 @@ lazy val baseSettings = Seq(
   version := "1.92",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
-  resolvers += Resolver.bintrayRepo("lhotari","releases"),
   libraryDependencies ++= Seq(
     //Application config
     "com.typesafe" % "config" % "1.3.0",
