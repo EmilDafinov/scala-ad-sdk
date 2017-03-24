@@ -9,7 +9,7 @@ import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 
 object SubscriptionOrderEventResolver {
 
-  def apply(credentialsSupplier: AppMarketCredentialsSupplier): EventResolver[SubscriptionOrderResponse] = {
+  def build(credentialsSupplier: AppMarketCredentialsSupplier): EventResolver[SubscriptionOrderResponse] = {
     val authorizationTokenGenerator = new AuthorizationTokenGenerator
     val eventResolver = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
     new SdkProvidedEventResolver(eventResolver, SubscriptionOrderResponseMarshaller())
