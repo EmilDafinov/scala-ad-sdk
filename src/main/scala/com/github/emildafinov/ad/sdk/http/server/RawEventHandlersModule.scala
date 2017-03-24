@@ -1,12 +1,11 @@
 package com.github.emildafinov.ad.sdk.http.server
 
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
+import com.github.emildafinov.ad.sdk.event.RoutingDependenciesModule
 import com.github.emildafinov.ad.sdk.event.marshallers.EventResultMarshallersModule
 import com.github.emildafinov.ad.sdk.event.payloads.SubscriptionOrder
 import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
 import com.github.emildafinov.ad.sdk.event.unmarshallers.RichEventParsersModule
-import com.github.emildafinov.ad.sdk.event.RoutingDependenciesModule
-import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.internal.ClientDefinedDependenciesModule
 
 trait RawEventHandlersModule {
@@ -15,8 +14,6 @@ trait RawEventHandlersModule {
     with RichEventParsersModule
     with RoutingDependenciesModule
     with EventResultMarshallersModule =>
-
-  private implicit lazy val eventResolver = new AppMarketEventResolver(authorizationTokenGenerator, credentialsSupplier)
 
   lazy val subscriptionOrderRawEventHandler: RawEventHandler[SubscriptionOrder, SubscriptionOrderResponse] =
     new RawEventHandler(

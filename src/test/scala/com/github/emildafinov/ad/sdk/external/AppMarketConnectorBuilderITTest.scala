@@ -43,7 +43,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     .start()
 
 
-  it should "trigger the Subscription Order Handler" in {
+  it should "trigger the Subscription Order Handler when appropriate URL is called" in {
 
     //Given
     val testClientId = "testClientId"
@@ -100,7 +100,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     }
   }
 
-  it should "trigger the Subscription Cancel Handler" in {
+  it should "trigger the Subscription Cancel Handler when appropriate URL is called" in {
 
     //Given
     val testClientId = "testClientId"
@@ -157,7 +157,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     }
   }
 
-  it should "trigger the Subscription Addon Order Handler" in {
+  it should "trigger the Subscription Addon Order Handler when appropriate URL is called" in {
 
     //Given
     val testClientId = "testClientId"
@@ -214,7 +214,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     }
   }
 
-  it should "trigger the 'Unimplemented Event' handler " in {
+  it should "trigger the 'Unimplemented Event' handler when appropriate URL is called" in {
 
     //Given
     val testClientId = "testClientId"
@@ -284,11 +284,8 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
-
-    val testEventId = "abcde"
-    val testEventPayloadResource = s"/integration/$testEventId"
-    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
-    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
+    
+    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant"
 
     val headerValue = tokenGenerator.generateAuthorizationHeader(
       httpMethodName = GET.value,
@@ -316,14 +313,9 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "return a '401 Unauthorized' if the request is not signed" in {
 
     //Given
-    val testEventId = "abcde"
-    val testEventPayloadResource = s"/integration/$testEventId"
-    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
-    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
-    
     val testRequest = HttpRequest(
       method = GET,
-      uri = testConnectorUrl
+      uri = s"http://127.0.0.1:8000/nonexistant"
     )
 
     //When
@@ -331,6 +323,8 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       future = Http().singleRequest(testRequest),
       timeout = Timeout(5 seconds)
     ) { response =>
+      
+      //Then
       response.status shouldEqual Unauthorized
     }
   }
@@ -350,11 +344,8 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.empty[AppMarketCredentials]
-
-    val testEventId = "abcde"
-    val testEventPayloadResource = s"/integration/$testEventId"
-    val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
-    val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant?eventUrl=$testEventPayloadFullUrl"
+    
+    val testConnectorUrl = s"http://127.0.0.1:8000"
 
     val headerValue = tokenGenerator.generateAuthorizationHeader(
       httpMethodName = GET.value,
@@ -378,5 +369,4 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       response.status shouldEqual Unauthorized
     }
   }
-  
 }

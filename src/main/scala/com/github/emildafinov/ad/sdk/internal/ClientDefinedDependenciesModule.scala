@@ -21,6 +21,6 @@ private[sdk] trait ClientDefinedDependenciesModule {
   val subscriptionDeactivatedHandler: EventHandler[SubscriptionDeactivated]
   val subscriptionReactivatedHandler: EventHandler[SubscriptionReactivated]
   val subscriptionUpcomingInvoiceHandler: EventHandler[SubscriptionUpcomingInvoice]
-  
-  val credentialsSupplier: AppMarketCredentialsSupplier
 }
+
+

@@ -93,7 +93,7 @@ class AppMarketConnectorBuilder(subscriptionOrderHandler: EventHandler[Subscript
   }
 
   def build(): AppMarketConnector = {
-    new ClientDefinedDependenciesModule with ConnectorRootApplicationContext with ConnectorServerStarter with AppMarketConnector {
+    new ClientDefinedDependenciesModule with ClientDefinedCredentialsModule with ConnectorRootApplicationContext with ConnectorServerStarter with AppMarketConnector {
       override val subscriptionCancelHandler: EventHandler[SubscriptionCancel] = AppMarketConnectorBuilder.this.subscriptionCancelHandler
       override val userAssignedHandler: EventHandler[UserAssignment] = AppMarketConnectorBuilder.this.userAssignedHandler
       override val subscriptionChangeHandler: EventHandler[SubscriptionChange] = AppMarketConnectorBuilder.this.subscriptionChangeHandler
