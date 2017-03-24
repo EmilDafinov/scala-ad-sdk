@@ -27,7 +27,7 @@ lazy val baseSettings = Seq(
     "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
-    "io.github.lhotari" %% "akka-http-health" % "1.0.3",
+    "io.github.lhotari" %% "akka-http-health" % "1.0.7",
     "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
     "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
