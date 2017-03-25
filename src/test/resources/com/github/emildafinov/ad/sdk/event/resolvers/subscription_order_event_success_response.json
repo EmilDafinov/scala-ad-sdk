@@ -1,0 +1,7 @@
+{
+  "success" : true,
+  "message" : "Order placed successfully",
+  "errorCode" : "",
+  "accountIdentifier" : "expectedAccountIdentifier",
+  "userIdentifier" : "expectedUserIdentifier"
+}

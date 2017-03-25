@@ -9,6 +9,7 @@ import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
+import com.github.emildafinov.ad.sdk.util.readResourceFile
 
 import scala.io.Source
 import scala.language.postfixOps
@@ -155,8 +156,5 @@ class AppMarketEventFetcherTest
     parsedEventId shouldEqual testEventId
   }
   //TODO: Add tests to parse all new event types !!
-  def readResourceFile(resourcePath: String) = {
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource(resourcePath)).mkString
-    expectedEventPayloadJson
-  }
+  
 }

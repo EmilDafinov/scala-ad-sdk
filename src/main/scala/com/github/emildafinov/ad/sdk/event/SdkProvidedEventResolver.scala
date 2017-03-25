@@ -4,10 +4,11 @@ import com.github.emildafinov.ad.sdk.EventReturnAddress
 import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
+import com.typesafe.scalalogging.StrictLogging
 
 
 class SdkProvidedEventResolver[T](appMarketEventResolver: AppMarketEventResolver,
-                                  toAppMarketResponse: T => ApiResult) extends EventResolver[T]{
+                                  toAppMarketResponse: T => ApiResult) extends EventResolver[T] with StrictLogging {
 
   override def resolveWithFailure(errorMessage: String, eventReturnAddress: EventReturnAddress): Unit = 
     appMarketEventResolver.sendEventResolvedCallback(

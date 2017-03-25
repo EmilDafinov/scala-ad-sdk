@@ -6,14 +6,14 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.GET
 import akka.http.scaladsl.model.StatusCodes.{Accepted, NotFound, Unauthorized}
 import akka.http.scaladsl.model.headers.RawHeader
-import akka.http.scaladsl.model.{HttpHeader, HttpRequest, StatusCodes}
+import akka.http.scaladsl.model.{HttpHeader, HttpRequest}
+import com.github.emildafinov.ad.sdk._
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.event.payloads.{AddonSubscriptionOrder, SubscriptionCancel, SubscriptionOrder}
-import com.github.emildafinov.ad.sdk.{AkkaSpec, EventHandler, UnitTestSpec, WiremockHttpServiceTestSuite}
+import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.{Matchers, Mockito}
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
-import com.github.emildafinov.ad.sdk.util.readResourceFile
 
 import scala.language.postfixOps
 
@@ -33,6 +33,15 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
 
   private val tokenGenerator = new AuthorizationTokenGenerator
 
+  val testClientId = "testClientId"
+  val testClientSecret = "testClientSecret"
+
+  val testRequestCredentials =
+    AppMarketCredentialsImpl(
+      clientKey = testClientId,
+      clientSecret = testClientSecret
+    )
+
   private val connector = new AppMarketConnectorBuilder(
     subscriptionOrderHandlerMock,
     subscriptionCancelHandlerMock,
@@ -42,19 +51,9 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
     .build()
     .start()
 
-
   it should "trigger the Subscription Order Handler when appropriate URL is called" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClientSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
@@ -103,15 +102,6 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "trigger the Subscription Cancel Handler when appropriate URL is called" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
@@ -160,15 +150,6 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "trigger the Subscription Addon Order Handler when appropriate URL is called" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
@@ -217,15 +198,6 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "trigger the 'Unimplemented Event' handler when appropriate URL is called" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
@@ -272,19 +244,10 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "return a 'Not Found' if a non-existant route is pinged" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
-    
+
     val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant"
 
     val headerValue = tokenGenerator.generateAuthorizationHeader(
@@ -323,7 +286,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       future = Http().singleRequest(testRequest),
       timeout = Timeout(5 seconds)
     ) { response =>
-      
+
       //Then
       response.status shouldEqual Unauthorized
     }
@@ -332,19 +295,10 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
   it should "return a '401 Unauthorized' if the request is signed with unknown client credentials" in {
 
     //Given
-    val testClientId = "testClientId"
-    val testClientSecret = "testClentSecret"
-
-    val testRequestCredentials =
-      AppMarketCredentialsImpl(
-        clientKey = testClientId,
-        clientSecret = testClientSecret
-      )
-
     Mockito.when {
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.empty[AppMarketCredentials]
-    
+
     val testConnectorUrl = s"http://127.0.0.1:8000"
 
     val headerValue = tokenGenerator.generateAuthorizationHeader(
