@@ -9,6 +9,8 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 
+import scala.concurrent.Await
+
 class SubscriptionOrderEventResolverTest extends UnitTestSpec
   with AkkaDependenciesModule with WiremockHttpServiceTestSuite {
 
@@ -75,10 +77,14 @@ class SubscriptionOrderEventResolverTest extends UnitTestSpec
     } thenReturn Optional.of[AppMarketCredentials](testCredentials)
 
     //When
-    tested.resolveWithFailure(testSubscriptionOrderResponse, testEventAddress)
+    val resolutionSentFuture = tested.resolveWithFailure(testSubscriptionOrderResponse, testEventAddress)
 
     //Then
-    Thread.sleep(2000)
+    Await.ready(
+      awaitable = resolutionSentFuture, 
+      atMost = 10 seconds
+    )
+
     httpServerMock
       .verify {
         postRequestedFor(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result"))

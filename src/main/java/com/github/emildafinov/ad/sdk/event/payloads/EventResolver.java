@@ -1,6 +1,8 @@
 package com.github.emildafinov.ad.sdk.event.payloads;
 
 import com.github.emildafinov.ad.sdk.EventReturnAddress;
+import scala.Unit;
+import scala.concurrent.Future;
 
 /**
  * Implementations of this class is what connectors implemented using the SDK would use in order to signal 
@@ -11,6 +13,6 @@ import com.github.emildafinov.ad.sdk.EventReturnAddress;
  *           or else the results might be unpredictable.
  */
 public interface EventResolver<T> {
-	void resolveWithFailure(String errorMessage, EventReturnAddress eventReturnAddress);
-	void resolveSuccessfully(T eventResponse, EventReturnAddress eventReturnAddress);
+	Future<Unit> resolveWithFailure(String errorMessage, EventReturnAddress eventReturnAddress);
+	Future<Unit> resolveSuccessfully(T eventResponse, EventReturnAddress eventReturnAddress);
 }
