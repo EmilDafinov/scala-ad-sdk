@@ -78,7 +78,7 @@ class SubscriptionOrderEventResolverTest extends UnitTestSpec
     tested.resolveWithFailure(testSubscriptionOrderResponse, testEventAddress)
 
     //Then
-    Thread.sleep(1000)
+    Thread.sleep(2000)
     httpServerMock
       .verify {
         postRequestedFor(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result"))
