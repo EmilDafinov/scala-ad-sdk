@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.http.server
 
-import java.util.Optional
+import java.util.{Optional, UUID}
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives
@@ -13,7 +13,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
 
   private val expectedClientKey = "clientKey"
   private val parser = new OauthSignatureParser()
-  private val expectedClientSecret = "cclientecret"
+  private val expectedClientSecret = "clientSecret"
   private val authorizationTokenGenerator = new AuthorizationTokenGenerator()
 
   private val connectorCredentialsSupplier: AppMarketCredentialsSupplier = (clientKey: String) =>
@@ -65,7 +65,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
     
     //Given
     val testRequestUrl = "http://example.com"
-    val unknownClientKey = expectedClientKey + "fsdfsd"
+    val unknownClientKey = expectedClientKey + UUID.randomUUID().toString
     val testClientCredentials = AppMarketCredentialsImpl(
       clientKey = unknownClientKey,
       clientSecret = expectedClientSecret

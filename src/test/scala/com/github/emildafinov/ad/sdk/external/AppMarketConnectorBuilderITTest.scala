@@ -1,6 +1,6 @@
 package com.github.emildafinov.ad.sdk.external
 
-import java.util.Optional
+import java.util.{Optional, UUID}
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.GET
@@ -58,7 +58,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
 
-    val testEventId = "abcde"
+    val testEventId = UUID.randomUUID().toString
     val testEventPayloadResource = s"/integration/$testEventId"
     val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
     val testConnectorUrl = s"http://127.0.0.1:8000/integration/subscription/order?eventUrl=$testEventPayloadFullUrl"
@@ -106,7 +106,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
       credentialsSupplierMock.readCredentialsFor(testClientId)
     } thenReturn Optional.of[AppMarketCredentials](testRequestCredentials)
 
-    val testEventId = "abcde"
+    val testEventId = UUID.randomUUID().toString
     val testEventPayloadResource = s"/integration/$testEventId"
     val testEventPayloadFullUrl = s"http://127.0.0.1:${httpServerMock.port()}" + testEventPayloadResource
     val testConnectorUrl = s"http://127.0.0.1:8000/integration/subscription/cancel?eventUrl=$testEventPayloadFullUrl"

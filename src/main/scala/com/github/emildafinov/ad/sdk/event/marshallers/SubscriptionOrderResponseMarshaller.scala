@@ -4,7 +4,7 @@ import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
 import com.github.emildafinov.ad.sdk.payload.ApiResult
 
 object SubscriptionOrderResponseMarshaller {
-  def apply() =
+  def apply(): (SubscriptionOrderResponse) => ApiResult =
     (eventResponse: SubscriptionOrderResponse) => ApiResult(
       message = "Order placed successfully", 
       accountIdentifier = eventResponse.accountIdentifier(),

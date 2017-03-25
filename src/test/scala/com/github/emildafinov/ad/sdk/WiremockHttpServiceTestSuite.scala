@@ -14,7 +14,8 @@ trait WiremockHttpServiceTestSuite extends BeforeAndAfterAll {
 
   val httpServerMock: WireMockServer = new WireMockServer(
     options()
-      .dynamicPort().dynamicHttpsPort()
+      .dynamicPort()
+      .dynamicHttpsPort()
   )
   
   override def beforeAll(): Unit = {

@@ -46,7 +46,7 @@ class OAuthAuthenticatorFactoryTest extends UnitTestSpec {
         "oauth_signature" -> incomingRequestSignature
       )
     )
-    val mockConennctorGeneratedToken = "mockToken"
+    val mockConnectorGeneratedToken = "mockToken"
     
     when {
       authorizationTokenGeneratorMock.generateAuthorizationHeader(
@@ -56,7 +56,7 @@ class OAuthAuthenticatorFactoryTest extends UnitTestSpec {
         nonce = incomingRequestNonce,
         marketplaceCredentials = testRequestCredentials
       )
-    } thenReturn mockConennctorGeneratedToken
+    } thenReturn mockConnectorGeneratedToken
 
     val connectorGeneratedSignatureParams = OauthParameters(
       consumerKey = testRequestClientKey,
@@ -66,7 +66,7 @@ class OAuthAuthenticatorFactoryTest extends UnitTestSpec {
     )
     
     when {
-      signatureParserMock.parse(mockConennctorGeneratedToken)
+      signatureParserMock.parse(mockConnectorGeneratedToken)
     } thenReturn connectorGeneratedSignatureParams
     
     when {

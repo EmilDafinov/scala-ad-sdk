@@ -13,7 +13,7 @@ import scala.language.postfixOps
   *
   * @param transformToClientEvent a function that takes a raw [[Event]] and a string representing the eventId and p
   *                               produces the event instance visible to the client handler
-  * @param clientEventHandler     the logic that is being executed from the client connector upon receival of the event]
+  * @param clientEventHandler     the logic that is being executed from the client connector upon receiving the event]
   * @tparam A Rich event type
   */
 class RawEventHandler[A, B](transformToClientEvent: (Event, String) => A,
