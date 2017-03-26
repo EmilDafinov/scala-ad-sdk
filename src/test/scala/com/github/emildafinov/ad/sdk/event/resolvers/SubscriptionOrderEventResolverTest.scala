@@ -4,7 +4,7 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier}
 import com.github.emildafinov.ad.sdk.payload.SubscriptionResponseEvent
-import com.github.emildafinov.ad.sdk.{AkkaDependenciesModule, EventReturnAddressImpl, UnitTestSpec, WiremockHttpServiceTestSuite}
+import com.github.emildafinov.ad.sdk._
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import com.github.emildafinov.ad.sdk.util.readResourceFile
@@ -12,7 +12,7 @@ import com.github.emildafinov.ad.sdk.util.readResourceFile
 import scala.concurrent.Await
 
 class SubscriptionOrderEventResolverTest extends UnitTestSpec
-  with AkkaDependenciesModule with WiremockHttpServiceTestSuite {
+  with ConnectorServerAkkaDependenciesModule with WiremockHttpServiceTestSuite {
 
   behavior of "SubscriptionOrderEventResolver"
   private val testCredentialsSupplier = mock[AppMarketCredentialsSupplier]

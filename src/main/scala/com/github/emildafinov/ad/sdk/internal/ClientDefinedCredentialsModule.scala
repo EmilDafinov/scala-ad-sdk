@@ -4,5 +4,5 @@ import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 
 private[sdk] trait ClientDefinedCredentialsModule {
 
-  val credentialsSupplier: AppMarketCredentialsSupplier
+  protected val credentialsSupplier: AppMarketCredentialsSupplier
 }

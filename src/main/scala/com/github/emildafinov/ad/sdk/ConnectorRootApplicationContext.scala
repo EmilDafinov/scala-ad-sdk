@@ -11,7 +11,7 @@ import com.github.emildafinov.ad.sdk.http.server.routing.directives.CustomDirect
 
 private[sdk] trait ConnectorRootApplicationContext
   extends ApplicationConfigurationModule
-  with AkkaDependenciesModule
+  with ConnectorServerAkkaDependenciesModule
   with RichEventParsersModule
   with HealthRoutes
   with ClientDefinedCredentialsModule
