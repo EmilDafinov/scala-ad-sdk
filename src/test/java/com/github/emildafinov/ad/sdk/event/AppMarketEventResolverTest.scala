@@ -93,6 +93,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
       credentialsSupplier.readCredentialsFor(testClientKey)
     } thenReturn Optional.of[AppMarketCredentials](testClientCredentials)
 
+    val expectedOauthToken = s"""OAuth oauth_consumer_key="$testClientKey", oauth_nonce="abcder", oauth_signature="fgbhndr6yhdrtgf", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1404540540", oauth_version="1.0""""
     when {
       authorizationTokenGenerator.generateAuthorizationHeader(
         httpMethodName = "POST",
@@ -100,7 +101,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
         marketplaceCredentials = testClientCredentials
       )
     } thenReturn
-      s"""OAuth oauth_consumer_key="$testClientKey", oauth_nonce="abcder", oauth_signature="fgbhndr6yhdrtgf", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1404540540", oauth_version="1.0""""
+      expectedOauthToken
 
     httpServerMock
       .stubFor(
@@ -128,7 +129,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
         .verify(
           postRequestedFor(
             urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result")
-          ) withHeader("Authorization", containing("OAuth "))
+          ) withHeader("Authorization", equalTo(expectedOauthToken))
         )
     }
   }

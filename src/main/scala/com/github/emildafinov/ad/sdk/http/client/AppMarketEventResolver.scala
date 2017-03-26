@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.POST
 import akka.http.scaladsl.model.HttpRequest
-import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
+import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials, OAuth2BearerToken}
 import akka.stream.Materializer
 import com.github.emildafinov.ad.sdk.EventReturnAddress
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
@@ -56,8 +56,9 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
     val resourceUrl = s"$resolveEndpointBaseUrl/api/integration/v1/events/$eventId/result"
     val requestEntity = Serialization.write(requestBody)
     val authorizationHeader = Authorization(
-      OAuth2BearerToken(
-        bearerTokenGenerator.generateAuthorizationHeader(
+      GenericHttpCredentials(
+        scheme = "",
+        token = bearerTokenGenerator.generateAuthorizationHeader(
           httpMethodName = "POST",
           resourceUrl = resourceUrl,
           marketplaceCredentials = clientCredentials
