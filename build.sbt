@@ -12,7 +12,7 @@ lazy val baseSettings = Seq(
 
   organization := "com.github.emildafinov",
   name := "scala-ad-sdk",
-  version := "1.93-SNAPSHOT",
+  version := "1.9.5-SNAPSHOT",
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
   libraryDependencies ++= Seq(
