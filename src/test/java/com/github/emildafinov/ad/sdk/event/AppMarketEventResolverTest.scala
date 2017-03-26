@@ -106,7 +106,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     httpServerMock
       .stubFor(
         post(urlPathEqualTo(s"/api/integration/v1/events/$testEventId/result"))
-            .withHeader("Authorization", containing("OAuth"))
+            .withHeader("Authorization", equalTo(expectedOauthToken))
           .willReturn(
             aResponse().withStatus(200)
           )
