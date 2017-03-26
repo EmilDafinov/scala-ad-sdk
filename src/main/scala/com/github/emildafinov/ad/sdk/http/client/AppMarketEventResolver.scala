@@ -58,7 +58,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
     val authorizationHeader = Authorization(
       GenericHttpCredentials(
         scheme = "",
-        token = bearerTokenGenerator.generateAuthorizationHeader(
+        token = bearerTokenGenerator.generateAuthorizationHeaderValue(
           httpMethodName = "POST",
           resourceUrl = resourceUrl,
           marketplaceCredentials = clientCredentials

@@ -24,7 +24,7 @@ class AppMarketEventFetcherTest
   private val mockCredentialsSuppler = mock[AppMarketCredentialsSupplier]
   private val mockAuthorizationTokenGenerator = mock[AuthorizationTokenGenerator]
 
-  val tested: AppMarketEventFetcher = new AppMarketEventFetcher(credentialsSupplier = mockCredentialsSuppler, authorizationTokenGenerator = mockAuthorizationTokenGenerator)
+  val tested: AppMarketEventFetcher = new AppMarketEventFetcher(authorizationTokenGenerator = mockAuthorizationTokenGenerator)
 
   before {
     reset(mockCredentialsSuppler, mockAuthorizationTokenGenerator)
@@ -68,7 +68,7 @@ class AppMarketEventFetcherTest
     } thenReturn Optional.of[AppMarketCredentials](testAppmarketCredentials)
 
     when {
-      mockAuthorizationTokenGenerator.generateAuthorizationHeader(
+      mockAuthorizationTokenGenerator.generateAuthorizationHeaderValue(
         "GET", testEventUrl, testAppmarketCredentials
       )
     } thenReturn "afscgg"
@@ -120,7 +120,7 @@ class AppMarketEventFetcherTest
     } thenReturn Optional.of[AppMarketCredentials](testAppmarketCredentials)
 
     when {
-      mockAuthorizationTokenGenerator.generateAuthorizationHeader(
+      mockAuthorizationTokenGenerator.generateAuthorizationHeaderValue(
         "GET", testEventUrl, testAppmarketCredentials
       )
     } thenReturn "afscgg"

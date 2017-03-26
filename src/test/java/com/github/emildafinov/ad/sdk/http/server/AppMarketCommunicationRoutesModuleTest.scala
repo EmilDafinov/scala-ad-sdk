@@ -46,7 +46,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
       clientKey = expectedClientKey,
       clientSecret = expectedClientSecret
     )
-    val header = authorizationTokenGenerator.generateAuthorizationHeader(
+    val header = authorizationTokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = "GET",
       resourceUrl = testRequestUrl,
       marketplaceCredentials = testMarketplaceCredentials
@@ -70,7 +70,7 @@ class AppMarketCommunicationRoutesModuleTest extends UnitTestSpec with Scalatest
       clientKey = unknownClientKey,
       clientSecret = expectedClientSecret
     )
-    val authorizationTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
+    val authorizationTokenValue = authorizationTokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = "GET",
       resourceUrl = testRequestUrl,
       marketplaceCredentials = testClientCredentials

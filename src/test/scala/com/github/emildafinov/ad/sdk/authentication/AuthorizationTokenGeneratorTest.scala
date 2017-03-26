@@ -30,7 +30,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -46,7 +46,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -62,7 +62,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -78,7 +78,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -94,7 +94,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -110,7 +110,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -126,7 +126,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     val testUrl = "http://www.google.com"
 
     //When
-    val headerValue = testedService.generateAuthorizationHeader(
+    val headerValue = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHTTPMethod,
       resourceUrl = testUrl,
       marketplaceCredentials = mockCredentials
@@ -144,7 +144,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     //Then
     an[IllegalArgumentException] shouldBe thrownBy {
       //When
-      testedService.generateAuthorizationHeader(
+      testedService.generateAuthorizationHeaderValue(
         httpMethodName = testHTTPMethod,
         resourceUrl = testUrl,
         marketplaceCredentials = mockCredentials
@@ -165,7 +165,7 @@ class AuthorizationTokenGeneratorTest extends UnitTestSpec with CustomMatchers {
     )
     val oauthParametersParser = new OauthSignatureParser()
 
-    val expected = testedService.generateAuthorizationHeader(
+    val expected = testedService.generateAuthorizationHeaderValue(
       httpMethodName = testHttpMethod,
       resourceUrl = testResourceUrl,
       marketplaceCredentials = testCredentals

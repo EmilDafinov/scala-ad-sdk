@@ -74,7 +74,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           }
       )
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials
@@ -122,7 +122,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           }
       )
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials
@@ -170,7 +170,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           }
       )
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials
@@ -218,7 +218,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           }
       )
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials
@@ -250,7 +250,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
 
     val testConnectorUrl = s"http://127.0.0.1:8000/nonexistant"
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials
@@ -301,7 +301,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
 
     val testConnectorUrl = s"http://127.0.0.1:8000"
 
-    val headerValue = tokenGenerator.generateAuthorizationHeader(
+    val headerValue = tokenGenerator.generateAuthorizationHeaderValue(
       httpMethodName = GET.value,
       resourceUrl = testConnectorUrl,
       marketplaceCredentials = testRequestCredentials

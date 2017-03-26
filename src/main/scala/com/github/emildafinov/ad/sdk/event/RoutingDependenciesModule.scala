@@ -13,7 +13,6 @@ trait RoutingDependenciesModule {
   lazy val authorizationTokenGenerator = new AuthorizationTokenGenerator()
 
   lazy implicit val eventFetcher = new AppMarketEventFetcher(
-    credentialsSupplier = credentialsSupplier,
     authorizationTokenGenerator = authorizationTokenGenerator
   )
 

@@ -38,7 +38,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
     } thenReturn Optional.of[AppMarketCredentials](testClientCredentials)
 
     when {
-      authorizationTokenGenerator.generateAuthorizationHeader(
+      authorizationTokenGenerator.generateAuthorizationHeaderValue(
         httpMethodName = "POST",
         resourceUrl = testEventResolutionEndpoint + "/api/integration/v1/events/1234qwer/result",
         marketplaceCredentials = testClientCredentials
@@ -95,7 +95,7 @@ class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with Wiremoc
 
     val expectedOauthToken = s"""OAuth oauth_consumer_key="$testClientKey", oauth_nonce="abcder", oauth_signature="fgbhndr6yhdrtgf", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1404540540", oauth_version="1.0""""
     when {
-      authorizationTokenGenerator.generateAuthorizationHeader(
+      authorizationTokenGenerator.generateAuthorizationHeaderValue(
         httpMethodName = "POST",
         resourceUrl = testEventResolutionEndpoint + "/api/integration/v1/events/1234qwer/result",
         marketplaceCredentials = testClientCredentials

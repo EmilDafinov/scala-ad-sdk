@@ -14,9 +14,9 @@ class AuthorizationTokenGenerator extends StrictLogging {
     * @param resourceUrl    the resource for which we want to generate an authorization value
     * @return The OAuth 1.0 token value
     */
-  def generateAuthorizationHeader(httpMethodName: String,
-                                  resourceUrl: String,
-                                  marketplaceCredentials: AppMarketCredentials): String = {
+  def generateAuthorizationHeaderValue(httpMethodName: String,
+                                       resourceUrl: String,
+                                       marketplaceCredentials: AppMarketCredentials): String = {
     signWithConsumer(
       new CommonsHttpOAuthConsumer(
         marketplaceCredentials.clientKey(),

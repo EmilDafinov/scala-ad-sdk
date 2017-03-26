@@ -20,12 +20,10 @@ import scala.util.control.NonFatal
 /**
   * Returns the event id and payload.
   * Synchronous, because we always want to retrieve the event before releasing the connections
-  * @param credentialsSupplier         for retrieving the client secret needed to generate the bearer token
   * @param authorizationTokenGenerator used to generate the OAuth bearer token used to sign the request
   * @param appMarketTimeoutInterval    timeout for retrieving the event payload.
   */
-class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
-                            authorizationTokenGenerator: AuthorizationTokenGenerator,
+class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGenerator,
                             appMarketTimeoutInterval: FiniteDuration = 15 seconds)
                            (implicit as: ActorSystem,
                             am: Materializer,
@@ -36,7 +34,7 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
   def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, eventFetchUrl: String): (String, Event) = {
   
     val parsedRawEvent = (for {
-      eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials.clientKey())
+      eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials)
       response <- Http().singleRequest(eventFetchRequest)
       responseBody <- response.entity.dataBytes.runFold(ByteString(""))(_ ++ _)
       responseBodyString = responseBody.decodeString("utf8")
@@ -55,21 +53,23 @@ class AppMarketEventFetcher(credentialsSupplier: AppMarketCredentialsSupplier,
     )
   }
 
-  private def signedFetchRequest(eventFetchUrl: String, clientKey: String) = Future {
-    val marketplaceCredentials = credentialsSupplier
-      .readCredentialsFor(clientKey)
-        .orElseThrow(() => new UnknownClientKeyException)
+  private def signedFetchRequest(eventFetchUrl: String, marketplaceCredentials: AppMarketCredentials) = Future {
 
-    val authorizationTokenValue = authorizationTokenGenerator.generateAuthorizationHeader(
-      "GET",
-      eventFetchUrl,
-      marketplaceCredentials
+    val authorizationHeader = Authorization(
+      credentials = GenericHttpCredentials(
+        scheme = "OAuth", 
+        token = authorizationTokenGenerator.generateAuthorizationHeaderValue(
+          "GET",
+          eventFetchUrl,
+          marketplaceCredentials
+        )
+      )
     )
-
+    
     HttpRequest(
       method = GET,
       uri = eventFetchUrl,
-      headers = List(Authorization(credentials = GenericHttpCredentials(scheme = "OAuth", token = authorizationTokenValue)))
+      headers = List(authorizationHeader)
     )
   }
 
