@@ -15,7 +15,7 @@ class SdkProvidedEventResolverTest extends UnitTestSpec {
   it should "call the underlying event resolver with a failure payload" in {
     //Given
     val appMarketEventResolverMock = mock[AppMarketEventResolver]
-    val mockMarshaller = (any: String) => ApiResults.success()
+    val mockMarshaller = (any: String) => ApiResults.failure("")
     val testResolutionHost = "http://example.com"
     val testEventId = "eventId"
     val testCredentials = AppMarketCredentialsImpl(
@@ -41,5 +41,38 @@ class SdkProvidedEventResolverTest extends UnitTestSpec {
           returnMessageCaptor.capture())
     
     returnMessageCaptor.getValue.success shouldEqual false
+  }
+
+  it should "call the underlying event resolver with a success payload" in {
+    //Given
+    val appMarketEventResolverMock = mock[AppMarketEventResolver]
+    val expectedPayloadSent = ApiResults.success()
+    val mockMarshaller = (any: String) => expectedPayloadSent
+    val testResolutionHost = "http://example.com"
+    val testEventId = "eventId"
+    val testCredentials = AppMarketCredentialsImpl(
+      clientKey = "clientKey",
+      clientSecret = "clientSecret"
+    )
+    val testReturnAddress = new EventReturnAddressImpl(
+      testEventId,
+      testResolutionHost,
+      testCredentials.clientKey
+    )
+    val testEventResponse = "testEventResponse"
+    val returnMessageCaptor = ArgumentCaptor.forClass(classOf[ApiResult])
+    val tested = new SdkProvidedEventResolver[String](appMarketEventResolverMock, mockMarshaller)
+
+    //When
+    tested.resolveSuccessfully(testEventResponse, testReturnAddress)
+
+    //Then
+    verify(appMarketEventResolverMock)
+      .sendEventResolvedCallback(
+        mockEq(testReturnAddress),
+        returnMessageCaptor.capture()
+      )
+
+    returnMessageCaptor.getValue shouldEqual expectedPayloadSent
   }
 }
