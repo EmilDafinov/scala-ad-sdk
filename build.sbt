@@ -5,14 +5,13 @@ val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.0"
 
 lazy val scalaAdSdk = (project in file("."))
-  .enablePlugins(JavaServerAppPackaging, DockerPlugin, UniversalPlugin)
-  .settings(baseSettings:_*)
-lazy val baseSettings = Seq(
+  .settings(
   scalaVersion := "2.12.1",
 
   organization := "com.github.emildafinov",
   name := "scala-ad-sdk",
-  version := "1.9.5-SNAPSHOT",
+  //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
+  //  based on the git tag/sha
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
 
   libraryDependencies ++= Seq(
@@ -22,18 +21,26 @@ lazy val baseSettings = Seq(
     //Logging
     "ch.qos.logback" % "logback-classic" % "1.1.7",
     "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+    
+    //Authentication
+    "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
+    "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
+    
+    //Http
     "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
     "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
     "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
     "io.github.lhotari" %% "akka-http-health" % "1.0.7",
-    "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
-    "oauth.signpost" % "signpost-commonshttp4" % SIGNPOST_VERSION,
-    "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
+    
+    //Json
     "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
     "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
     "de.heikoseeberger" %% "akka-http-json4s" % "1.13.0",
+    
+    //Test
+    "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
     "org.mockito" % "mockito-all" % "1.10.19" % "test",
     "com.github.tomakehurst" % "wiremock" % "2.5.1" % "test"
@@ -54,10 +61,10 @@ lazy val baseSettings = Seq(
   publishArtifact in Test := false,
   
   publishTo := {
-    if (isSnapshot.value || travisPrNumber.value.isDefined)
+    if (isSnapshot.value)
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
     else
-      publishTo.value //Here we are assuming that the bintray plugin does its magic
+      publishTo.value //Here we are assuming that the bintray plugin does its magic s
   },
   credentials := {
     if(isSnapshot.value) 
