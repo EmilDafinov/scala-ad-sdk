@@ -52,8 +52,9 @@ lazy val baseSettings = Seq(
       url = url("https://emiliorodo.com"))
   ),
   publishArtifact in Test := false,
+  
   publishTo := {
-    if (isSnapshot.value)
+    if (isSnapshot.value || travisPrNumber.value.isDefined)
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
     else
       publishTo.value //Here we are assuming that the bintray plugin does its magic

@@ -15,3 +15,5 @@ addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
 
 addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "1.3.8")
+
+addSbtPlugin("com.dwijnand" % "sbt-travisci" % "1.1.0")
