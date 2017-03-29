@@ -58,12 +58,14 @@ lazy val scalaAdSdk = (project in file("."))
       id = "edafinov", 
       name = "Emil Dafinov", 
       email = "emiliorodo@gmail.com", 
-      url = url("https://emiliorodo.com"))
+      url = url("https://emiliorodo.com")
+    )
   ),
   publishArtifact in Test := false,
   
   publishTo := {
     if (isSnapshot.value) {
+      println(s"The version ${version.value} isSnapshot is ${isSnapshot.value}")
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
     } else
       publishTo.value //Here we are assuming that the bintray plugin does its magic
@@ -74,5 +76,7 @@ lazy val scalaAdSdk = (project in file("."))
     else
       credentials.value
   },
-  bintrayReleaseOnPublish := !isSnapshot.value
+  bintrayReleaseOnPublish := !isSnapshot.value,
+  version in ThisBuild ~= (_.replace('+', '-')),
+  dynver in ThisBuild ~= (_.replace('+', '-'))
 )
