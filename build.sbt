@@ -63,9 +63,9 @@ lazy val scalaAdSdk = (project in file("."))
   publishArtifact in Test := false,
   
   publishTo := {
-    if (isSnapshot.value)
+    if (isSnapshot.value) {
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
-    else
+    } else
       publishTo.value //Here we are assuming that the bintray plugin does its magic
   },
   credentials := {
