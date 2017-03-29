@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.external
+package com.github.emildafinov.ad.sdk
 
 import java.util.{Optional, UUID}
 
@@ -7,9 +7,9 @@ import akka.http.scaladsl.model.HttpMethods.GET
 import akka.http.scaladsl.model.StatusCodes.{Accepted, NotFound, Unauthorized}
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{HttpHeader, HttpRequest}
-import com.github.emildafinov.ad.sdk._
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.event.payloads.{AddonSubscriptionOrder, SubscriptionCancel, SubscriptionOrder}
+import com.github.emildafinov.ad.sdk.external.AppMarketConnectorBuilder
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.{Matchers, Mockito}

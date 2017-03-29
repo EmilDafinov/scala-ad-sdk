@@ -5,6 +5,8 @@ val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.0"
 
 lazy val scalaAdSdk = (project in file("."))
+  .configs(IntegrationTest)
+  .settings(Defaults.itSettings)  
   .settings(
   scalaVersion := "2.12.1",
 
@@ -41,9 +43,9 @@ lazy val scalaAdSdk = (project in file("."))
     
     //Test
     "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
-    "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "test",
-    "org.mockito" % "mockito-all" % "1.10.19" % "test",
-    "com.github.tomakehurst" % "wiremock" % "2.5.1" % "test"
+    "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "it,test",
+    "org.mockito" % "mockito-all" % "1.10.19" % "it,test",
+    "com.github.tomakehurst" % "wiremock" % "2.5.1" % "it,test"
   ),
   scmInfo := Some(
     ScmInfo(
@@ -64,7 +66,7 @@ lazy val scalaAdSdk = (project in file("."))
     if (isSnapshot.value)
       Some("Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
     else
-      publishTo.value //Here we are assuming that the bintray plugin does its magic s
+      publishTo.value //Here we are assuming that the bintray plugin does its magic
   },
   credentials := {
     if(isSnapshot.value) 
