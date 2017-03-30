@@ -62,12 +62,13 @@ lazy val scalaAdSdk = (project in file("."))
     )
   ),
   publishArtifact in Test := false,
-  
   publishTo := {
-    if (version.value.nonEmpty && isSnapshot.value) {
+    if (isSnapshot.value) {
       Some(s"Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
-    } else
+    } else {
+      println(s"Value: NoTags:${dynverGitDescribeOutput.value.hasNoTags}, isDirty ${dynverGitDescribeOutput.value.isDirty}, suffix: ${dynverGitDescribeOutput.value.get.dirtySuffix}")
       publishTo.value //Here we are assuming that the bintray plugin does its magic
+    }
   },
   credentials := {
     if(isSnapshot.value) 
@@ -75,7 +76,5 @@ lazy val scalaAdSdk = (project in file("."))
     else
       credentials.value
   },
-  bintrayReleaseOnPublish := !isSnapshot.value,
-  version in ThisBuild ~= (_.replace('+', '-')),
-  dynver in ThisBuild ~= (_.replace('+', '-'))
+  bintrayReleaseOnPublish := !isSnapshot.value
 )
