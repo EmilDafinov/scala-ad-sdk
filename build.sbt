@@ -80,5 +80,11 @@ lazy val scalaAdSdk = (project in file("."))
   isSnapshot := {
     val versionDesc = dynverGitDescribeOutput.value.get
     versionDesc.hasNoTags() || versionDesc.isDirty() || versionDesc.commitSuffix.distance > 0
-  }
+  },
+  version := {
+    if(isSnapshot.value)
+      version.value + "-SNAPSHOT"
+    else
+      version.value
+  }  
 )
