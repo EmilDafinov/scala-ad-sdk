@@ -76,5 +76,9 @@ lazy val scalaAdSdk = (project in file("."))
     else
       credentials.value
   },
-  bintrayReleaseOnPublish := !isSnapshot.value
+  bintrayReleaseOnPublish := !isSnapshot.value,
+  isSnapshot := {
+    val versionDesc = dynverGitDescribeOutput.value.get
+    versionDesc.hasNoTags() || versionDesc.isDirty() || versionDesc.commitSuffix.distance > 0
+  }
 )
