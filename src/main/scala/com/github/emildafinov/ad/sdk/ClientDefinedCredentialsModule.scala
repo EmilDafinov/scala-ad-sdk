@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.internal
+package com.github.emildafinov.ad.sdk
 
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 

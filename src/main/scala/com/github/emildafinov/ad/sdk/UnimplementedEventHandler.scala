@@ -1,8 +1,7 @@
-package com.github.emildafinov.ad.sdk.internal
+package com.github.emildafinov.ad.sdk
 
 import javax.naming.OperationNotSupportedException
 
-import com.github.emildafinov.ad.sdk.{EventHandler, EventReturnAddress}
 import com.typesafe.scalalogging.StrictLogging
 
 private[sdk] class UnimplementedEventHandler[U](eventType: Class[U]) extends EventHandler[U] with StrictLogging {

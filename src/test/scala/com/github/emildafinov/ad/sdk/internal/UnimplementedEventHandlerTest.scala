@@ -4,7 +4,7 @@ import javax.naming.OperationNotSupportedException
 
 import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.payload.Event
-import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
+import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnimplementedEventHandler, UnitTestSpec}
 
 class UnimplementedEventHandlerTest extends UnitTestSpec {
 

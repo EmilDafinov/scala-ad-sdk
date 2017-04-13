@@ -1,16 +1,15 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk
 
 import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.ApiResults
-import com.github.emildafinov.ad.sdk.{AkkaSpec, EventReturnAddressImpl, UnitTestSpec, WiremockHttpServiceTestSuite}
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
-class AppMarketEventResolverTest extends UnitTestSpec with AkkaSpec with WiremockHttpServiceTestSuite {
+class AppMarketEventResolverITTest extends ITTestSpec {
 
   behavior of "AppMarketEventResolver"
 

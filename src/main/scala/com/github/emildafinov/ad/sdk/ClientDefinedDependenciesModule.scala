@@ -1,9 +1,6 @@
-package com.github.emildafinov.ad.sdk.internal
+package com.github.emildafinov.ad.sdk
 
-import com.github.emildafinov.ad.sdk.EventHandler
-import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.payloads._
-import com.github.emildafinov.ad.sdk.event.responses._
 
 /**
   * Abstract trait whose implementation should define all the dependencies that a user of the SDK can

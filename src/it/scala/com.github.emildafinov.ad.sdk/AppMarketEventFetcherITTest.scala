@@ -1,4 +1,4 @@
-package com.github.emildafinov.ad.sdk.event
+package com.github.emildafinov.ad.sdk
 
 import java.util.Optional
 
@@ -6,18 +6,14 @@ import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMa
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
 import com.github.emildafinov.ad.sdk.payload.EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
 import com.github.emildafinov.ad.sdk.payload._
-import com.github.emildafinov.ad.sdk.{AkkaSpec, UnitTestSpec, WiremockHttpServiceTestSuite}
+import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
-import com.github.emildafinov.ad.sdk.util.readResourceFile
 
 import scala.io.Source
 import scala.language.postfixOps
 
-class AppMarketEventFetcherTest
-  extends UnitTestSpec
-    with AkkaSpec
-    with WiremockHttpServiceTestSuite {
+class AppMarketEventFetcherITTest extends ITTestSpec {
 
   behavior of "AppMarketEventFetcher"
 
@@ -61,7 +57,7 @@ class AppMarketEventFetcherTest
     val testClientSecret = "abcdef"
     val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
 
-    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/com/github/emildafinov/ad/sdk/event/subscription_order_event_payload.json")).mkString
+    val expectedEventPayloadJson = Source.fromURL(getClass.getResource("/event/subscription_order_event_payload.json")).mkString
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)
@@ -113,7 +109,7 @@ class AppMarketEventFetcherTest
     val testClientSecret = "abcdef"
     val testAppmarketCredentials = AppMarketCredentialsImpl(clientKey = testClientKey, clientSecret = testClientSecret)
 
-    val expectedEventPayloadJson: String = readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_closed_event_payload.json")
+    val expectedEventPayloadJson: String = readResourceFile("/event/subscription_closed_event_payload.json")
 
     when {
       mockCredentialsSuppler.readCredentialsFor(testClientKey)

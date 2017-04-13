@@ -1,9 +1,8 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
+import com.github.emildafinov.ad.sdk.{AkkaDependenciesModule, ClientDefinedCredentialsModule, ClientDefinedDependenciesModule}
 import com.github.emildafinov.ad.sdk.authentication.{AuthorizationTokenGenerator, OAuthAuthenticatorFactory, OauthSignatureParser}
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
-import com.github.emildafinov.ad.sdk.internal.{ClientDefinedCredentialsModule, ClientDefinedDependenciesModule}
 
 trait RoutingDependenciesModule {
   this: ClientDefinedDependenciesModule

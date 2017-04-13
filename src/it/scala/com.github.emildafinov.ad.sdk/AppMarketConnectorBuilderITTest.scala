@@ -9,7 +9,6 @@ import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{HttpHeader, HttpRequest}
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.event.payloads.{AddonSubscriptionOrder, SubscriptionCancel, SubscriptionOrder}
-import com.github.emildafinov.ad.sdk.external.AppMarketConnectorBuilder
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.{Matchers, Mockito}
@@ -17,9 +16,8 @@ import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
 import scala.language.postfixOps
 
-class AppMarketConnectorBuilderITTest extends UnitTestSpec
-  with AkkaSpec
-  with WiremockHttpServiceTestSuite {
+class AppMarketConnectorBuilderITTest 
+  extends ITTestSpec {
 
   behavior of "AppMarketConnector"
 
@@ -69,7 +67,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           .willReturn {
             aResponse()
               .withHeader("Content-Type", "application/json")
-              .withBody(readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_order_event_payload.json"))
+              .withBody(readResourceFile("/event/subscription_cancel_event_payload.json"))
               .withStatus(200)
           }
       )
@@ -117,7 +115,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           .willReturn {
             aResponse()
               .withHeader("Content-Type", "application/json")
-              .withBody(readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_cancel_event_payload.json"))
+              .withBody(readResourceFile("/event/subscription_cancel_event_payload.json"))
               .withStatus(200)
           }
       )
@@ -165,7 +163,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           .willReturn {
             aResponse()
               .withHeader("Content-Type", "application/json")
-              .withBody(readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_order_addon_payload.json"))
+              .withBody(readResourceFile("/event/subscription_order_addon_payload.json"))
               .withStatus(200)
           }
       )
@@ -213,7 +211,7 @@ class AppMarketConnectorBuilderITTest extends UnitTestSpec
           .willReturn {
             aResponse()
               .withHeader("Content-Type", "application/json")
-              .withBody(readResourceFile("/com/github/emildafinov/ad/sdk/event/subscription_order_addon_payload.json"))
+              .withBody(readResourceFile("/event/subscription_order_addon_payload.json"))
               .withStatus(200)
           }
       )
