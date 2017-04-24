@@ -8,7 +8,7 @@ addSbtPlugin("io.spray" % "sbt-revolver" % "0.8.0")
 
 addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.5.2")
 
-addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
+addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.4.0")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
 
