@@ -1,8 +1,8 @@
 val AKKA_VERSION = "2.4.16"
 val AKKA_HTTP_VERSION = "10.0.4"
-val SCALATEST_VERSION = "3.0.0"
+val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
-val JSON4S_VERSION = "3.5.0"
+val JSON4S_VERSION = "3.5.1"
 
 lazy val versionSettings = Seq(
   isSnapshot := {
@@ -64,17 +64,17 @@ lazy val scalaAdSdk = (project in file("."))
   .settings(versionSettings)
   .settings(publicationSettings)
   .settings(
-    scalaVersion := "2.12.1",
+    scalaVersion := "2.12.2",
 
     organization := "com.github.emildafinov",
     name := "scala-ad-sdk",
 
     libraryDependencies ++= Seq(
       //Application config
-      "com.typesafe" % "config" % "1.3.0",
+      "com.typesafe" % "config" % "1.3.1",
 
       //Logging
-      "ch.qos.logback" % "logback-classic" % "1.1.7",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
 
       //Authentication
@@ -92,12 +92,12 @@ lazy val scalaAdSdk = (project in file("."))
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.13.0",
+      "de.heikoseeberger" %% "akka-http-json4s" % "1.15.0",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "it,test",
       "org.mockito" % "mockito-all" % "1.10.19" % "it,test",
-      "com.github.tomakehurst" % "wiremock" % "2.5.1" % "it,test"
+      "com.github.tomakehurst" % "wiremock" % "2.6.0" % "it,test"
     )
   )
