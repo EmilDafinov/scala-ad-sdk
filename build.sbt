@@ -1,5 +1,5 @@
-val AKKA_VERSION = "2.4.16"
-val AKKA_HTTP_VERSION = "10.0.4"
+val AKKA_VERSION = "2.4.17"
+val AKKA_HTTP_VERSION = "10.0.5"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.1"
@@ -31,7 +31,14 @@ lazy val publicationSettings = Seq(
   },
   credentials := {
     if (isSnapshot.value)
-      List(Path.userHome / ".bintray" / ".artifactory").filter(_.exists).map(Credentials(_))
+      Seq(
+        Credentials(
+          realm = "Artifactory Realm", 
+          host = "oss.jfrog.org", 
+          userName = System.getenv("BINTRAY_USER"), 
+          passwd = System.getenv("BINTRAY_PASSWORD")
+        )
+      )
     else
       credentials.value
   },
