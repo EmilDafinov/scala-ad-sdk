@@ -2,7 +2,7 @@ val AKKA_VERSION = "2.4.17"
 val AKKA_HTTP_VERSION = "10.0.5"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
-val JSON4S_VERSION = "3.5.1"
+val JSON4S_VERSION = "3.5.0"
 
 lazy val versionSettings = Seq(
   isSnapshot := {
