@@ -6,3 +6,5 @@ private[sdk] trait ClientDefinedCredentialsModule {
 
   protected val credentialsSupplier: AppMarketCredentialsSupplier
 }
+
+

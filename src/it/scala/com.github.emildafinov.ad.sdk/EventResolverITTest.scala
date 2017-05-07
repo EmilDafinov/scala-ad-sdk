@@ -9,9 +9,9 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
-class AppMarketEventResolverITTest extends ITTestSpec {
+class EventResolverITTest extends ITTestSpec {
 
-  behavior of "AppMarketEventResolver"
+  behavior of "EventResolver"
 
   val credentialsSupplier: AppMarketCredentialsSupplier = mock[AppMarketCredentialsSupplier]
 

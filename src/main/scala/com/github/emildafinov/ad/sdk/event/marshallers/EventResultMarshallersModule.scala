@@ -1,13 +1,11 @@
 package com.github.emildafinov.ad.sdk.event.marshallers
 
 import com.github.emildafinov.ad.sdk.event.responses._
+import com.github.emildafinov.ad.sdk.event.responses.marshallers.EventResponseMarshaller
 import com.github.emildafinov.ad.sdk.payload.ApiResult
- 
-
-
 
 trait EventResultMarshallersModule {
-  lazy val subscriptionOrderResponseMarshaller: SubscriptionOrderResponse => ApiResult = 
+  lazy val subscriptionOrderResponseMarshaller: EventResponseMarshaller[SubscriptionOrderResponse] = 
     SubscriptionOrderResponseMarshaller()
 
   lazy val subscriptionCancelResponseMarshaller: SubscriptionCancelResponse => ApiResult = ???

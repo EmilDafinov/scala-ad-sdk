@@ -1,8 +1,12 @@
 package com.github.emildafinov.ad.sdk.event.payloads;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.github.emildafinov.ad.sdk.EventReturnAddress;
-import scala.Unit;
-import scala.concurrent.Future;
+import com.github.emildafinov.ad.sdk.event.SdkProvidedEventResolver;
+import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver;
+import com.github.emildafinov.ad.sdk.payload.ApiResult;
+import scala.Function1;
 
 /**
  * Implementations of this class is what connectors implemented using the SDK would use in order to signal 
@@ -13,6 +17,6 @@ import scala.concurrent.Future;
  *           or else the results might be unpredictable.
  */
 public interface EventResolver<T> {
-	Future<Unit> resolveWithFailure(String errorMessage, EventReturnAddress eventReturnAddress);
-	Future<Unit> resolveSuccessfully(T eventResponse, EventReturnAddress eventReturnAddress);
+	CompletableFuture<Void> resolveWithFailure(String errorMessage, EventReturnAddress eventReturnAddress);
+	CompletableFuture<Void> resolveSuccessfully(T eventResponse, EventReturnAddress eventReturnAddress);
 }

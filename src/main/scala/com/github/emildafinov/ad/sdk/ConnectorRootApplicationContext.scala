@@ -16,7 +16,7 @@ private[sdk] trait ConnectorRootApplicationContext
   with ClientDefinedCredentialsModule
   with RoutingDependenciesModule
   with RawEventHandlersModule
-  with EventResultMarshallersModule
+//  with EventResultMarshallersModule
   with CustomDirectivesModule
   with AppMarketCommunicationRoutesModule
   with RoutesModule {

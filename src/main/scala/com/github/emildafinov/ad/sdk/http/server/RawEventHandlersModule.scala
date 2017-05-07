@@ -11,8 +11,7 @@ trait RawEventHandlersModule {
   this: ClientDefinedDependenciesModule
     with AkkaDependenciesModule
     with RichEventParsersModule
-    with RoutingDependenciesModule
-    with EventResultMarshallersModule =>
+    with RoutingDependenciesModule =>
 
   lazy val subscriptionOrderRawEventHandler: RawEventHandler[SubscriptionOrder, SubscriptionOrderResponse] =
     new RawEventHandler(

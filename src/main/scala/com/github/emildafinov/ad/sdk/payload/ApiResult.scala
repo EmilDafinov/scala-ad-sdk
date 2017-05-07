@@ -20,8 +20,6 @@ object ApiResults {
   def unknownError(message: String = "An unknown error has occurred"): ApiResult = ApiResult(
     success = false,
     message = message,
-    errorCode = "UNKNOWN_ERROR",
-    accountIdentifier = "",
-    userIdentifier = ""
+    errorCode = "UNKNOWN_ERROR"
   )
 }
