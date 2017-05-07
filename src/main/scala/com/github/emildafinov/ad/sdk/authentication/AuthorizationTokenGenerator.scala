@@ -22,7 +22,7 @@ class AuthorizationTokenGenerator extends StrictLogging {
         marketplaceCredentials.clientKey(),
         marketplaceCredentials.clientSecret()
       )
-    )(httpMethodName, resourceUrl, marketplaceCredentials)
+    )(httpMethodName, resourceUrl)
   }
 
   /**
@@ -48,12 +48,10 @@ class AuthorizationTokenGenerator extends StrictLogging {
         nonce = nonce,
         timestamp = timeStamp
       )
-    )(httpMethodName, resourceUrl, marketplaceCredentials)
+    )(httpMethodName, resourceUrl)
 
   private def signWithConsumer(consumer: OAuthConsumer)
-                              (httpMethodName: String,
-                               resourceUrl: String,
-                               marketplaceCredentials: AppMarketCredentials): String = {
+                              (httpMethodName: String, resourceUrl: String): String = {
 
     val request = httpMethodName match {
       case requestMethod if requestMethod.equalsIgnoreCase(HttpGet.METHOD_NAME) => new HttpGet(resourceUrl)
