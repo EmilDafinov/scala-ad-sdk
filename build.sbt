@@ -76,7 +76,7 @@ lazy val scalaAdSdk = (project in file("."))
     organization := "com.github.emildafinov",
     name := "scala-ad-sdk",
     
-    coverageExcludedFiles := "*Module.scala",
+    coverageExcludedFiles := ".*Module.*;",
     libraryDependencies ++= Seq(
       //Application config
       "com.typesafe" % "config" % "1.3.1",
