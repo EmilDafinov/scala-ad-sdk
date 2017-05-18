@@ -13,7 +13,7 @@ before_script:
     ./travis_bintray_credentials.sh
   - sbt dynverAssertVersion
 script:
-    - sbt ++$TRAVIS_SCALA_VERSION clean coverage test it:test publish #Publish artifacts
+    - sbt ++$TRAVIS_SCALA_VERSION clean coverage test it:test coverageOff publish #Publish artifacts
     - sbt coverageReport 
     - sbt coverageAggregate 
     - sbt codacyCoverage
