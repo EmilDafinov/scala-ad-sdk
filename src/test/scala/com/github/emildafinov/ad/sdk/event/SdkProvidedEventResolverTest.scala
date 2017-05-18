@@ -4,17 +4,18 @@ import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsImpl
 import com.github.emildafinov.ad.sdk.event.responses.marshallers.EventResponseMarshaller
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
 import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
-import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnitTestSpec}
+import com.github.emildafinov.ad.sdk.{EventReturnAddress, EventReturnAddressImpl, UnitTestSpec}
 import org.mockito.Matchers.{any, eq => mockEq}
 import org.mockito.Mockito.{verify, when}
 import org.mockito.{ArgumentCaptor, Mockito}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionException, Future}
 
 class SdkProvidedEventResolverTest extends UnitTestSpec {
 
   behavior of "SdkProvidedEventResolver"
+  
   private val appMarketEventResolverMock = mock[AppMarketEventResolver]
   private val testResolutionHost = "http://example.com"
   private val testEventId = "eventId"
@@ -22,6 +23,7 @@ class SdkProvidedEventResolverTest extends UnitTestSpec {
     clientKey = "clientKey",
     clientSecret = "clientSecret"
   )
+  
   private val testReturnAddress = new EventReturnAddressImpl(
     testEventId,
     testResolutionHost,
@@ -93,5 +95,49 @@ class SdkProvidedEventResolverTest extends UnitTestSpec {
       )
 
     returnMessageCaptor.getValue shouldEqual expectedPayloadSent
+  }
+  
+  it should "complete the java future exceptionally if the appMarketEventResolver fails on resolve successfully" in  {
+    
+    //Given
+    val tested = new SdkProvidedEventResolver[String](appMarketEventResolverMock, mock[EventResponseMarshaller[String]])
+    val expectedException = new RuntimeException
+    
+    when {
+      appMarketEventResolverMock.sendEventResolvedCallback(any[EventReturnAddress], any[ApiResult])
+    } thenReturn {
+      Future.failed(expectedException)
+    }
+    
+    //When
+    val actualFuture = tested.resolveSuccessfully(testEventResponse, testReturnAddress)
+    
+    //Then
+    val actualException = the [ExecutionException] thrownBy {
+      actualFuture.get()
+    }  
+    actualException.getCause shouldEqual expectedException
+  }
+
+  it should "complete the java future exceptionally if the appMarketEventResolver fails on resolve with failure" in  {
+
+    //Given
+    val tested = new SdkProvidedEventResolver[String](appMarketEventResolverMock, mock[EventResponseMarshaller[String]])
+    val expectedException = new RuntimeException
+
+    when {
+      appMarketEventResolverMock.sendEventResolvedCallback(any[EventReturnAddress], any[ApiResult])
+    } thenReturn {
+      Future.failed(expectedException)
+    }
+
+    //When
+    val actualFuture = tested.resolveWithFailure(testEventResponse, testReturnAddress)
+
+    //Then
+    val actualException = the [ExecutionException] thrownBy {
+      actualFuture.get()
+    }
+    actualException.getCause shouldEqual expectedException
   }
 }
