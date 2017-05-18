@@ -27,15 +27,15 @@ lazy val publicationSettings = Seq(
       Some(s"Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
     else
       publishTo.value //Here we are assuming that the bintray-sbt plugin does its magic and the publish settings are set to
-                      //point to Bintray
+    //point to Bintray
   },
   credentials := {
     if (isSnapshot.value)
       Seq(
         Credentials(
-          realm = "Artifactory Realm", 
-          host = "oss.jfrog.org", 
-          userName = System.getenv("BINTRAY_USER"), 
+          realm = "Artifactory Realm",
+          host = "oss.jfrog.org",
+          userName = System.getenv("BINTRAY_USER"),
           passwd = System.getenv("BINTRAY_PASSWORD")
         )
       )
@@ -75,7 +75,7 @@ lazy val scalaAdSdk = (project in file("."))
 
     organization := "com.github.emildafinov",
     name := "scala-ad-sdk",
-    
+
     coverageExcludedFiles := ".*Module.*;",
     libraryDependencies ++= Seq(
       //Application config
