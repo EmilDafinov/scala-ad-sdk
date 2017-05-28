@@ -47,7 +47,7 @@ lazy val publicationSettings = Seq(
 )
 
 lazy val projectMetadataSettings = Seq(
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+  licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"),
   scmInfo := Some(
     ScmInfo(
       browseUrl = url("https://github.com/EmilDafinov/scala-ad-sdk"),
