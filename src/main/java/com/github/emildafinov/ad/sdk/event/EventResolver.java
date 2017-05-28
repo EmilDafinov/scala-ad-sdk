@@ -1,12 +1,9 @@
-package com.github.emildafinov.ad.sdk.event.payloads;
+package com.github.emildafinov.ad.sdk.event;
 
 import java.util.concurrent.CompletableFuture;
 
 import com.github.emildafinov.ad.sdk.EventReturnAddress;
-import com.github.emildafinov.ad.sdk.event.SdkProvidedEventResolver;
-import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver;
-import com.github.emildafinov.ad.sdk.payload.ApiResult;
-import scala.Function1;
+import com.github.emildafinov.ad.sdk.event.payloads.SubscriptionOrder;
 
 /**
  * Implementations of this class is what connectors implemented using the SDK would use in order to signal 

@@ -2,7 +2,7 @@ package com.github.emildafinov.ad.sdk.internal
 
 import javax.naming.OperationNotSupportedException
 
-import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
+import com.github.emildafinov.ad.sdk.event.EventResolver
 import com.github.emildafinov.ad.sdk.payload.Event
 import com.github.emildafinov.ad.sdk.{EventReturnAddressImpl, UnimplementedEventHandler, UnitTestSpec}
 

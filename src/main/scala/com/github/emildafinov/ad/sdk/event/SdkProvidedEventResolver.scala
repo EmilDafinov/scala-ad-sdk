@@ -3,10 +3,9 @@ package com.github.emildafinov.ad.sdk.event
 import java.util.concurrent.CompletableFuture
 
 import com.github.emildafinov.ad.sdk.EventReturnAddress
-import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
 import com.github.emildafinov.ad.sdk.event.responses.marshallers.EventResponseMarshaller
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
-import com.github.emildafinov.ad.sdk.payload.{ApiResult, ApiResults}
+import com.github.emildafinov.ad.sdk.payload.ApiResults
 import com.typesafe.scalalogging.StrictLogging
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -1,7 +1,6 @@
 package com.github.emildafinov.ad.sdk.event;
 
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier;
-import com.github.emildafinov.ad.sdk.event.payloads.EventResolver;
 import com.github.emildafinov.ad.sdk.event.resolvers.EventResolverFactory$;
 import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse;
 

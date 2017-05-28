@@ -1,10 +1,8 @@
 package com.github.emildafinov.ad.sdk.event
 
-import com.github.emildafinov.ad.sdk.{ClientDefinedCredentialsModule, ClientDefinedDependenciesModule, ConnectorResolversAkkaDependenciesModule}
 import com.github.emildafinov.ad.sdk.authentication.AppMarketCredentialsSupplier
 import com.github.emildafinov.ad.sdk.event.marshallers.EventResultMarshallersModule
-import com.github.emildafinov.ad.sdk.event.payloads.EventResolver
-import com.github.emildafinov.ad.sdk.event.responses.SubscriptionOrderResponse
+import com.github.emildafinov.ad.sdk.{ClientDefinedCredentialsModule, ConnectorResolversAkkaDependenciesModule}
 
 package object resolvers {
 
@@ -16,8 +14,6 @@ package object resolvers {
                           with EventResolversModule {
       override protected val credentialsSupplier: AppMarketCredentialsSupplier = credSupplier
     }
-    new EventResolverFactory {
-      override def subscriptionOrderResolver(): EventResolver[SubscriptionOrderResponse] = context.subscriptionOrderEventResolver
-    }
+    () => context.subscriptionOrderEventResolver
   }
 }
