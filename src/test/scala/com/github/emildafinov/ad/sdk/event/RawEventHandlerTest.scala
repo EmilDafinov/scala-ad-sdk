@@ -3,10 +3,10 @@ package com.github.emildafinov.ad.sdk.event
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes.Accepted
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventResolver
-import com.github.emildafinov.ad.sdk.payload.EventType.SUBSCRIPTION_ORDER
-import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
-import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.http.server.RawEventHandler
+import com.github.emildafinov.ad.sdk.payload.EventType.SUBSCRIPTION_ORDER
+import com.github.emildafinov.ad.sdk.payload.PricingDuration.YEARLY
+import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.{EventHandler, UnitTestSpec}
 import org.mockito.Matchers.any
 import org.mockito.Mockito
@@ -36,25 +36,7 @@ class RawEventHandlerTest extends UnitTestSpec {
     //Given
     val testEventId = "eventId"
     val testClientKey = "testClientKey"
-    val testEvent = Event(
-      `type` = SUBSCRIPTION_ORDER,
-      marketplace = Marketplace("testPartner", "http://example.com"),
-      creator = User(),
-      payload =
-        Payload(
-          company = null,
-          account = Option(
-            Account(
-              parentAccountIdentifier = Option("")
-            )
-          ),
-          notice = Option(
-            Notice(
-              `type` = CLOSED
-            )
-          )
-        )
-    )
+    val testEvent: Event = sampleEvent
 
     when {
       mockClientHandler.handle(any(), any())
@@ -74,5 +56,13 @@ class RawEventHandlerTest extends UnitTestSpec {
       verify(mockClientHandler, Mockito.atMost(1))
         .handle(any(), any())
     }
+  }
+
+  private def sampleEvent = {
+    Event(
+      `type` = SUBSCRIPTION_ORDER,
+      marketplace = Marketplace("testPartner", "http://example.com"),
+      payload = Payload()
+    )
   }
 }

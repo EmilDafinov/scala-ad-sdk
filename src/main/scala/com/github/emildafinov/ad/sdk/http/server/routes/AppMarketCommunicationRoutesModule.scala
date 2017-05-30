@@ -7,14 +7,13 @@ import akka.http.scaladsl.server.{Directives, ExceptionHandler, Route}
 import com.github.emildafinov.ad.sdk.AkkaDependenciesModule
 import com.github.emildafinov.ad.sdk.http.client.{CouldNotFetchRawMarketplaceEventException, MalformedRawMarketplaceEventPayloadException}
 import com.github.emildafinov.ad.sdk.http.server.RawEventHandlersModule
-import com.github.emildafinov.ad.sdk.payload.NoticeType.{CLOSED, DEACTIVATED, REACTIVATED, UPCOMING_INVOICE}
 import com.github.emildafinov.ad.sdk.payload.{ApiResults, Event}
 import com.github.emildafinov.ad.sdk.http.server.routing.directives.CustomDirectivesModule
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport
 import org.json4s._
 import org.json4s.jackson.Serialization
 import org.json4s.jackson.Serialization.write
-
+import com.github.emildafinov.ad.sdk.payload.NoticeType._
 import scala.language.postfixOps
 
 /**

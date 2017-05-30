@@ -17,7 +17,7 @@ class UnimplementedEventHandlerTest extends UnitTestSpec {
 
   it should "throw when processing an event" in {
     //Given
-    val testEvent = Event(null, null, null, null)
+    val testEvent = mock[Event]
     val mockReturnAddress = new EventReturnAddressImpl(null, null, null)
 
     //Then

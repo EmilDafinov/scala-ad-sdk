@@ -4,11 +4,13 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
-import com.github.emildafinov.ad.sdk.payload.EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
+import EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
+import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
+import com.github.emildafinov.ad.sdk.payload.PricingDuration.MONTHLY
 
 import scala.io.Source
 import scala.language.postfixOps
@@ -82,11 +84,33 @@ class AppMarketEventFetcherITTest extends ITTestSpec {
         partner = "APPDIRECT",
         baseUrl = "http://sample.appdirect.com"
       ),
-      creator = User(),
+      creator = Some (
+        User(
+          uuid = "cd8f0308-1eaa-4eb0-bdb4-1d773be5fcca",
+          openId = "https://dev5.appdirect.com/openid/id/cd8f0308-1eaa-4eb0-bdb4-1d773be5fcca",
+          email = "dev5ad081816@yopmail.com",
+          firstName = "test",
+          lastName = "tester",
+          language = "en",
+          locale = "en-US",
+          attributes = Map.empty
+        )
+      ),
       payload = Payload(
-        company = Company(),
-        account = None,
-        notice = None
+        company = Some (
+          Company(
+            uuid = "10471b2d-7b48-4b6d-a7fc-9e0c5acd5f77",
+            name = "test comp",
+            website = "yopmail.com",
+            country = "US"
+          )
+        ),
+        order = Some (
+          Order(
+            editionCode = "Google-Apps-For-Business",
+            pricingDuration = MONTHLY
+          ) 
+        )
       )
     )
 
@@ -134,13 +158,18 @@ class AppMarketEventFetcherITTest extends ITTestSpec {
         partner = "APPDIRECT",
         baseUrl = "http://sample.appdirect.com"
       ),
-      creator = User(),
       payload = Payload(
-        company = Company(),
         account = Some(
-          Account(None)
+          Account(
+            accountIdentifier = "a3f72246-5377-4d92-8bdc-b1b6b450c55c",
+            status = AccountStatus.CANCELLED
+          )
         ),
-        notice = Some(Notice(NoticeType.CLOSED))
+        notice = Some(
+          Notice(
+            `type` = CLOSED
+          )
+        )
       )
     )
 
