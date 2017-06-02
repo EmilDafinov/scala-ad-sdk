@@ -1,45 +1,36 @@
+scala: 2.12.2
+
+jdk: oraclejdk8
+
 language: scala
+
 cache:
   directories:
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot/"
+before_script:
+  - chmod +x ./src/scripts/*.sh
+
 jobs:
   include:
-
+ 
     - stage: test
       env:
         - NAME="Assert project version is not overriden manually"
-      scala: 2.12.2
-      jdk: oraclejdk8
-      script:
-        - sbt dynverAssertVersion
+      script: ./src/scripts/assert_project_version_not_overriden.sh
 
     - stage: test
       env:
         - NAME="Run unit tests"
-      scala: 2.12.2
-      jdk: oraclejdk8
-      script: 
-        - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
-        - sbt coverageReport coverageAggregate codacyCoverage
+      script: ./src/scripts/run_unit_tests_and_report_coverage.sh
         
     - stage: test
       env:
         - NAME="Run integration tests"
-      scala: 2.12.2
-      jdk: oraclejdk8
-      script: 
-        - sbt ++$TRAVIS_SCALA_VERSION clean it:test
+      script: ./src/scripts/run_integration_tests.sh
         
     - stage: publish build artifacts
-      scala: 2.12.2
-      jdk: oraclejdk8
-      script: 
-        # Write the bintray credentials to disk (sbt-bintray expects them to be present there in order to run)
-        - curl -O https://gist.githubusercontent.com/EmilDafinov/c874e7f3abe77dd770c2bd26828b9224/raw/f75b659d1a2c3634140eace2c7899dc634e2790b/travis_bintray_credentials.sh &&
-          chmod +x travis_bintray_credentials.sh &&
-          ./travis_bintray_credentials.sh
-        - sbt ++$TRAVIS_SCALA_VERSION publish
+      script: ./src/scripts/publish_build_artifacts.sh
 
 notifications:
   email: false
