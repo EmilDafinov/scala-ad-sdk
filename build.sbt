@@ -1,8 +1,8 @@
-val AKKA_VERSION = "2.4.17"
-val AKKA_HTTP_VERSION = "10.0.5"
+val AKKA_VERSION = "2.4.18"
+val AKKA_HTTP_VERSION = "10.0.7"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
-val JSON4S_VERSION = "3.5.1"
+val JSON4S_VERSION = "3.5.2"
 
 lazy val versionSettings = Seq(
   isSnapshot := {
@@ -95,12 +95,12 @@ lazy val scalaAdSdk = (project in file("."))
       "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
-      "io.github.lhotari" %% "akka-http-health" % "1.0.7",
+      "io.github.lhotari" %% "akka-http-health" % "1.0.8",
 
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.15.0",
+      "de.heikoseeberger" %% "akka-http-json4s" % "1.16.1",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,

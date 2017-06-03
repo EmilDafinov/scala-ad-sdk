@@ -6,7 +6,7 @@ addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5")
 
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.8.0")
 
-addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.5.2")
+addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.5.3")
 
 addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
 
