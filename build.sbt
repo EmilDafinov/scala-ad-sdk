@@ -1,4 +1,4 @@
-val AKKA_VERSION = "2.4.18"
+val AKKA_VERSION = "2.5.2"
 val AKKA_HTTP_VERSION = "10.0.7"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
@@ -92,6 +92,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Http
       "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
+      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
