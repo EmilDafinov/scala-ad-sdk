@@ -8,6 +8,7 @@ cache:
   directories:
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot/"
+
 before_script:
   - chmod +x ./src/scripts/*.sh
 
@@ -23,12 +24,12 @@ jobs:
       env:
         - NAME="Run unit tests"
       script: ./src/scripts/run_unit_tests_and_report_coverage.sh
-        
+
     - stage: test
       env:
         - NAME="Run integration tests"
       script: ./src/scripts/run_integration_tests.sh
-        
+
     - stage: publish build artifacts
       script: ./src/scripts/publish_build_artifacts.sh
 

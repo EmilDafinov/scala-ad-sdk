@@ -4,13 +4,13 @@ import java.util.Optional
 
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsImpl, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.http.client.AppMarketEventFetcher
+import com.github.emildafinov.ad.sdk.payload.EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
+import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
+import com.github.emildafinov.ad.sdk.payload.PricingDuration.MONTHLY
 import com.github.emildafinov.ad.sdk.payload._
 import com.github.emildafinov.ad.sdk.util.readResourceFile
 import com.github.tomakehurst.wiremock.client.WireMock.{get, _}
 import org.mockito.Mockito.{reset, when}
-import EventType.{SUBSCRIPTION_NOTICE, SUBSCRIPTION_ORDER}
-import com.github.emildafinov.ad.sdk.payload.NoticeType.CLOSED
-import com.github.emildafinov.ad.sdk.payload.PricingDuration.MONTHLY
 
 import scala.io.Source
 import scala.language.postfixOps
@@ -92,8 +92,7 @@ class AppMarketEventFetcherITTest extends ITTestSpec {
           firstName = "test",
           lastName = "tester",
           language = "en",
-          locale = "en-US",
-          attributes = Map.empty
+          locale = "en-US"
         )
       ),
       payload = Payload(
@@ -110,7 +109,8 @@ class AppMarketEventFetcherITTest extends ITTestSpec {
             editionCode = "Google-Apps-For-Business",
             pricingDuration = MONTHLY
           ) 
-        )
+        ),
+        configuration = Some(Map("alternateEmail" -> "dev5ad081816@yopmail.com"))
       )
     )
 

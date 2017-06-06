@@ -9,10 +9,10 @@ import com.github.emildafinov.ad.sdk.payload.PricingUnit.PricingUnit
 
 case class Event(`type`: EventType,
                  marketplace: Marketplace,
-                 applicationUuid: Option[String] = None,
                  creator: Option[User] = None,
-                 flag: Option[EventFlag] = None,
-                 payload: Payload)
+                 payload: Payload,
+                 applicationUuid: Option[String] = None,
+                 flag: Option[EventFlag] = None)
 
 object EventType extends Enumeration {
   type EventType = Value
@@ -39,14 +39,14 @@ case class User(uuid: String,
                 lastName: String, 
                 language: String, 
                 locale: String, 
-                attributes: Map[String, String])
+                attributes: Option[Map[String, String]] = None)
 
 case class Payload(account: Option[Account] = None,
                    notice: Option[Notice] = None,
                    company: Option[Company] = None,
                    user: Option[User] = None,
                    order: Option[Order] = None,
-                   configuration: Map[String, String] = Map.empty)
+                   configuration: Option[Map[String, String]] = None)
 
 
 case class Account(accountIdentifier: String, 

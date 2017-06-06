@@ -7,8 +7,8 @@ import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials}
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator, UnknownClientKeyException}
-import com.github.emildafinov.ad.sdk.payload.{Event, EventType, NoticeType}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator}
+import com.github.emildafinov.ad.sdk.payload._
 import org.json4s._
 import org.json4s.ext.EnumNameSerializer
 import org.json4s.jackson.JsonMethods._
@@ -29,9 +29,16 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
                             am: Materializer,
                             ec: ExecutionContext) {
 
-  implicit val formats: Formats = DefaultFormats + new EnumNameSerializer(NoticeType) + new EnumNameSerializer(EventType) 
+  implicit val formats: Formats = DefaultFormats + 
+                                  new EnumNameSerializer(NoticeType) + 
+                                  new EnumNameSerializer(EventFlag) + 
+                                  new EnumNameSerializer(PricingDuration) + 
+                                  new EnumNameSerializer(PricingUnit) + 
+                                  new EnumNameSerializer(AccountStatus) + 
+                                  new EnumNameSerializer(EventType) 
   
-  def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, eventFetchUrl: String): (String, Event) = {
+  def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, 
+                             eventFetchUrl: String): (String, Event) = {
   
     val parsedRawEvent = (for {
       eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials)
@@ -53,7 +60,8 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
     )
   }
 
-  private def signedFetchRequest(eventFetchUrl: String, marketplaceCredentials: AppMarketCredentials) = Future {
+  private def signedFetchRequest(eventFetchUrl: String, 
+                                 marketplaceCredentials: AppMarketCredentials) = Future {
 
     val authorizationHeader = Authorization(
       credentials = GenericHttpCredentials(
