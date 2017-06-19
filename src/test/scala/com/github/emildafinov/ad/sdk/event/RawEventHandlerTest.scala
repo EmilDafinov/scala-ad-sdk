@@ -59,7 +59,9 @@ class RawEventHandlerTest extends UnitTestSpec {
     when {
       mockClientHandler.handle(any(), any())
     } thenAnswer { _ =>
-      Thread.sleep(Long.MaxValue) //Wait a very long time
+      while (true) {
+        // Loop forever
+      }
       1
     }
 

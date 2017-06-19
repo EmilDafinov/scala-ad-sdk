@@ -92,7 +92,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Http
       "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
-      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION,
+      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION, // Added to allow using the latest version of Akka with Akka Http 10.0.7
       "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
