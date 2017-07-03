@@ -3,6 +3,7 @@ val AKKA_HTTP_VERSION = "10.0.7"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.2"
+val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
 
 lazy val versionSettings = Seq(
   isSnapshot := {
@@ -46,11 +47,13 @@ lazy val publicationSettings = Seq(
   bintrayReleaseOnPublish := !isSnapshot.value
 )
 
+
 lazy val projectMetadataSettings = Seq(
   licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"),
+  homepage := Some(url(PROJECT_HOMEPAGE_URL)),
   scmInfo := Some(
     ScmInfo(
-      browseUrl = url("https://github.com/EmilDafinov/scala-ad-sdk"),
+      browseUrl = url(PROJECT_HOMEPAGE_URL),
       connection = "scm:git:git@github.com:EmilDafinov/scala-ad-sdk.git"
     )
   ),
