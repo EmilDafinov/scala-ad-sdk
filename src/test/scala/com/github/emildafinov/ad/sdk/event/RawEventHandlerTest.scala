@@ -62,13 +62,13 @@ class RawEventHandlerTest extends UnitTestSpec {
       while (true) {
         // Loop forever
       }
-      1
+      ???
     }
 
     //When
     whenReady(
       future = tested.processRawEvent(testEventId, testEvent, testClientKey),
-      timeout = Timeout(1 second)
+      timeout = Timeout(2 seconds)
     ) { result =>
       //Then
       result shouldEqual HttpResponse(status = Accepted)
