@@ -1,5 +1,5 @@
-val AKKA_VERSION = "2.5.2"
-val AKKA_HTTP_VERSION = "10.0.7"
+val AKKA_VERSION = "2.5.3"
+val AKKA_HTTP_VERSION = "10.0.9"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.2"
@@ -86,7 +86,7 @@ lazy val scalaAdSdk = (project in file("."))
 
       //Logging
       "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.1",
 
       //Authentication
       "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
@@ -104,7 +104,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.16.1",
+      "de.heikoseeberger" %% "akka-http-json4s" % "1.17.0",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
