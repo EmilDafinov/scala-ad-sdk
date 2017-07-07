@@ -4,7 +4,7 @@ resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releas
 
 addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.5.3")
 
-addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.0")
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
 
