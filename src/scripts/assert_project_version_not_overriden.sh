@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-echo "Tags on the current commit: "
-git tag --points-at HEAD
-
-echo "Dynver output:"
-sbt dynverGitDescribeOutput
 
 # Output current project version:
 sbt version

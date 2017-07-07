@@ -9,9 +9,6 @@ cache:
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot/"
 
-before_script:
-  - chmod +x ./src/scripts/*.sh
-
 jobs:
   include:
  
