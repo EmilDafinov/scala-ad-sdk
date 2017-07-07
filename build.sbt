@@ -9,10 +9,11 @@ lazy val versionSettings = Seq(
   //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
   //  based on the git tag/sha. Here we're just tacking on the maven-compatible snapshot suffix if needed
   version := {
-    if (dynverGitDescribeOutput.value.get.isSnapshot()) 
-      version.value + "-SNAPSHOT"
-    else 
-      version.value 
+    val snapshotVersion = dynverGitDescribeOutput.value
+      .filter(gitVersion => gitVersion.isSnapshot())
+      .map(output => output.version + "-SNAPSHOT")
+
+    snapshotVersion.getOrElse(version.value)
   }
 )
 
