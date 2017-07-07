@@ -6,19 +6,13 @@ val JSON4S_VERSION = "3.5.2"
 val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
 
 lazy val versionSettings = Seq(
-  isSnapshot := {
-    dynverGitDescribeOutput.value forall { gitVersion =>
-      gitVersion.hasNoTags() || gitVersion.isDirty() || gitVersion.commitSuffix.distance > 0
-    }
-  },
-
   //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
   //  based on the git tag/sha. Here we're just tacking on the maven-compatible snapshot suffix if needed
   version := {
-    if (isSnapshot.value)
+    if (dynverGitDescribeOutput.value.get.isSnapshot()) 
       version.value + "-SNAPSHOT"
-    else
-      version.value
+    else 
+      version.value 
   }
 )
 
