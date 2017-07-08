@@ -2,10 +2,14 @@
 [![Build Status](https://travis-ci.org/EmilDafinov/scala-ad-sdk.svg?branch=master)](https://travis-ci.org/EmilDafinov/scala-ad-sdk)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4b72b43682c44efb9e6da00d60b15337)](https://www.codacy.com/app/EmilDafinov/scala-ad-sdk?utm_source=github.com&utm_medium=referral&utm_content=EmilDafinov/scala-ad-sdk&utm_campaign=Badge_Coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b72b43682c44efb9e6da00d60b15337)](https://www.codacy.com/app/EmilDafinov/scala-ad-sdk?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EmilDafinov/scala-ad-sdk&amp;utm_campaign=Badge_Grade)
+[![Dependency Status](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6)
 
 [![Download](https://api.bintray.com/packages/bintray/jcenter/scala-ad-sdk/images/download.svg) ](https://bintray.com/bintray/jcenter/scala-ad-sdk/_latestVersion)
-[![Dependency Status](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.emildafinov/scala-ad-sdk_2.12/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.github.emildafinov/scala-ad-sdk_2.12)
+
 [![Join the chat at https://gitter.im/scala-ad-sdk/Lobby](https://badges.gitter.im/scala-ad-sdk/Lobby.svg)](https://gitter.im/scala-ad-sdk/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
 # scala-ad-sdk
 
 ## Release process
