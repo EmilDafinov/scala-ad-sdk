@@ -6,13 +6,7 @@
 [![Download](https://api.bintray.com/packages/bintray/jcenter/scala-ad-sdk/images/download.svg) ](https://bintray.com/bintray/jcenter/scala-ad-sdk/_latestVersion)
 [![Dependency Status](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59371711b6ed0f0051b9f6b6)
 [![Join the chat at https://gitter.im/scala-ad-sdk/Lobby](https://badges.gitter.im/scala-ad-sdk/Lobby.svg)](https://gitter.im/scala-ad-sdk/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-## Tools
-
-The [SBT-revolver](https://github.com/spray/sbt-revolver) plugin is enabled in the project, 
-which allows you to have SBT re-compile and re-start your application when a change
-in the sources is detected
-
+# scala-ad-sdk
 
 ## Release process
 
