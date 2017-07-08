@@ -32,7 +32,7 @@ lazy val publicationSettings = Seq(
           realm = "Artifactory Realm",
           host = "oss.jfrog.org",
           userName = System.getenv("BINTRAY_USER"),
-          passwd = System.getenv("BINTRAY_PASSWORD")
+          passwd = System.getenv("BINTRAY_PASS")
         )
       )
     else
