@@ -1,16 +1,13 @@
-scala: 2.12.2
-
 jdk: oraclejdk8
 
 language: scala
+
+scala: 2.12.2
 
 cache:
   directories:
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot/"
-
-before_script:
-  - chmod +x ./src/scripts/*.sh
 
 jobs:
   include:
@@ -23,12 +20,12 @@ jobs:
     - stage: test
       env:
         - NAME="Run unit tests"
-      script: ./src/scripts/run_unit_tests_and_report_coverage.sh
+      script: sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport coverageAggregate codacyCoverage
 
     - stage: test
       env:
         - NAME="Run integration tests"
-      script: ./src/scripts/run_integration_tests.sh
+      script: sbt ++$TRAVIS_SCALA_VERSION clean it:test
 
     - stage: publish build artifacts
       script: ./src/scripts/publish_build_artifacts.sh

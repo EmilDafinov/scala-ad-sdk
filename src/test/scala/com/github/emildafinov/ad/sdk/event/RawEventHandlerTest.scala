@@ -41,14 +41,16 @@ class RawEventHandlerTest extends UnitTestSpec {
     when {
       mockClientHandler.handle(any(), any())
     } thenAnswer { _ =>
-      Thread.sleep(Long.MaxValue) //Wait a very long time
-      1
+      while (true) {
+        // Loop forever
+      }
+      ???
     }
 
     //When
     whenReady(
       future = tested.processRawEvent(testEventId, testEvent, testClientKey),
-      timeout = Timeout(1 second)
+      timeout = Timeout(2 seconds)
     ) { result =>
       //Then
       result shouldEqual HttpResponse(status = Accepted)

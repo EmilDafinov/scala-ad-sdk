@@ -16,7 +16,7 @@ import org.scalatest.concurrent.PatienceConfiguration.Timeout
 
 import scala.language.postfixOps
 
-class AppMarketConnectorBuilderITTest 
+class AppMarketConnectorBuilderImplITTest 
   extends ITTestSpec {
 
   behavior of "AppMarketConnector"
@@ -40,7 +40,7 @@ class AppMarketConnectorBuilderITTest
       clientSecret = testClientSecret
     )
 
-  private val connector = new AppMarketConnectorBuilder(
+  private val connector = new AppMarketConnectorBuilderImpl(
     subscriptionOrderHandlerMock,
     subscriptionCancelHandlerMock,
     credentialsSupplierMock

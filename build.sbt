@@ -1,23 +1,19 @@
-val AKKA_VERSION = "2.5.2"
-val AKKA_HTTP_VERSION = "10.0.7"
+val AKKA_VERSION = "2.5.3"
+val AKKA_HTTP_VERSION = "10.0.9"
 val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.2"
+val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
 
 lazy val versionSettings = Seq(
-  isSnapshot := {
-    dynverGitDescribeOutput.value forall { gitVersion =>
-      gitVersion.hasNoTags() || gitVersion.isDirty() || gitVersion.commitSuffix.distance > 0
-    }
-  },
-
   //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
   //  based on the git tag/sha. Here we're just tacking on the maven-compatible snapshot suffix if needed
   version := {
-    if (isSnapshot.value)
-      version.value + "-SNAPSHOT"
-    else
-      version.value
+    val snapshotVersion = dynverGitDescribeOutput.value
+      .filter(gitVersion => gitVersion.isSnapshot())
+      .map(output => output.version + "-SNAPSHOT")
+
+    snapshotVersion.getOrElse(version.value)
   }
 )
 
@@ -36,7 +32,7 @@ lazy val publicationSettings = Seq(
           realm = "Artifactory Realm",
           host = "oss.jfrog.org",
           userName = System.getenv("BINTRAY_USER"),
-          passwd = System.getenv("BINTRAY_PASSWORD")
+          passwd = System.getenv("BINTRAY_PASS")
         )
       )
     else
@@ -46,11 +42,13 @@ lazy val publicationSettings = Seq(
   bintrayReleaseOnPublish := !isSnapshot.value
 )
 
+
 lazy val projectMetadataSettings = Seq(
   licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"),
+  homepage := Some(url(PROJECT_HOMEPAGE_URL)),
   scmInfo := Some(
     ScmInfo(
-      browseUrl = url("https://github.com/EmilDafinov/scala-ad-sdk"),
+      browseUrl = url(PROJECT_HOMEPAGE_URL),
       connection = "scm:git:git@github.com:EmilDafinov/scala-ad-sdk.git"
     )
   ),
@@ -83,7 +81,7 @@ lazy val scalaAdSdk = (project in file("."))
 
       //Logging
       "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.1",
 
       //Authentication
       "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
@@ -92,7 +90,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Http
       "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
-      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION,
+      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION, // Added to allow using the latest version of Akka with Akka Http 10.0.7
       "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
@@ -101,7 +99,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.16.1",
+      "de.heikoseeberger" %% "akka-http-json4s" % "1.17.0",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
