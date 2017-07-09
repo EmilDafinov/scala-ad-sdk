@@ -27,20 +27,12 @@ lazy val publicationSettings = Seq(
       publishTo.value //Here we are assuming that the bintray-sbt plugin does its magic and the publish settings are set to
     //point to Bintray
   },
-  credentials := {
-    if (isSnapshot.value) {
-      Seq(
-        Credentials(
+  credentials += Credentials(
           realm = "Artifactory Realm",
           host = "oss.jfrog.org",
           userName = BINTRAY_USER,
           passwd = BINTRAY_PASSWORD
-        )
-      )
-    }
-    else
-      credentials.value
-  },
+        ),
   publishArtifact in Test := false,
   bintrayReleaseOnPublish := !isSnapshot.value
 )
