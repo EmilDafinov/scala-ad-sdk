@@ -1,6 +1,12 @@
 logLevel := Level.Warn
 
-resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
+resolvers ++= Seq(
+  "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/",
+  "Era7 maven releases" at "https://s3-eu-west-1.amazonaws.com/releases.era7.com",
+  "Jenkins repo" at "http://repo.jenkins-ci.org/public/"
+)
+
+addSbtPlugin("ohnosequences" % "sbt-github-release" % "0.4.0")
 
 addSbtPlugin("com.softwaremill.clippy" % "plugin-sbt" % "0.5.3")
 
