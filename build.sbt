@@ -4,6 +4,8 @@ val SCALATEST_VERSION = "3.0.3"
 val SIGNPOST_VERSION = "1.2.1.2"
 val JSON4S_VERSION = "3.5.2"
 val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
+val BINTRAY_USER = System.getenv("BINTRAY_USER")
+val BINTRAY_PASSWORD = System.getenv("BINTRAY_PASS")
 
 lazy val versionSettings = Seq(
   //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
@@ -26,15 +28,16 @@ lazy val publicationSettings = Seq(
     //point to Bintray
   },
   credentials := {
-    if (isSnapshot.value)
+    if (isSnapshot.value) {
       Seq(
         Credentials(
           realm = "Artifactory Realm",
           host = "oss.jfrog.org",
-          userName = System.getenv("BINTRAY_USER"),
-          passwd = System.getenv("BINTRAY_PASS")
+          userName = BINTRAY_USER,
+          passwd = BINTRAY_PASSWORD
         )
       )
+    }
     else
       credentials.value
   },
