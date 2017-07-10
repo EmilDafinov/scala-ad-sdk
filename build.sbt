@@ -8,7 +8,15 @@ val BINTRAY_USER = System.getenv("BINTRAY_USER")
 val BINTRAY_PASSWORD = System.getenv("BINTRAY_PASS")
 
 lazy val versionSettings = Seq(
+  //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
+  //  based on the git tag/sha. Here we're just tacking on the maven-compatible snapshot suffix if needed
+  version := {
+    val snapshotVersion = dynverGitDescribeOutput.value
+      .filter(gitVersion => gitVersion.isSnapshot())
+      .map(output => output.version + "-SNAPSHOT")
 
+    snapshotVersion.getOrElse(version.value)
+  }
 )
 
 lazy val publicationSettings = Seq(
