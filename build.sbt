@@ -35,7 +35,7 @@ lazy val publicationSettings = Seq(
           passwd = BINTRAY_PASSWORD
         ),
   publishArtifact in Test := false,
-  bintrayReleaseOnPublish := false //!isSnapshot.value
+  bintrayReleaseOnPublish := !isSnapshot.value
 )
 
 
