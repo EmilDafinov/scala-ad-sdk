@@ -20,6 +20,7 @@ lazy val versionSettings = Seq(
 )
 
 lazy val publicationSettings = Seq(
+  ghreleaseRepoOrg := "EmilDafinov",
   publishTo := {
     if (isSnapshot.value)
       Some(s"Artifactory Realm" at "https://oss.jfrog.org/artifactory/oss-snapshot-local;build.timestamp=" + new java.util.Date().getTime)
