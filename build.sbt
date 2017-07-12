@@ -7,6 +7,24 @@ val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
 val BINTRAY_USER = System.getenv("BINTRAY_USER")
 val BINTRAY_PASSWORD = System.getenv("BINTRAY_PASS")
 
+lazy val publishReleaseNotes = TaskKey[Unit]("publishReleaseNotes", "Automatically publishes release notes on non-snapshot versions.")
+
+val publishGithubReleaseNotesTaskDef = Def.taskDyn {
+  ghreleaseGetRepo.value
+  ghreleaseGetReleaseBuilder.value
+
+  val log = streams.value.log
+  if (!isSnapshot.value) Def.task {
+    log.info(s"Publishing release notes for version ${version.value}")
+    githubRelease.inputTaskValue
+    ()
+  }
+  else Def.task {
+    log.info(s"Skipping release notes generation since ${version.value} is a snapshot version")
+    ()
+  }
+}
+
 lazy val versionSettings = Seq(
   //  The 'version' setting is not set on purpose: its value is generated automatically by the sbt-dynver plugin
   //  based on the git tag/sha. Here we're just tacking on the maven-compatible snapshot suffix if needed
@@ -68,9 +86,11 @@ lazy val scalaAdSdk = (project in file("."))
     scalaVersion := "2.12.2",
 
     organization := "com.github.emildafinov",
+    
     name := "scala-ad-sdk",
 
     coverageExcludedFiles := ".*Module.*;",
+    
     libraryDependencies ++= Seq(
       //Application config
       "com.typesafe" % "config" % "1.3.1",
@@ -86,7 +106,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Http
       "com.typesafe.akka" %% "akka-actor" % AKKA_VERSION,
       "com.typesafe.akka" %% "akka-http-core" % AKKA_HTTP_VERSION,
-      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION, // Added to allow using the latest version of Akka with Akka Http 10.0.7
+      "com.typesafe.akka" %% "akka-stream" % AKKA_VERSION, // Added to allow using the latest version of Akka with Akka Http 10.0.9
       "com.typesafe.akka" %% "akka-http" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-testkit" % AKKA_HTTP_VERSION,
       "com.typesafe.akka" %% "akka-http-xml" % AKKA_HTTP_VERSION,
@@ -102,5 +122,7 @@ lazy val scalaAdSdk = (project in file("."))
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "it,test",
       "org.mockito" % "mockito-all" % "1.10.19" % "it,test",
       "com.github.tomakehurst" % "wiremock" % "2.6.0" % "it,test"
-    )
+    ),
+    
+    publishReleaseNotes := publishGithubReleaseNotesTaskDef.value
   )

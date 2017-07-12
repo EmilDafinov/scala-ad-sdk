@@ -27,7 +27,9 @@ jobs:
         - NAME="Run integration tests"
       script: sbt ++$TRAVIS_SCALA_VERSION clean it:test
 
-    - stage: publish build artifacts
+    - stage: publish
+      env:
+        - NAME="Publish build artifacts"
       script: ./src/scripts/publish_build_artifacts.sh
 
 notifications:
