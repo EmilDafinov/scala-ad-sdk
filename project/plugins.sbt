@@ -5,7 +5,7 @@ resolvers ++= Seq(
   "Era7 maven releases" at "https://s3-eu-west-1.amazonaws.com/releases.era7.com",
   "Jenkins repo" at "http://repo.jenkins-ci.org/public/"
 )
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.5")
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC6")
 
 addSbtPlugin("ohnosequences" % "sbt-github-release" % "0.4.0")
 
