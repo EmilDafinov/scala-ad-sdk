@@ -1,7 +1,7 @@
 package com.github.emildafinov.ad.sdk
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import org.scalatest.{BeforeAndAfterAll, Suite}
 
 /**
@@ -13,7 +13,7 @@ trait WiremockHttpServiceTestSuite extends BeforeAndAfterAll {
   this: Suite =>
 
   val httpServerMock: WireMockServer = new WireMockServer(
-    options()
+    wireMockConfig()
       .dynamicPort()
       .dynamicHttpsPort()
   )
