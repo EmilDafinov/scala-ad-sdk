@@ -7,21 +7,19 @@ val PROJECT_HOMEPAGE_URL = "https://github.com/EmilDafinov/scala-ad-sdk"
 val BINTRAY_USER = System.getenv("BINTRAY_USER")
 val BINTRAY_PASSWORD = System.getenv("BINTRAY_PASS")
 
-lazy val publishReleaseNotes = TaskKey[Unit]("publishReleaseNotes", "Automatically publishes release notes on non-snapshot versions.")
+lazy val publishReleaseNotes = TaskKey[Unit]("publishReleaseNotes", "Publishes release notes on non-snapshot versions.")
 
 val publishGithubReleaseNotesTaskDef = Def.taskDyn {
+  val log = streams.value.log
   ghreleaseGetRepo.value
   ghreleaseGetReleaseBuilder.value
-
-  val log = streams.value.log
-  if (!isSnapshot.value) Def.task {
+  
+  if (isSnapshot.value) Def.task {
+    log.info(s"Skipping release notes generation since ${version.value} is a snapshot version")
+  } else Def.task {
     log.info(s"Publishing release notes for version ${version.value}")
     githubRelease.inputTaskValue
-    ()
-  }
-  else Def.task {
-    log.info(s"Skipping release notes generation since ${version.value} is a snapshot version")
-    ()
+    log.info(s"Finished publishing release notes")
   }
 }
 
@@ -47,15 +45,14 @@ lazy val publicationSettings = Seq(
     //point to Bintray
   },
   credentials += Credentials(
-          realm = "Artifactory Realm",
-          host = "oss.jfrog.org",
-          userName = BINTRAY_USER,
-          passwd = BINTRAY_PASSWORD
-        ),
+    realm = "Artifactory Realm",
+    host = "oss.jfrog.org",
+    userName = BINTRAY_USER,
+    passwd = BINTRAY_PASSWORD
+  ),
   publishArtifact in Test := false,
   bintrayReleaseOnPublish := !isSnapshot.value
 )
-
 
 lazy val projectMetadataSettings = Seq(
   licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"),
@@ -86,11 +83,11 @@ lazy val scalaAdSdk = (project in file("."))
     scalaVersion := "2.12.2",
 
     organization := "com.github.emildafinov",
-    
+
     name := "scala-ad-sdk",
 
     coverageExcludedFiles := ".*Module.*;",
-    
+
     libraryDependencies ++= Seq(
       //Application config
       "com.typesafe" % "config" % "1.3.1",
@@ -115,7 +112,7 @@ lazy val scalaAdSdk = (project in file("."))
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-      "de.heikoseeberger" %% "akka-http-json4s" % "1.17.0",
+//      "de.heikoseeberger" %% "akka-http-json4s" % "1.17.0",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
@@ -123,6 +120,6 @@ lazy val scalaAdSdk = (project in file("."))
       "org.mockito" % "mockito-all" % "1.10.19" % "it,test",
       "com.github.tomakehurst" % "wiremock" % "2.6.0" % "it,test"
     ),
-    
+
     publishReleaseNotes := publishGithubReleaseNotesTaskDef.value
   )

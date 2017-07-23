@@ -3,8 +3,8 @@ package com.github.emildafinov.ad.sdk.http.client
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.POST
-import akka.http.scaladsl.model.HttpRequest
-import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials, OAuth2BearerToken}
+import akka.http.scaladsl.model.{ContentType, ContentTypes, HttpRequest}
+import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials, `Content-Type`}
 import akka.stream.Materializer
 import com.github.emildafinov.ad.sdk.EventReturnAddress
 import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator}
@@ -16,7 +16,7 @@ import org.json4s.jackson.Serialization
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
-class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator, 
+class AppMarketEventResolver(authorizationTokenGenerator: AuthorizationTokenGenerator,
                              credentialsSupplier: AppMarketCredentialsSupplier)
                             (implicit
                              ec: ExecutionContext,
@@ -58,7 +58,7 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
     val authorizationHeader = Authorization(
       GenericHttpCredentials(
         scheme = "",
-        token = bearerTokenGenerator.generateAuthorizationHeaderValue(
+        token = authorizationTokenGenerator.generateAuthorizationHeaderValue(
           httpMethodName = "POST",
           resourceUrl = resourceUrl,
           marketplaceCredentials = clientCredentials
@@ -66,11 +66,13 @@ class AppMarketEventResolver(bearerTokenGenerator: AuthorizationTokenGenerator,
       )
     )
 
+    val contentTypeHeader = `Content-Type`(ContentTypes.`application/json`)
+
     HttpRequest(
       method = POST,
       uri = resourceUrl,
       entity = requestEntity,
-      headers = List(authorizationHeader)
+      headers = List(authorizationHeader, contentTypeHeader)
     )
   }
 }

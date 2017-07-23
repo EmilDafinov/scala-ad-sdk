@@ -4,10 +4,11 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpMethods.GET
 import akka.http.scaladsl.model.HttpRequest
-import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials}
+import akka.http.scaladsl.model.MediaTypes.`application/json`
+import akka.http.scaladsl.model.headers.{Accept, Authorization, GenericHttpCredentials}
 import akka.stream.Materializer
 import akka.util.ByteString
-import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AppMarketCredentialsSupplier, AuthorizationTokenGenerator, UnknownClientKeyException}
+import com.github.emildafinov.ad.sdk.authentication.{AppMarketCredentials, AuthorizationTokenGenerator}
 import com.github.emildafinov.ad.sdk.payload.{Event, EventType, NoticeType}
 import org.json4s._
 import org.json4s.ext.EnumNameSerializer
@@ -17,9 +18,11 @@ import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 import scala.util.control.NonFatal
+
 /**
   * Returns the event id and payload.
   * Synchronous, because we always want to retrieve the event before releasing the connections
+  *
   * @param authorizationTokenGenerator used to generate the OAuth bearer token used to sign the request
   * @param appMarketTimeoutInterval    timeout for retrieving the event payload.
   */
@@ -29,10 +32,10 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
                             am: Materializer,
                             ec: ExecutionContext) {
 
-  implicit val formats: Formats = DefaultFormats + new EnumNameSerializer(NoticeType) + new EnumNameSerializer(EventType) 
-  
+  implicit val formats: Formats = DefaultFormats + new EnumNameSerializer(NoticeType) + new EnumNameSerializer(EventType)
+
   def fetchRawAppMarketEvent(clientCredentials: AppMarketCredentials, eventFetchUrl: String): (String, Event) = {
-  
+
     val parsedRawEvent = (for {
       eventFetchRequest <- signedFetchRequest(eventFetchUrl, clientCredentials)
       response <- Http().singleRequest(eventFetchRequest)
@@ -43,7 +46,7 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
       extractIdFrom(eventFetchUrl) -> eventPayload
 
     } recover {
-      case NonFatal(e) => 
+      case NonFatal(e) =>
         throw new CouldNotFetchRawMarketplaceEventException(e)
     }
 
@@ -57,7 +60,7 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
 
     val authorizationHeader = Authorization(
       credentials = GenericHttpCredentials(
-        scheme = "OAuth", 
+        scheme = "",
         token = authorizationTokenGenerator.generateAuthorizationHeaderValue(
           "GET",
           eventFetchUrl,
@@ -65,15 +68,15 @@ class AppMarketEventFetcher(authorizationTokenGenerator: AuthorizationTokenGener
         )
       )
     )
-    
+
     HttpRequest(
       method = GET,
       uri = eventFetchUrl,
-      headers = List(authorizationHeader)
+      headers = List(authorizationHeader, Accept(`application/json`))
     )
   }
 
-  private def extractIdFrom(eventFetchUrl: String): String = 
+  private def extractIdFrom(eventFetchUrl: String): String =
     eventFetchUrl split "/" last
 
 }

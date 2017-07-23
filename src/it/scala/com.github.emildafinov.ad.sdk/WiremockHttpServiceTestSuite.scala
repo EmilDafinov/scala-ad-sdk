@@ -17,7 +17,7 @@ trait WiremockHttpServiceTestSuite extends BeforeAndAfterAll {
       .dynamicPort()
       .dynamicHttpsPort()
   )
-  
+
   override def beforeAll(): Unit = {
     super.beforeAll()
     httpServerMock.start()
