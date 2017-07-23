@@ -13,7 +13,7 @@ val publishGithubReleaseNotesTaskDef = Def.taskDyn {
   val log = streams.value.log
   ghreleaseGetRepo.value
   ghreleaseGetReleaseBuilder.value
-  
+
   if (isSnapshot.value) Def.task {
     log.info(s"Skipping release notes generation since ${version.value} is a snapshot version")
   } else Def.task {
@@ -112,7 +112,6 @@ lazy val scalaAdSdk = (project in file("."))
       //Json
       "org.json4s" %% "json4s-jackson" % JSON4S_VERSION,
       "org.json4s" %% "json4s-ext" % JSON4S_VERSION,
-//      "de.heikoseeberger" %% "akka-http-json4s" % "1.17.0",
 
       //Test
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
