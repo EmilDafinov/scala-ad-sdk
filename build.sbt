@@ -80,7 +80,7 @@ lazy val scalaAdSdk = (project in file("."))
   .settings(versionSettings)
   .settings(publicationSettings)
   .settings(
-    scalaVersion := "2.12.2",
+    scalaVersion := "2.12.3",
 
     organization := "com.github.emildafinov",
 
@@ -94,7 +94,7 @@ lazy val scalaAdSdk = (project in file("."))
 
       //Logging
       "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.1",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
 
       //Authentication
       "oauth.signpost" % "signpost-core" % SIGNPOST_VERSION,
@@ -117,7 +117,7 @@ lazy val scalaAdSdk = (project in file("."))
       "org.scalactic" %% "scalactic" % SCALATEST_VERSION,
       "org.scalatest" %% "scalatest" % SCALATEST_VERSION % "it,test",
       "org.mockito" % "mockito-all" % "1.10.19" % "it,test",
-      "com.github.tomakehurst" % "wiremock" % "2.6.0" % "it,test"
+      "com.github.tomakehurst" % "wiremock" % "2.7.0" % "it,test"
     ),
 
     publishReleaseNotes := publishGithubReleaseNotesTaskDef.value
