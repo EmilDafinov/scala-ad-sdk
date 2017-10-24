@@ -8,4 +8,4 @@ chmod +x travis_bintray_credentials.sh &&
 #Write the Github credentials to disk
 echo "oauth = ${GITHUB_RELEASE_TOKEN}" > $HOME/.github
 
-sbt ++$TRAVIS_SCALA_VERSION bintrayEnsureCredentials publish publishReleaseNotes 
+sbt ++$TRAVIS_SCALA_VERSION bintrayEnsureCredentials publish publishReleaseNotes bintraySyncMavenCentral
